@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dlion.life.base.dao.NoteMapper">
+
+    <resultMap id="BaseResultMap" type="com.dlion.life.base.entity.Note">
+        <id column="open_id" property="id" jdbcType="INTEGER"/>
+        <id column="open_id" property="openId" jdbcType="INTEGER"/>
+        <id column="content" property="openId" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,open_id, content, create_time, update_time
+    </sql>
+
+    <insert id="insertNote" parameterType="com.dlion.life.base.entity.Note" useGeneratedKeys="true" keyProperty="id">
+        insert into note(open_id, content, create_time, update_time)
+        VALUE
+         (#{note.open_id,jdbcType=VARCHAR},
+        #{note.content,jdbcType=VARCHAR},
+        #{note.create_time,jdbcType=TIMESTAMP}),
+        #{note.update_time,jdbcType=TIMESTAMP})
+    </insert>
+    <delete id="deleteNote">
+        delete from note where id = #{id}
+    </delete>
+
+    <!-- 查询用户 -->
+    <select id="selectById" resultMap="BaseResultMap" parameterType="Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from note where id=#{id}
+    </select>
+
+
+    <select id="listByOpenId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from note where id=#{id}
+    </select>
+
+    <update id="update" parameterType="com.dlion.life.base.entity.Note">
+        UPDATE
+        note
+        SET
+        <if test="content != null and content !=''">
+            content = #{content},
+        </if>
+        WHERE
+        id = #{id}
+        and open_id = #{openId}
+    </update>
+
+</mapper>

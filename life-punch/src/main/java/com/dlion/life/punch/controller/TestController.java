@@ -18,7 +18,7 @@ import org.springframework.web.client.RestTemplate;
 @RestController
 public class TestController {
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private UserApi userApi;
@@ -43,5 +43,9 @@ public class TestController {
     }
 
 
+    @GetMapping("/getUser")
+    public Object getUserById(){
+        return userApi.getUserById(4);
+    }
 
 }
