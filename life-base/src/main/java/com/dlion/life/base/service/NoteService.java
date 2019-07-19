@@ -21,8 +21,12 @@ public class NoteService {
         noteMapper.insertNote(note);
     }
 
-    public List<Note> listByOpenId(String openId){
-        return noteMapper.listByOpenId(openId);
+    public Note getById(Integer id){
+        return noteMapper.selectById(id);
+    }
+
+    public List<Note> listByUserId(Integer userId){
+        return noteMapper.listByUserId(userId);
     }
 
     public void updateNote(Note note){

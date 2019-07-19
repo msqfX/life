@@ -1,6 +1,7 @@
 package com.dlion.life.note.model;
 
 import lombok.Data;
+import org.omg.CORBA.INTERNAL;
 
 /**
  * @author 李正元
@@ -9,7 +10,9 @@ import lombok.Data;
 @Data
 public class NoteModel {
 
-    private String openId;
+    private Integer id;
+
+    private Integer userId;
 
     private String content;
 

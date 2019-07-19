@@ -14,16 +14,19 @@ import java.util.List;
 @FeignClient(value = "life-base",fallback = UserApiFallback.class)
 public interface NoteApi {
 
-    @GetMapping("/listByOpenId")
-    List<Note> listByOpenId(@RequestParam String openId);
+    @GetMapping("/listByUserId")
+    List<Note> listByUserId(@RequestParam Integer userId);
+
+    @GetMapping("getById")
+    Note getById(@RequestParam Integer id);
 
     @PostMapping("/addNote")
     void addNote(@RequestBody Note note);
 
-    @PutMapping
+    @PutMapping("updateNote")
     void updateNote(@RequestBody Note note);
 
-    @DeleteMapping
+    @DeleteMapping("deleteNote")
     void deleteNote(@RequestParam Integer id);
 
 }

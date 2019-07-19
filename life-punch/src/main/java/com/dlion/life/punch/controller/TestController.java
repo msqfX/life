@@ -1,6 +1,7 @@
 package com.dlion.life.punch.controller;
 
 import com.dlion.life.base.api.UserApi;
+import com.dlion.life.common.model.ResponseModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,7 @@ public class TestController {
 
     @GetMapping("/getUser")
     public Object getUserById(){
-        return userApi.getUserById(4);
+        return new ResponseModel(userApi.getUserById(4));
     }
 
 }

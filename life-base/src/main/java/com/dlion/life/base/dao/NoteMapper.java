@@ -17,7 +17,7 @@ public interface NoteMapper {
 
     Note selectById(@Param("id") Integer id);
 
-    List<Note> listByOpenId(@Param("openId") String openId);
+    List<Note> listByUserId(@Param("userId") Integer userId);
 
     void update(@Param("note") Note note);
 

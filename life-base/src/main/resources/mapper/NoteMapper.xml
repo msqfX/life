@@ -3,24 +3,22 @@
 <mapper namespace="com.dlion.life.base.dao.NoteMapper">
 
     <resultMap id="BaseResultMap" type="com.dlion.life.base.entity.Note">
-        <id column="open_id" property="id" jdbcType="INTEGER"/>
-        <id column="open_id" property="openId" jdbcType="INTEGER"/>
-        <id column="content" property="openId" jdbcType="VARCHAR"/>
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <id column="user_id" property="userId" jdbcType="INTEGER"/>
+        <id column="content" property="content" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,open_id, content, create_time, update_time
+        id, user_id, content, create_time, update_time
     </sql>
 
     <insert id="insertNote" parameterType="com.dlion.life.base.entity.Note" useGeneratedKeys="true" keyProperty="id">
-        insert into note(open_id, content, create_time, update_time)
+        insert into note(user_id, content)
         VALUE
-         (#{note.open_id,jdbcType=VARCHAR},
-        #{note.content,jdbcType=VARCHAR},
-        #{note.create_time,jdbcType=TIMESTAMP}),
-        #{note.update_time,jdbcType=TIMESTAMP})
+         (#{note.userId,jdbcType=VARCHAR},
+        #{note.content,jdbcType=VARCHAR})
     </insert>
     <delete id="deleteNote">
         delete from note where id = #{id}
@@ -34,10 +32,11 @@
     </select>
 
 
-    <select id="listByOpenId" resultMap="BaseResultMap">
+    <select id="listByUserId" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from note where id=#{id}
+        from note
+        where user_id=#{userId}
     </select>
 
     <update id="update" parameterType="com.dlion.life.base.entity.Note">
@@ -49,7 +48,7 @@
         </if>
         WHERE
         id = #{id}
-        and open_id = #{openId}
+        and user_id = #{userId}
     </update>
 
 </mapper>

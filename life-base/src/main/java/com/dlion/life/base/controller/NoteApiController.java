@@ -20,8 +20,13 @@ public class NoteApiController implements NoteApi {
     private NoteService noteService;
 
     @Override
-    public List<Note> listByOpenId(String openId) {
-        return noteService.listByOpenId(openId);
+    public List<Note> listByUserId(Integer userId) {
+        return noteService.listByUserId(userId);
+    }
+
+    @Override
+    public Note getById(Integer id) {
+        return noteService.getById(id);
     }
 
     @Override

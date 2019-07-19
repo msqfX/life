@@ -13,7 +13,7 @@ public class Note {
 
     private Integer id;
 
-    private String openId;
+    private Integer userId;
 
     private String content;
 
