@@ -4,18 +4,51 @@
 
     <resultMap id="BaseResultMap" type="com.dlion.life.base.entity.User">
         <id column="id" property="id" jdbcType="BIGINT"/>
-        <result column="age" property="age" jdbcType="INTEGER"/>
-        <result column="pass_word" property="passWord" jdbcType="VARCHAR"/>
+        <result column="open_id" property="openId" jdbcType="VARCHAR"/>
+        <result column="nick_name" property="nickName" jdbcType="VARCHAR"/>
+        <result column="avatar_url" property="avatarUrl" jdbcType="VARCHAR"/>
+        <result column="gender" property="gender" jdbcType="INTEGER"/>
+        <result column="country" property="country" jdbcType="VARCHAR"/>
+        <result column="province" property="province" jdbcType="VARCHAR"/>
+        <result column="city" property="city" jdbcType="VARCHAR"/>
+        <result column="language" property="language" jdbcType="VARCHAR"/>
         <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="pass_word" property="passWord" jdbcType="VARCHAR"/>
+        <result column="channel" property="channel" jdbcType="VARCHAR"/>
+        <result column="brand" property="brand" jdbcType="VARCHAR"/>
+        <result column="model" property="model" jdbcType="VARCHAR"/>
+        <result column="wx_language" property="wxLanguage" jdbcType="VARCHAR"/>
+        <result column="system" property="system" jdbcType="VARCHAR"/>
+        <result column="platform" property="platform" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, user_name,age, pass_word
+        id,open_id,nick_name,avatar_url,gender,country,province,city,language,pass_word,user_name,channel,
+        brand,model, wx_language,system,platform,create_time,update_time
     </sql>
 
     <insert id="inserUser" parameterType="com.dlion.life.base.entity.User" useGeneratedKeys="true" keyProperty="id">
-        insert into user(age,pass_word,user_name)
-        VALUE (#{user.age,jdbcType=INTEGER},#{user.passWord,jdbcType=INTEGER},#{user.userName,jdbcType=INTEGER})
+        insert into user(open_id,nick_name,avatar_url,gender,country,province,city,language,user_name,pass_word,channel,
+        brand,model, wx_language,system,platform)
+        VALUE
+        (#{user.openId,jdbcType=VARCHAR},
+        #{user.nickName,jdbcType=VARCHAR},
+        #{user.avatarUrl,jdbcType=VARCHAR},
+        #{user.gender,jdbcType=INTEGER},
+        #{user.country,jdbcType=VARCHAR},
+        #{user.province,jdbcType=VARCHAR},
+        #{user.city,jdbcType=VARCHAR},
+        #{user.language,jdbcType=VARCHAR},
+        #{user.userName,jdbcType=VARCHAR},
+        #{user.passWord,jdbcType=VARCHAR},
+        #{user.channel,jdbcType=VARCHAR},
+        #{user.brand,jdbcType=VARCHAR},
+        #{user.model,jdbcType=VARCHAR},
+        #{user.wxLanguage,jdbcType=VARCHAR},
+        #{user.system,jdbcType=VARCHAR},
+        #{user.platform,jdbcType=VARCHAR})
     </insert>
 
     <!-- 查询用户 -->
@@ -24,6 +57,14 @@
         <include refid="Base_Column_List"/>
         from user where id=#{id}
     </select>
+
+    <select id="selectByOpenId" resultMap="BaseResultMap" parameterType="string">
+        select
+        <include refid="Base_Column_List"/>
+        from user where open_id=#{openId}
+    </select>
+
+
 
     <update id="updateUser" parameterType="com.dlion.life.base.entity.User">
         UPDATE

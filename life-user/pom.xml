@@ -9,12 +9,13 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>life-mbook</artifactId>
+    <artifactId>life-user</artifactId>
 
     <properties>
         <java.version>1.8</java.version>
         <docker.image.prefix>life</docker.image.prefix>
     </properties>
+
 
     <dependencies>
 
@@ -73,11 +74,22 @@
             <artifactId>spring-cloud-starter-stream-rocketmq</artifactId>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.58</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
 
     </dependencies>
 
     <build>
-        <finalName>life-mbook</finalName>
+        <finalName>life-note</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

@@ -16,4 +16,6 @@ public interface UserMapper {
     User selectUserById(Integer id);
 
     int updateUser(User user);
+
+    User selectByOpenId(@Param("openId") String openId);
 }

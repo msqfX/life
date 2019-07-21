@@ -17,6 +17,7 @@
         <module>life-common</module>
         <module>life-note</module>
         <module>life-mbook</module>
+        <module>life-user</module>
     </modules>
 
     <parent>

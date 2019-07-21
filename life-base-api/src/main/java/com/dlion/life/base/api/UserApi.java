@@ -4,25 +4,24 @@ import com.dlion.life.base.fallback.UserApiFallback;
 import com.dlion.life.base.entity.User;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author 李正元
  * @date 2019-06-08
  */
-@FeignClient(value = "life-base",fallback = UserApiFallback.class)
+@FeignClient(name = "life-base-user", url = "http://localhost:8081")
 public interface UserApi {
 
-    /**
-     * 熔断
-     *
-     * @param name
-     * @return
-     */
-    @GetMapping("/hellpo")
-    String hello(@RequestParam String name);
-
-    @GetMapping("/getUserById")
+    @GetMapping("/life-base-user/getUserById")
     User getUserById(@RequestParam("id") Integer id);
 
+    @GetMapping("/life-base-user/getByOpenId")
+    User getByOpenId(@RequestParam("openId") String openId);
+
+    @PostMapping("/life-base-user/addUser")
+    void addUser(@RequestBody User user);
+    
 }

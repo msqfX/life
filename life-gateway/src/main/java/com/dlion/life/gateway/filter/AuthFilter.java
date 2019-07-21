@@ -1,5 +1,6 @@
 package com.dlion.life.gateway.filter;
 
+import com.dlion.life.common.model.ResponseModel;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
@@ -8,6 +9,7 @@ import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
@@ -28,7 +30,9 @@ public class AuthFilter implements GlobalFilter, Ordered {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
 
-        String token = exchange.getRequest().getQueryParams().getFirst("token");
+        //String token = exchange.getRequest().getQueryParams().getFirst("token");
+        ServerHttpRequest request = exchange.getRequest();
+        String token = request.getHeaders().getFirst("token");
 
         ServerHttpResponse response = exchange.getResponse();
 

@@ -1,17 +1,14 @@
-package com.dlion.life.base.entity;
+package com.dlion.life.common.model;
 
 import lombok.Data;
 
-import java.sql.Timestamp;
-
 /**
- * 用户信息
- *
  * @author 李正元
- * @date 2019/7/19
+ * @date 2019-07-21
  */
+
 @Data
-public class User {
+public class UserModel {
 
     private Integer id;
 
@@ -85,9 +82,5 @@ public class User {
      * 客户端平台
      */
     private String platform;
-
-    private Timestamp createTime;
-
-    private Timestamp updateTime;
 
 }

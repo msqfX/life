@@ -5,6 +5,7 @@ import com.dlion.life.base.entity.Note;
 import com.dlion.life.base.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class NoteApiController implements NoteApi {
     }
 
     @Override
-    public Note getById(Integer id) {
+    public Note getById(@RequestParam("id") Integer id) {
         return noteService.getById(id);
     }
 

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dlion.life.base.dao.AccountMapper">
+
+    <resultMap id="BaseResultMap" type="com.dlion.life.base.entity.Account">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="amount" property="amount" jdbcType="DECIMAL"/>
+        <result column="userd_amount" property="userdAmount" jdbcType="DECIMAL"/>
+        <result column="usable_amount" property="usableAmount" jdbcType="TIMESTAMP"/>
+        <result column="billing_day" property="billingDay" jdbcType="TIMESTAMP"/>
+        <result column="repayment_date" property="repaymentDate" jdbcType="TIMESTAMP"/>
+        <result column="account_type" property="accountType" jdbcType="INTEGER"/>
+        <result column="card_num" property="cardNum" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="changes" property="changes" jdbcType="DECIMAL"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, user_id, name,amount,userd_amount,usable_amount,billing_day,repayment_date,account_type,remark,changes,card_num,
+         create_time, update_time
+    </sql>
+
+    <insert id="insert" parameterType="com.dlion.life.base.entity.Account" useGeneratedKeys="true" keyProperty="id">
+        insert into account(user_id, name,amount,userd_amount,usable_amount,billing_day,
+        repayment_date,account_type,remark,changes,card_num)
+        VALUE(
+        #{account.userId,jdbcType=VARCHAR},
+        #{note.name,jdbcType=VARCHAR}
+        #{note.amount,jdbcType=DECIMAL}
+        #{note.userd_amount,jdbcType=DECIMAL}
+        #{note.usable_amount,jdbcType=DECIMAL}
+        #{note.billing_day,jdbcType=TIMESTAMP}
+        #{note.repayment_date,jdbcType=TIMESTAMP}
+        #{note.account_type,jdbcType=INTEGER}
+        #{note.remark,jdbcType=VARCHAR}
+        #{note.changes,jdbcType=DECIMAL}
+        #{note.cardNum,jdbcType=VARCHAR})
+    </insert>
+    <delete id="delete">
+        delete from account where id = #{id}
+    </delete>
+
+    <!-- 查询用户 -->
+    <select id="selectById" resultMap="BaseResultMap" parameterType="Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from account where id=#{id}
+    </select>
+
+
+    <select id="selectByUserId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from account
+        where id = #{id} and user_id=#{userId}
+    </select>
+
+    <update id="update" parameterType="com.dlion.life.base.entity.Account">
+        UPDATE
+        account
+        SET
+        <if test="name != null and name !=''">
+            name = #{name},
+        </if>
+        <if test="account != null">
+            account = #{account},
+        </if>
+        <if test="userdAmount != null">
+            userd_amount = #{userdAmount},
+        </if>
+        <if test="usableAmount != null">
+            usable_amount = #{usableAmount},
+        </if>
+        <if test="billingDay != null">
+            billing_day = #{billingDay},
+        </if>
+        <if test="repaymentDate != null">
+            repayment_date = #{repaymentDate},
+        </if>
+        <if test="cardNum != null and cardNum !=''">
+            card_num = #{cardNum},
+        </if>
+        <if test="remark != null and remark !=''">
+            remark = #{remark},
+        </if>
+        <if test="content != null and content !=''">
+            content = #{content},
+        </if>
+        WHERE
+        id = #{id}
+        and user_id = #{userId}
+    </update>
+
+</mapper>

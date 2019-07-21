@@ -12,13 +12,18 @@ import org.springframework.stereotype.Component;
 public class UserApiFallback implements UserApi {
 
     @Override
-    public String hello(String name) {
-        return "请求失败，请检查网络";
+    public User getUserById(Integer id) {
+        return null;
     }
 
     @Override
-    public User getUserById(Integer id) {
+    public User getByOpenId(String openId) {
         return null;
+    }
+
+    @Override
+    public void addUser(User user) {
+
     }
 
 }

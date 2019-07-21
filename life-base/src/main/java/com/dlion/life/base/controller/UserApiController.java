@@ -6,8 +6,8 @@ import com.dlion.life.base.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author 李正元
@@ -21,30 +21,25 @@ public class UserApiController implements UserApi {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private ConfigurableApplicationContext applicationContext;
-
-    @GetMapping("/hello")
-    @Override
-    public String hello(@RequestParam String name) {
-        logger.info("invoked name = " + name);
-        return "hello " + name+"port:"+applicationContext.getEnvironment().getProperty("server.port");
-    }
-
     @Override
     public User getUserById(Integer id) {
+
         return userService.getUser(id);
+
     }
 
-    @GetMapping
-    public String getUserInfo(@RequestParam("userId") String userId){
-        return userId;
+    @Override
+    public User getByOpenId(String openId) {
+
+        return userService.getByOpenId(openId);
+
     }
 
-    @PostMapping("/addUser")
-    public String addUser(@RequestBody User user){
+    @Override
+    public void addUser(@RequestBody User user) {
+
         userService.addUser(user);
-        return "success";
+
     }
 
 

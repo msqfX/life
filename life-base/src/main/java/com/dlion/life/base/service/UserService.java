@@ -15,16 +15,23 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
-    public void addUser(User user){
+    public void addUser(User user) {
         userMapper.inserUser(user);
     }
 
-    public User getUser(Integer id){
+    public User getUser(Integer id) {
         return userMapper.selectUserById(id);
     }
 
-    public void updateUser(User user){
+    public void updateUser(User user) {
         userMapper.updateUser(user);
     }
+
+    public User getByOpenId(String openId) {
+
+        return userMapper.selectByOpenId(openId);
+
+    }
+
 
 }

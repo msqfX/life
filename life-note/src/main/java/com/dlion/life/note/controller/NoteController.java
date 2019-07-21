@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.*;
  * @author 李正元
  * @date 2019-07-16
  */
-@RestController("/note")
+@RestController
+@RequestMapping("/api/note")
 public class NoteController {
 
     @Autowired
@@ -44,6 +45,8 @@ public class NoteController {
         Note note = new Note();
         BeanUtils.copyProperties(noteModel, note);
 
+
+        note.setId(id);
         noteApi.updateNote(note);
 
         return new ResponseModel();
