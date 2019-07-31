@@ -3,7 +3,7 @@ create table user(
 id int primary key auto_increment,
 open_id varchar(50),
 nick_name varchar(30),
-avatar_url varchar(100),
+avatar_url varchar(500),
 gender tinyint(1),
 country varchar(30),
 province varchar(20),
@@ -21,7 +21,7 @@ create_time timestamp  not NULL DEFAULT CURRENT_TIMESTAMP,
 update_time timestamp  not NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 )charset utf8 collate utf8_general_ci;
 
-create unique index account_open_id_index on user(open_id);
+create unique index user_open_id_index on user(open_id);
 
 
 #笔记
