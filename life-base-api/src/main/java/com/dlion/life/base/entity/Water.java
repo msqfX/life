@@ -19,6 +19,8 @@ public class Water {
 
     private Byte consumptionType;
 
+    private String remark;
+
     private Date createTime;
 
     private Date updateTime;

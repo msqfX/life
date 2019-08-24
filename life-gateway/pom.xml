@@ -15,6 +15,12 @@
 
     <dependency>
         <groupId>com.dlion</groupId>
+        <artifactId>life-base-api</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+        <groupId>com.dlion</groupId>
         <artifactId>life-common</artifactId>
         <version>1.0-SNAPSHOT</version>
     </dependency>

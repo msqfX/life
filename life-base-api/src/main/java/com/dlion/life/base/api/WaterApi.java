@@ -2,6 +2,7 @@ package com.dlion.life.base.api;
 
 import com.dlion.life.base.entity.Water;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,7 +23,7 @@ public interface WaterApi {
      * @param water
      * @return
      */
-    @PostMapping
+    @PostMapping("/life-base-water/add")
     void add(@RequestBody Water water);
 
     /**
@@ -33,6 +34,7 @@ public interface WaterApi {
      * @param endTime
      * @return
      */
+    @GetMapping("/life-base-water/listByTime")
     List<Water> listByTime(@RequestParam("userId") Integer userId, @RequestParam("startTime") Date startTime,
                            @RequestParam("endTime") Date endTime);
 

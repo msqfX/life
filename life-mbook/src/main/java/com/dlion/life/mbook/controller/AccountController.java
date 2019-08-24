@@ -7,6 +7,7 @@ import com.dlion.life.common.enums.AccountTypeEnum;
 import com.dlion.life.common.model.AccountModel;
 import com.dlion.life.common.model.ResponseModel;
 import com.dlion.life.common.model.UserAccountModel;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/account")
-public class MBookController {
+public class AccountController {
 
     @Autowired
     private AccountApi accountApi;
@@ -43,8 +44,9 @@ public class MBookController {
 
             BeanUtils.copyProperties(e, accountModel);
 
-            accountModel.setAbbreviation(e.getName().substring(0, 1));
-
+            if(StringUtils.isNotEmpty(e.getName())){
+                accountModel.setAbbreviation(e.getName().substring(0, 1));
+            }
             accountModel.setAccountTypeName(AccountTypeEnum.getName(e.getAccountType()));
 
             return accountModel;

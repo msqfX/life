@@ -13,16 +13,29 @@ import java.math.BigDecimal;
 @Data
 public class WaterModel {
 
-    private Integer id;
-
-    private Integer userId;
-
+    /**
+     * 金额
+     */
     private BigDecimal amount;
 
+    /**
+     * 账户类型
+     */
     private Integer accountType;
 
+    /**
+     * 支出/收入
+     */
     private Integer changeType;
 
+    /**
+     * 消费类型
+     */
     private Integer consumptionType;
+
+    /**
+     * 备注
+     */
+    private String remark;
 
 }
