@@ -35,7 +35,7 @@ public class AccountModel {
     /**
      * 固定额度
      */
-    private BigDecimal Amount;
+    private BigDecimal amount;
 
     /**
      * 已使用额度
@@ -66,6 +66,11 @@ public class AccountModel {
      * 账户类型名称
      */
     private String accountTypeName;
+
+    /**
+     * 尾号
+     */
+    private String cardNum;
 
     /**
      * 备注

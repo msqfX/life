@@ -75,3 +75,19 @@ CREATE TABLE `water` (
 create unique index water_user_id_index on account(user_id);
 create unique index water_create_time_index on account(create_time);
 create unique index water_update_time_index on account(update_time);
+
+
+#账户流水表
+create table water(
+id int primary key auto_increment,
+user_id int not null,
+change decimal not null default 0,
+account_type tinyint not null ,
+change_type tinyint not null ,
+consumption_type tinyint not null,
+create_time timestamp  not NULL DEFAULT CURRENT_TIMESTAMP,
+update_time timestamp  not NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+)charset utf8 collate utf8_general_ci;
+
+create unique index water_user_id_index on water(user_id);
+

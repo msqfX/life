@@ -53,3 +53,4 @@ nbdist/
 build/
 !gradle/wrapper/gradle-wrapper.jar
 
+life-skywalking/agent/logs/

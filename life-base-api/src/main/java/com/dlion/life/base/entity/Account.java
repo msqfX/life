@@ -3,7 +3,6 @@ package com.dlion.life.base.entity;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -70,9 +69,9 @@ public class Account {
      */
     private BigDecimal changes;
 
-    private Timestamp createTime;
+    private Date createTime;
 
-    private Timestamp updateTime;
+    private Date updateTime;
 
 
 }

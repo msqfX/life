@@ -29,16 +29,16 @@
         repayment_date,account_type,remark,changes,card_num)
         VALUE(
         #{account.userId,jdbcType=VARCHAR},
-        #{note.name,jdbcType=VARCHAR}
-        #{note.amount,jdbcType=DECIMAL}
-        #{note.userd_amount,jdbcType=DECIMAL}
-        #{note.usable_amount,jdbcType=DECIMAL}
-        #{note.billing_day,jdbcType=TIMESTAMP}
-        #{note.repayment_date,jdbcType=TIMESTAMP}
-        #{note.account_type,jdbcType=INTEGER}
-        #{note.remark,jdbcType=VARCHAR}
-        #{note.changes,jdbcType=DECIMAL}
-        #{note.cardNum,jdbcType=VARCHAR})
+        #{account.name,jdbcType=VARCHAR},
+        #{account.amount,jdbcType=DECIMAL},
+        #{account.userdAmount,jdbcType=DECIMAL},
+        #{account.usableAmount,jdbcType=DECIMAL},
+        #{account.billingDay,jdbcType=TIMESTAMP},
+        #{account.repaymentDate,jdbcType=TIMESTAMP},
+        #{account.accountType,jdbcType=INTEGER},
+        #{account.remark,jdbcType=VARCHAR},
+        #{account.changes,jdbcType=DECIMAL},
+        #{account.cardNum,jdbcType=VARCHAR})
     </insert>
     <delete id="delete">
         delete from account where id = #{id}
@@ -56,7 +56,7 @@
         select
         <include refid="Base_Column_List"/>
         from account
-        where id = #{id} and user_id=#{userId}
+        where user_id = #{userId}
     </select>
 
     <update id="update" parameterType="com.dlion.life.base.entity.Account">

@@ -6,6 +6,7 @@ import com.dlion.life.common.constant.ResultConstant;
 import com.dlion.life.common.enums.AccountTypeEnum;
 import com.dlion.life.common.model.AccountModel;
 import com.dlion.life.common.model.ResponseModel;
+import com.dlion.life.common.model.UserAccountModel;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,8 @@ import java.util.stream.Collectors;
  * @date 2019-07-16
  */
 
-@RestController("/mbook")
+@RestController
+@RequestMapping("/api/account")
 public class MBookController {
 
     @Autowired
@@ -53,7 +55,7 @@ public class MBookController {
 
     }
 
-    @PostMapping("/addAccount")
+    @PostMapping
     public Object addAccount(@RequestBody AccountModel accountModel) {
 
         Account account = new Account();
@@ -100,6 +102,15 @@ public class MBookController {
         accountApi.delete(id);
 
         return new ResponseModel();
+
+    }
+
+    @GetMapping("/getUserAccount")
+    public Object getUserAccount(@RequestParam String userId){
+
+        UserAccountModel userAccountModel = new UserAccountModel(1L,1L,1L,1L);
+
+        return new ResponseModel(userAccountModel);
 
     }
 
