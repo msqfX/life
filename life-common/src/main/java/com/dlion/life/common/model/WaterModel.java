@@ -21,7 +21,7 @@ public class WaterModel {
     /**
      * 账户类型
      */
-    private Integer accountType;
+    private Integer accountId;
 
     /**
      * 支出/收入

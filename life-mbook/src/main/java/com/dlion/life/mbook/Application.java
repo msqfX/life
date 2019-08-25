@@ -14,7 +14,7 @@ import org.springframework.cloud.stream.messaging.Sink;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients(basePackages = {"com.dlion.life"})
-@EnableBinding(Sink.class)
+//@EnableBinding(Sink.class)
 public class Application {
 
     public static void main(String[] args) {

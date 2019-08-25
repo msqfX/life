@@ -5,7 +5,7 @@
     <result column="id" jdbcType="INTEGER" property="id" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="amount" jdbcType="DECIMAL" property="amount" />
-    <result column="account_type" jdbcType="TINYINT" property="accountType" />
+    <result column="account_id" jdbcType="BIGINT" property="accountId" />
     <result column="change_type" jdbcType="TINYINT" property="changeType" />
     <result column="consumption_type" jdbcType="TINYINT" property="consumptionType" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
@@ -14,7 +14,7 @@
   </resultMap>
 
   <sql id="Base_Column_List">
-    id, user_id, amount, account_type, change_type, consumption_type, remark, create_time, update_time
+    id, user_id, amount, account_id, change_type, consumption_type, remark, create_time, update_time
   </sql>
   <select id="selectByCon" parameterType="com.dlion.life.base.entity.Water" resultMap="BaseResultMap">
     select
@@ -30,18 +30,15 @@
   </delete>
   <insert id="insert" parameterType="com.dlion.life.base.entity.Water">
     insert into water (id, user_id, amount, 
-      account_type, change_type, consumption_type, 
+      account_id, change_type, consumption_type, 
       remark
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL}, 
       #{accountType,jdbcType=TINYINT}, #{changeType,jdbcType=TINYINT}, #{consumptionType,jdbcType=TINYINT}, 
       #{account.remark,jdbcType=VARCHAR}
   </insert>
-  <insert id="insertSelective" parameterType="com.dlion.life.base.entity.Water">
+  <insert id="insertSelective" parameterType="com.dlion.life.base.entity.Water" useGeneratedKeys="true" keyProperty="id">
     insert into water
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
       <if test="userId != null">
         user_id,
       </if>
@@ -49,7 +46,7 @@
         amount,
       </if>
       <if test="accountType != null">
-        account_type,
+        account_id,
       </if>
       <if test="changeType != null">
         change_type,
@@ -68,32 +65,29 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
       <if test="userId != null">
-        #{userId,jdbcType=INTEGER},
+        #{water.userId,jdbcType=INTEGER},
       </if>
       <if test="amount != null">
-        #{amount,jdbcType=DECIMAL},
+        #{water.amount,jdbcType=DECIMAL},
       </if>
       <if test="accountType != null">
-        #{accountType,jdbcType=TINYINT},
+        #{water.accountType,jdbcType=TINYINT},
       </if>
       <if test="changeType != null">
-        #{changeType,jdbcType=TINYINT},
+        #{water.changeType,jdbcType=TINYINT},
       </if>
       <if test="consumptionType != null">
-        #{consumptionType,jdbcType=TINYINT},
+        #{water.consumptionType,jdbcType=TINYINT},
       </if>
       <if test="remark != null and remark != ''">
-        #{account.remark,jdbcType=VARCHAR},
+        #{water.remark,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
+        #{water.createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
+        #{water.updateTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>

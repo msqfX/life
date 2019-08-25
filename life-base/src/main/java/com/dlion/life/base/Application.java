@@ -15,7 +15,7 @@ import org.springframework.cloud.stream.messaging.Source;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients(basePackages = {"com.dlion.life"})
-@EnableBinding({Source.class})
+//@EnableBinding({Source.class})
 public class Application {
 
     public static void main(String[] args) {

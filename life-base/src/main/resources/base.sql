@@ -59,13 +59,14 @@ create unique index account_create_time_index on account(create_time);
 create unique index account_update_time_index on account(update_time);
 
 
+drop table water;
 
 #账户流水表
 create table water(
-id int primary key auto_increment,
+id bigint primary key auto_increment,
 user_id int not null,
 amount decimal not null default 0,
-account_type tinyint not null ,
+account_id bigint not null ,
 change_type tinyint not null ,
 consumption_type tinyint not null,
 remark varchar(50),

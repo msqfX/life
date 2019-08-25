@@ -2,6 +2,7 @@ package com.dlion.life.base.entity;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
@@ -11,13 +12,13 @@ public class Water {
 
     private Integer userId;
 
-    private Long amount;
+    private BigDecimal amount;
 
-    private Byte accountType;
+    private Integer accountId;
 
-    private Byte changeType;
+    private Integer changeType;
 
-    private Byte consumptionType;
+    private Integer consumptionType;
 
     private String remark;
 

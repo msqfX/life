@@ -30,9 +30,9 @@ public class WaterController {
 
         Map<String, Object> result = new HashMap<>();
         result.put("yearmonth", "2019年08月");
-        result.put("sumin", new BigDecimal(0));
-        result.put("sumout", new BigDecimal(0));
-        result.put("jieyu", new BigDecimal(0));
+        result.put("sumin", new BigDecimal(100));
+        result.put("sumout", new BigDecimal(200));
+        result.put("jieyu", new BigDecimal(3000));
 
         Map<String, Object> yusuan = new HashMap<>();
 
@@ -60,6 +60,8 @@ public class WaterController {
     public Object add(@RequestBody WaterModel waterModel) {
 
         Water water = new Water();
+
+        water.setUserId(1);
 
         BeanUtils.copyProperties(waterModel, water);
 
