@@ -1,6 +1,5 @@
 package com.dlion.life.base.api;
 
-import com.dlion.life.base.fallback.UserApiFallback;
 import com.dlion.life.base.entity.User;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,5 +22,5 @@ public interface UserApi {
 
     @PostMapping("/life-base-user/addUser")
     void addUser(@RequestBody User user);
-    
+
 }

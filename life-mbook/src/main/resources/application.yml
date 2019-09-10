@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: life-mbook
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 47.107.92.79:8848
+      config:
+        prefix=example:
+        file-extension: yaml
+        group: dev
+
+
+server:
+  port: 8084
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

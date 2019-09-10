@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: life-base
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 47.107.92.79:8848
+    stream:
+      rocketmq:
+        binder:
+          # RocketMQ 服务器地址
+          namesrv-addr: 47.107.92.79:9876
+      bindings:
+        # 这里是个 Map 类型参数，{} 为 YAML 中 Map 的行内写法
+        output: {destination: test-topic, content-type: application/json}
+
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    username: life
+    password: 123456
+    url: jdbc:mysql://106.13.139.156:3306/life
+  redis:
+    host: 106.13.139.156
+    port: 6379
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1
+        min-idle: 0
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+
+server:
+  port: 8081
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+life:
+  url:
+    base: localhost:8081

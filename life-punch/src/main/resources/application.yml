@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: life-punch
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 47.107.92.79:8848
+      config:
+        prefix=example:
+        file-extension: yaml
+        group: dev
+
+    stream:
+      rocketmq:
+        binder:
+          namesrv-addr: 169.254.49.163:9876
+        bindings:
+          input: {consumer.orderly: true}
+      bindings:
+        input: {destination: test-topic, content-type: text/plain, group: test-group, consumer.maxAttempts: 1}
+
+
+server:
+  port: 8082
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

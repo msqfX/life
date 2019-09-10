@@ -18,6 +18,8 @@
         <module>life-note</module>
         <module>life-mbook</module>
         <module>life-user</module>
+        <module>life-mgt</module>
+        <module>life-admin</module>
     </modules>
 
     <parent>

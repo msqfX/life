@@ -1,0 +1,24 @@
+server:
+  port: 8085
+
+spring:
+  application:
+    name: life-user
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 47.107.92.79:8848
+      config:
+        prefix=example:
+        file-extension: yaml
+        group: dev
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+wxmp:
+  appId: wx495c3315b4939f78
+  secret: 23b4e769f7e121c96e5721e0b57a9c3e
