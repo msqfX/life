@@ -36,6 +36,7 @@
       #{accountType,jdbcType=TINYINT}, #{changeType,jdbcType=TINYINT}, #{consumptionType,jdbcType=TINYINT}, 
       #{account.remark,jdbcType=VARCHAR}
   </insert>
+
   <insert id="insertSelective" parameterType="com.dlion.life.base.entity.Water" useGeneratedKeys="true" keyProperty="id">
     insert into water
     <trim prefix="(" suffix=")" suffixOverrides=",">
