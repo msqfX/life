@@ -71,20 +71,20 @@ public class UserController {
             }
         }
 
+        User temUser = new User();
+        BeanUtils.copyProperties(userModel, temUser);
+
         User dbUser = userApi.getByOpenId(userModel.getOpenId());
         if (Objects.nonNull(dbUser)) {
-            return new ResponseModel(ResultConstant.ERROR, "此openId已存在用户信息");
+
+            temUser.setId(dbUser.getId());
+
+            userApi.updateUser(temUser);
+        } else {
+            userApi.addUser(temUser);
         }
 
-
-        User user = new User();
-
-        BeanUtils.copyProperties(userModel, user);
-
-        userApi.addUser(user);
-
         return new ResponseModel();
-
     }
 
     @PutMapping("{id}")

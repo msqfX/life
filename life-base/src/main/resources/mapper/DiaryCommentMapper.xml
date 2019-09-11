@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dlion.life.base.dao.DiaryCommentMapper">
+    <resultMap id="BaseResultMap" type="com.dlion.life.base.entity.DiaryComment">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="diary_id" property="diaryId" jdbcType="INTEGER"/>
+        <result column="pid" property="pid" jdbcType="INTEGER"/>
+        <result column="reviewer_id" property="reviewerId" jdbcType="INTEGER"/>
+        <result column="respondent_id" property="respondentId" jdbcType="INTEGER"/>
+        <result column="text_comment" property="textComment" jdbcType="VARCHAR"/>
+        <result column="sound_comment" property="soundComment" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, diary_id, pid, reviewer_id, respondent_id, text_comment, sound_comment, create_time
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from diary_comment
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectByDiaryId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from diary_comment
+        where diary_id = #{diaryId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from diary_comment
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.dlion.life.base.entity.DiaryComment">
+    insert into diary_comment (id, diary_id, pid, 
+      reviewer_id, respondent_id, text_comment, 
+      sound_comment, create_time)
+    values (#{id,jdbcType=INTEGER}, #{diaryId,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER}, 
+      #{reviewerId,jdbcType=INTEGER}, #{respondentId,jdbcType=INTEGER}, #{textComment,jdbcType=VARCHAR}, 
+      #{soundComment,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+    <insert id="insertSelective" parameterType="com.dlion.life.base.entity.DiaryComment">
+        insert into diary_comment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="diaryId != null">
+                diary_id,
+            </if>
+            <if test="pid != null">
+                pid,
+            </if>
+            <if test="reviewerId != null">
+                reviewer_id,
+            </if>
+            <if test="respondentId != null">
+                respondent_id,
+            </if>
+            <if test="textComment != null">
+                text_comment,
+            </if>
+            <if test="soundComment != null">
+                sound_comment,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="diaryId != null">
+                #{diaryId,jdbcType=INTEGER},
+            </if>
+            <if test="pid != null">
+                #{pid,jdbcType=INTEGER},
+            </if>
+            <if test="reviewerId != null">
+                #{reviewerId,jdbcType=INTEGER},
+            </if>
+            <if test="respondentId != null">
+                #{respondentId,jdbcType=INTEGER},
+            </if>
+            <if test="textComment != null">
+                #{textComment,jdbcType=VARCHAR},
+            </if>
+            <if test="soundComment != null">
+                #{soundComment,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.dlion.life.base.entity.DiaryComment">
+        update diary_comment
+        <set>
+            <if test="diaryId != null">
+                diary_id = #{diaryId,jdbcType=INTEGER},
+            </if>
+            <if test="pid != null">
+                pid = #{pid,jdbcType=INTEGER},
+            </if>
+            <if test="reviewerId != null">
+                reviewer_id = #{reviewerId,jdbcType=INTEGER},
+            </if>
+            <if test="respondentId != null">
+                respondent_id = #{respondentId,jdbcType=INTEGER},
+            </if>
+            <if test="textComment != null">
+                text_comment = #{textComment,jdbcType=VARCHAR},
+            </if>
+            <if test="soundComment != null">
+                sound_comment = #{soundComment,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.dlion.life.base.entity.DiaryComment">
+    update diary_comment
+    set diary_id = #{diaryId,jdbcType=INTEGER},
+      pid = #{pid,jdbcType=INTEGER},
+      reviewer_id = #{reviewerId,jdbcType=INTEGER},
+      respondent_id = #{respondentId,jdbcType=INTEGER},
+      text_comment = #{textComment,jdbcType=VARCHAR},
+      sound_comment = #{soundComment,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

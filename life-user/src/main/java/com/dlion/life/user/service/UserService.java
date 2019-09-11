@@ -44,6 +44,8 @@ public class UserService {
 
         Map<String, Object> result = new HashMap<>(3);
 
+        logger.info("获取用户身份信息result:{}", result);
+
         try {
             String res = httpService.doGet(url);
 

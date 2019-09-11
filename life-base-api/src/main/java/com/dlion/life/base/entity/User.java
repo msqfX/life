@@ -3,6 +3,7 @@ package com.dlion.life.base.entity;
 import lombok.Data;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * 用户信息
@@ -85,6 +86,30 @@ public class User {
      * 客户端平台
      */
     private String platform;
+    /**
+     * 生日
+     */
+    private Date birthday;
+
+    /**
+     * 性别
+     */
+    private Byte sex;
+
+    /**
+     * 个性签名
+     */
+    private String personSign;
+
+    /**
+     * 北京图片
+     */
+    private Integer bgImg;
+
+    /**
+     * 个人页面访问量
+     */
+    private Integer personalPageVisitNum;
 
     private Timestamp createTime;
 

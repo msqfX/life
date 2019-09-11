@@ -24,18 +24,18 @@ public class UserService {
     private UserMapper userMapper;
 
     public void addUser(User user) {
-        userMapper.inserUser(user);
+        userMapper.insertSelective(user);
     }
 
     public User getUser(Integer id) {
-        return userMapper.selectUserById(id);
+        return userMapper.selectByPrimaryKey(id);
     }
 
     public void updateUser(User user) {
 
-        userMapper.updateUser(user);
+        userMapper.updateByPrimaryKeySelective(user);
 
-        User userNew = userMapper.selectUserById(user.getId());
+        User userNew = userMapper.selectByPrimaryKey(user.getId());
 
         if (userNew.getChannel().equals(ChannelConstant.WEIXIN_MINIPROGRAM)) {
 

@@ -23,4 +23,7 @@ public interface UserApi {
     @PostMapping("/life-base-user/addUser")
     void addUser(@RequestBody User user);
 
+    @PostMapping("/life-base-user/updateUser")
+    void updateUser(@RequestBody User user);
+
 }

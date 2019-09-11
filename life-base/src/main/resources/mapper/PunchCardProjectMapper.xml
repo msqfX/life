@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dlion.life.base.dao.PunchCardProjectMapper">
+    <resultMap id="BaseResultMap" type="com.dlion.life.base.entity.PunchCardProject">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="project_name" property="projectName" jdbcType="VARCHAR"/>
+        <result column="privacy_type" property="privacyType" jdbcType="TINYINT"/>
+        <result column="open_audit" property="openAudit" jdbcType="TINYINT"/>
+        <result column="type_label" property="typeLabel" jdbcType="VARCHAR"/>
+        <result column="cover_img_url" property="coverImgUrl" jdbcType="VARCHAR"/>
+        <result column="creator_id" property="creatorId" jdbcType="INTEGER"/>
+        <result column="creator_introduce" property="creatorIntroduce" jdbcType="VARCHAR"/>
+        <result column="weixin_num" property="weixinNum" jdbcType="VARCHAR"/>
+        <result column="all_punch_card_num" property="allPunchCardNum" jdbcType="INTEGER"/>
+        <result column="today_punch_card_num" property="todayPunchCardNum" jdbcType="INTEGER"/>
+        <result column="attend_user_num" property="attendUserNum" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, project_name, privacy_type, open_audit, type_label, cover_img_url, creator_id,
+    creator_introduce, weixin_num, all_punch_card_num, today_punch_card_num, attend_user_num
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from punch_card_project
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from punch_card_project
+        where creator_id = #{userId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from punch_card_project
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.dlion.life.base.entity.PunchCardProject">
+    insert into punch_card_project (id, project_name, privacy_type,
+      open_audit, type_label, cover_img_url,
+      creator_id, creator_introduce, weixin_num,
+      all_punch_card_num, today_punch_card_num, attend_user_num
+      )
+    values (#{id,jdbcType=INTEGER}, #{projectName,jdbcType=VARCHAR}, #{privacyType,jdbcType=TINYINT},
+      #{openAudit,jdbcType=TINYINT}, #{typeLabel,jdbcType=VARCHAR}, #{coverImgUrl,jdbcType=VARCHAR},
+      #{creatorId,jdbcType=INTEGER}, #{creatorIntroduce,jdbcType=VARCHAR}, #{weixinNum,jdbcType=VARCHAR},
+      #{allPunchCardNum,jdbcType=INTEGER}, #{todayPunchCardNum,jdbcType=INTEGER}, #{attendUserNum,jdbcType=INTEGER}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.dlion.life.base.entity.PunchCardProject">
+        insert into punch_card_project
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="projectName != null">
+                project_name,
+            </if>
+            <if test="privacyType != null">
+                privacy_type,
+            </if>
+            <if test="openAudit != null">
+                open_audit,
+            </if>
+            <if test="typeLabel != null">
+                type_label,
+            </if>
+            <if test="coverImgUrl != null">
+                cover_img_url,
+            </if>
+            <if test="creatorId != null">
+                creator_id,
+            </if>
+            <if test="creatorIntroduce != null">
+                creator_introduce,
+            </if>
+            <if test="weixinNum != null">
+                weixin_num,
+            </if>
+            <if test="allPunchCardNum != null">
+                all_punch_card_num,
+            </if>
+            <if test="todayPunchCardNum != null">
+                today_punch_card_num,
+            </if>
+            <if test="attendUserNum != null">
+                attend_user_num,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="projectName != null">
+                #{projectName,jdbcType=VARCHAR},
+            </if>
+            <if test="privacyType != null">
+                #{privacyType,jdbcType=TINYINT},
+            </if>
+            <if test="openAudit != null">
+                #{openAudit,jdbcType=TINYINT},
+            </if>
+            <if test="typeLabel != null">
+                #{typeLabel,jdbcType=VARCHAR},
+            </if>
+            <if test="coverImgUrl != null">
+                #{coverImgUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="creatorId != null">
+                #{creatorId,jdbcType=INTEGER},
+            </if>
+            <if test="creatorIntroduce != null">
+                #{creatorIntroduce,jdbcType=VARCHAR},
+            </if>
+            <if test="weixinNum != null">
+                #{weixinNum,jdbcType=VARCHAR},
+            </if>
+            <if test="allPunchCardNum != null">
+                #{allPunchCardNum,jdbcType=INTEGER},
+            </if>
+            <if test="todayPunchCardNum != null">
+                #{todayPunchCardNum,jdbcType=INTEGER},
+            </if>
+            <if test="attendUserNum != null">
+                #{attendUserNum,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.dlion.life.base.entity.PunchCardProject">
+        update punch_card_project
+        <set>
+            <if test="projectName != null">
+                project_name = #{projectName,jdbcType=VARCHAR},
+            </if>
+            <if test="privacyType != null">
+                privacy_type = #{privacyType,jdbcType=TINYINT},
+            </if>
+            <if test="openAudit != null">
+                open_audit = #{openAudit,jdbcType=TINYINT},
+            </if>
+            <if test="typeLabel != null">
+                type_label = #{typeLabel,jdbcType=VARCHAR},
+            </if>
+            <if test="coverImgUrl != null">
+                cover_img_url = #{coverImgUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="creatorId != null">
+                creator_id = #{creatorId,jdbcType=INTEGER},
+            </if>
+            <if test="creatorIntroduce != null">
+                creator_introduce = #{creatorIntroduce,jdbcType=VARCHAR},
+            </if>
+            <if test="weixinNum != null">
+                weixin_num = #{weixinNum,jdbcType=VARCHAR},
+            </if>
+            <if test="allPunchCardNum != null">
+                all_punch_card_num = #{allPunchCardNum,jdbcType=INTEGER},
+            </if>
+            <if test="todayPunchCardNum != null">
+                today_punch_card_num = #{todayPunchCardNum,jdbcType=INTEGER},
+            </if>
+            <if test="attendUserNum != null">
+                attend_user_num = #{attendUserNum,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.dlion.life.base.entity.PunchCardProject">
+    update punch_card_project
+    set project_name = #{projectName,jdbcType=VARCHAR},
+      privacy_type = #{privacyType,jdbcType=TINYINT},
+      open_audit = #{openAudit,jdbcType=TINYINT},
+      type_label = #{typeLabel,jdbcType=VARCHAR},
+      cover_img_url = #{coverImgUrl,jdbcType=VARCHAR},
+      creator_id = #{creatorId,jdbcType=INTEGER},
+      creator_introduce = #{creatorIntroduce,jdbcType=VARCHAR},
+      weixin_num = #{weixinNum,jdbcType=VARCHAR},
+      all_punch_card_num = #{allPunchCardNum,jdbcType=INTEGER},
+      today_punch_card_num = #{todayPunchCardNum,jdbcType=INTEGER},
+      attend_user_num = #{attendUserNum,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dlion.life.base.dao.PunchCardDiaryMapper">
+    <resultMap id="BaseResultMap" type="com.dlion.life.base.entity.PunchCardDiary">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="project_id" property="projectId" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="text_content" property="textContent" jdbcType="VARCHAR"/>
+        <result column="punch_card_time" property="punchCardTime" jdbcType="TIMESTAMP"/>
+        <result column="punch_card_address" property="punchCardAddress" jdbcType="VARCHAR"/>
+        <result column="address_longitude" property="addressLongitude" jdbcType="DOUBLE"/>
+        <result column="address_latitude" property="addressLatitude" jdbcType="DOUBLE"/>
+        <result column="visible_type" property="visibleType" jdbcType="TINYINT"/>
+        <result column="curr_diary_punch_card_day_num" property="currDiaryPunchCardDayNum" jdbcType="INTEGER"/>
+        <result column="have_sticky" property="haveSticky" jdbcType="TINYINT"/>
+        <result column="is_repair_diary" property="isRepairDiary" jdbcType="TINYINT"/>
+        <result column=" repair_punch_card_time" property="repairPunchCardTime" jdbcType="TIMESTAMP"/>
+        <result column="like_user_num" property="likeUserNum" jdbcType="INTEGER"/>
+        <result column="comment_num" property="commentNum" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, project_id, user_id, text_content, punch_card_time, punch_card_address, address_longitude, 
+    address_latitude, visible_type, curr_diary_punch_card_day_num, have_sticky, is_repair_diary, 
+    " repair_punch_card_time", like_user_num, comment_num
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from punch_card_diary
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectByProjectId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from punch_card_diary
+        where project_id = #{projectId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from punch_card_diary
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.dlion.life.base.entity.PunchCardDiary">
+    insert into punch_card_diary (id, project_id, user_id, 
+      text_content, punch_card_time, punch_card_address, 
+      address_longitude, address_latitude, visible_type, 
+      curr_diary_punch_card_day_num, have_sticky, is_repair_diary, 
+      " repair_punch_card_time", like_user_num, comment_num
+      )
+    values (#{id,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
+      #{textContent,jdbcType=VARCHAR}, #{punchCardTime,jdbcType=TIMESTAMP}, #{punchCardAddress,jdbcType=VARCHAR}, 
+      #{addressLongitude,jdbcType=DOUBLE}, #{addressLatitude,jdbcType=DOUBLE}, #{visibleType,jdbcType=TINYINT}, 
+      #{currDiaryPunchCardDayNum,jdbcType=INTEGER}, #{haveSticky,jdbcType=TINYINT}, #{isRepairDiary,jdbcType=TINYINT}, 
+      #{repairPunchCardTime,jdbcType=TIMESTAMP}, #{likeUserNum,jdbcType=INTEGER}, #{commentNum,jdbcType=INTEGER}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.dlion.life.base.entity.PunchCardDiary">
+        insert into punch_card_diary
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="projectId != null">
+                project_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="textContent != null">
+                text_content,
+            </if>
+            <if test="punchCardTime != null">
+                punch_card_time,
+            </if>
+            <if test="punchCardAddress != null">
+                punch_card_address,
+            </if>
+            <if test="addressLongitude != null">
+                address_longitude,
+            </if>
+            <if test="addressLatitude != null">
+                address_latitude,
+            </if>
+            <if test="visibleType != null">
+                visible_type,
+            </if>
+            <if test="currDiaryPunchCardDayNum != null">
+                curr_diary_punch_card_day_num,
+            </if>
+            <if test="haveSticky != null">
+                have_sticky,
+            </if>
+            <if test="isRepairDiary != null">
+                is_repair_diary,
+            </if>
+            <if test="repairPunchCardTime != null">
+                " repair_punch_card_time",
+            </if>
+            <if test="likeUserNum != null">
+                like_user_num,
+            </if>
+            <if test="commentNum != null">
+                comment_num,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="projectId != null">
+                #{projectId,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="textContent != null">
+                #{textContent,jdbcType=VARCHAR},
+            </if>
+            <if test="punchCardTime != null">
+                #{punchCardTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="punchCardAddress != null">
+                #{punchCardAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="addressLongitude != null">
+                #{addressLongitude,jdbcType=DOUBLE},
+            </if>
+            <if test="addressLatitude != null">
+                #{addressLatitude,jdbcType=DOUBLE},
+            </if>
+            <if test="visibleType != null">
+                #{visibleType,jdbcType=TINYINT},
+            </if>
+            <if test="currDiaryPunchCardDayNum != null">
+                #{currDiaryPunchCardDayNum,jdbcType=INTEGER},
+            </if>
+            <if test="haveSticky != null">
+                #{haveSticky,jdbcType=TINYINT},
+            </if>
+            <if test="isRepairDiary != null">
+                #{isRepairDiary,jdbcType=TINYINT},
+            </if>
+            <if test="repairPunchCardTime != null">
+                #{repairPunchCardTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="likeUserNum != null">
+                #{likeUserNum,jdbcType=INTEGER},
+            </if>
+            <if test="commentNum != null">
+                #{commentNum,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.dlion.life.base.entity.PunchCardDiary">
+        update punch_card_diary
+        <set>
+            <if test="projectId != null">
+                project_id = #{projectId,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="textContent != null">
+                text_content = #{textContent,jdbcType=VARCHAR},
+            </if>
+            <if test="punchCardTime != null">
+                punch_card_time = #{punchCardTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="punchCardAddress != null">
+                punch_card_address = #{punchCardAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="addressLongitude != null">
+                address_longitude = #{addressLongitude,jdbcType=DOUBLE},
+            </if>
+            <if test="addressLatitude != null">
+                address_latitude = #{addressLatitude,jdbcType=DOUBLE},
+            </if>
+            <if test="visibleType != null">
+                visible_type = #{visibleType,jdbcType=TINYINT},
+            </if>
+            <if test="currDiaryPunchCardDayNum != null">
+                curr_diary_punch_card_day_num = #{currDiaryPunchCardDayNum,jdbcType=INTEGER},
+            </if>
+            <if test="haveSticky != null">
+                have_sticky = #{haveSticky,jdbcType=TINYINT},
+            </if>
+            <if test="isRepairDiary != null">
+                is_repair_diary = #{isRepairDiary,jdbcType=TINYINT},
+            </if>
+            <if test="repairPunchCardTime != null">
+                " repair_punch_card_time" = #{repairPunchCardTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="likeUserNum != null">
+                like_user_num = #{likeUserNum,jdbcType=INTEGER},
+            </if>
+            <if test="commentNum != null">
+                comment_num = #{commentNum,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.dlion.life.base.entity.PunchCardDiary">
+    update punch_card_diary
+    set project_id = #{projectId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER},
+      text_content = #{textContent,jdbcType=VARCHAR},
+      punch_card_time = #{punchCardTime,jdbcType=TIMESTAMP},
+      punch_card_address = #{punchCardAddress,jdbcType=VARCHAR},
+      address_longitude = #{addressLongitude,jdbcType=DOUBLE},
+      address_latitude = #{addressLatitude,jdbcType=DOUBLE},
+      visible_type = #{visibleType,jdbcType=TINYINT},
+      curr_diary_punch_card_day_num = #{currDiaryPunchCardDayNum,jdbcType=INTEGER},
+      have_sticky = #{haveSticky,jdbcType=TINYINT},
+      is_repair_diary = #{isRepairDiary,jdbcType=TINYINT},
+      " repair_punch_card_time" = #{repairPunchCardTime,jdbcType=TIMESTAMP},
+      like_user_num = #{likeUserNum,jdbcType=INTEGER},
+      comment_num = #{commentNum,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

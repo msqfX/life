@@ -1,81 +1,325 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.dlion.life.base.dao.UserMapper">
-
     <resultMap id="BaseResultMap" type="com.dlion.life.base.entity.User">
-        <id column="id" property="id" jdbcType="BIGINT"/>
+        <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="open_id" property="openId" jdbcType="VARCHAR"/>
         <result column="nick_name" property="nickName" jdbcType="VARCHAR"/>
         <result column="avatar_url" property="avatarUrl" jdbcType="VARCHAR"/>
-        <result column="gender" property="gender" jdbcType="INTEGER"/>
+        <result column="gender" property="gender" jdbcType="BIT"/>
         <result column="country" property="country" jdbcType="VARCHAR"/>
         <result column="province" property="province" jdbcType="VARCHAR"/>
         <result column="city" property="city" jdbcType="VARCHAR"/>
         <result column="language" property="language" jdbcType="VARCHAR"/>
-        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
         <result column="pass_word" property="passWord" jdbcType="VARCHAR"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
         <result column="channel" property="channel" jdbcType="VARCHAR"/>
         <result column="brand" property="brand" jdbcType="VARCHAR"/>
         <result column="model" property="model" jdbcType="VARCHAR"/>
         <result column="wx_language" property="wxLanguage" jdbcType="VARCHAR"/>
         <result column="system" property="system" jdbcType="VARCHAR"/>
         <result column="platform" property="platform" jdbcType="VARCHAR"/>
+        <result column="birthday" property="birthday" jdbcType="DATE"/>
+        <result column="sex" property="sex" jdbcType="TINYINT"/>
+        <result column="person_sign" property="personSign" jdbcType="VARCHAR"/>
+        <result column="bg_img" property="bgImg" jdbcType="INTEGER"/>
+        <result column="personal_page_visit_num" property="personalPageVisitNum" jdbcType="INTEGER"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
-
     <sql id="Base_Column_List">
-        id,open_id,nick_name,avatar_url,gender,country,province,city,language,pass_word,user_name,channel,
-        brand,model, wx_language,system,platform,create_time,update_time
-    </sql>
+    id, open_id, nick_name, avatar_url, gender, country, province, city, language, pass_word,
+    user_name, channel, brand, model, wx_language, system, platform, birthday, sex, person_sign,
+    bg_img, personal_page_visit_num, create_time, update_time
+  </sql>
 
-    <insert id="inserUser" parameterType="com.dlion.life.base.entity.User" useGeneratedKeys="true" keyProperty="id">
-        insert into user(open_id,nick_name,avatar_url,gender,country,province,city,language,user_name,pass_word,channel,
-        brand,model, wx_language,system,platform)
-        VALUE
-        (#{user.openId,jdbcType=VARCHAR},
-        #{user.nickName,jdbcType=VARCHAR},
-        #{user.avatarUrl,jdbcType=VARCHAR},
-        #{user.gender,jdbcType=INTEGER},
-        #{user.country,jdbcType=VARCHAR},
-        #{user.province,jdbcType=VARCHAR},
-        #{user.city,jdbcType=VARCHAR},
-        #{user.language,jdbcType=VARCHAR},
-        #{user.userName,jdbcType=VARCHAR},
-        #{user.passWord,jdbcType=VARCHAR},
-        #{user.channel,jdbcType=VARCHAR},
-        #{user.brand,jdbcType=VARCHAR},
-        #{user.model,jdbcType=VARCHAR},
-        #{user.wxLanguage,jdbcType=VARCHAR},
-        #{user.system,jdbcType=VARCHAR},
-        #{user.platform,jdbcType=VARCHAR})
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List"/>
+    from user
+    where id = #{id,jdbcType=INTEGER}
+   </select>
+   <select id="selectByOpenId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List"/>
+    from user
+    where open_id = #{openId,jdbcType=INTEGER}
+   </select>
+   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.dlion.life.base.entity.User">
+    insert into user (id, open_id, nick_name,
+      avatar_url, gender, country,
+      province, city, language,
+      pass_word, user_name, channel,
+      brand, model, wx_language,
+      system, platform, birthday,
+      sex, person_sign, bg_img,
+      personal_page_visit_num, create_time, update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{openId,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR},
+      #{avatarUrl,jdbcType=VARCHAR}, #{gender,jdbcType=BIT}, #{country,jdbcType=VARCHAR},
+      #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{language,jdbcType=VARCHAR},
+      #{passWord,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{channel,jdbcType=VARCHAR},
+      #{brand,jdbcType=VARCHAR}, #{model,jdbcType=VARCHAR}, #{wxLanguage,jdbcType=VARCHAR},
+      #{system,jdbcType=VARCHAR}, #{platform,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE},
+      #{sex,jdbcType=TINYINT}, #{personSign,jdbcType=VARCHAR}, #{bgImg,jdbcType=INTEGER},
+      #{personalPageVisitNum,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.dlion.life.base.entity.User">
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="openId != null">
+                open_id,
+            </if>
+            <if test="nickName != null">
+                nick_name,
+            </if>
+            <if test="avatarUrl != null">
+                avatar_url,
+            </if>
+            <if test="gender != null">
+                gender,
+            </if>
+            <if test="country != null">
+                country,
+            </if>
+            <if test="province != null">
+                province,
+            </if>
+            <if test="city != null">
+                city,
+            </if>
+            <if test="language != null">
+                language,
+            </if>
+            <if test="passWord != null">
+                pass_word,
+            </if>
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="channel != null">
+                channel,
+            </if>
+            <if test="brand != null">
+                brand,
+            </if>
+            <if test="model != null">
+                model,
+            </if>
+            <if test="wxLanguage != null">
+                wx_language,
+            </if>
+            <if test="system != null">
+                system,
+            </if>
+            <if test="platform != null">
+                platform,
+            </if>
+            <if test="birthday != null">
+                birthday,
+            </if>
+            <if test="sex != null">
+                sex,
+            </if>
+            <if test="personSign != null">
+                person_sign,
+            </if>
+            <if test="bgImg != null">
+                bg_img,
+            </if>
+            <if test="personalPageVisitNum != null">
+                personal_page_visit_num,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="openId != null">
+                #{openId,jdbcType=VARCHAR},
+            </if>
+            <if test="nickName != null">
+                #{nickName,jdbcType=VARCHAR},
+            </if>
+            <if test="avatarUrl != null">
+                #{avatarUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null">
+                #{gender,jdbcType=BIT},
+            </if>
+            <if test="country != null">
+                #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="province != null">
+                #{province,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="language != null">
+                #{language,jdbcType=VARCHAR},
+            </if>
+            <if test="passWord != null">
+                #{passWord,jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="channel != null">
+                #{channel,jdbcType=VARCHAR},
+            </if>
+            <if test="brand != null">
+                #{brand,jdbcType=VARCHAR},
+            </if>
+            <if test="model != null">
+                #{model,jdbcType=VARCHAR},
+            </if>
+            <if test="wxLanguage != null">
+                #{wxLanguage,jdbcType=VARCHAR},
+            </if>
+            <if test="system != null">
+                #{system,jdbcType=VARCHAR},
+            </if>
+            <if test="platform != null">
+                #{platform,jdbcType=VARCHAR},
+            </if>
+            <if test="birthday != null">
+                #{birthday,jdbcType=DATE},
+            </if>
+            <if test="sex != null">
+                #{sex,jdbcType=TINYINT},
+            </if>
+            <if test="personSign != null">
+                #{personSign,jdbcType=VARCHAR},
+            </if>
+            <if test="bgImg != null">
+                #{bgImg,jdbcType=INTEGER},
+            </if>
+            <if test="personalPageVisitNum != null">
+                #{personalPageVisitNum,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
     </insert>
-
-    <!-- 查询用户 -->
-    <select id="selectUserById" resultMap="BaseResultMap" parameterType="Integer">
-        select
-        <include refid="Base_Column_List"/>
-        from user where id=#{id}
-    </select>
-
-    <select id="selectByOpenId" resultMap="BaseResultMap" parameterType="string">
-        select
-        <include refid="Base_Column_List"/>
-        from user where open_id=#{openId}
-    </select>
-
-
-
-    <update id="updateUser" parameterType="com.dlion.life.base.entity.User">
-        UPDATE
-        user
-        SET
-        <if test="age != null and age!=''">age = #{age},</if>
-        <if test="passWord != null and passWord!=''">
-            passWord = #{passWord},</if>
-            user_name = #{userName}
-        WHERE
-        id = #{id}
+    <update id="updateByPrimaryKeySelective" parameterType="com.dlion.life.base.entity.User">
+        update user
+        <set>
+            <if test="openId != null">
+                open_id = #{openId,jdbcType=VARCHAR},
+            </if>
+            <if test="nickName != null">
+                nick_name = #{nickName,jdbcType=VARCHAR},
+            </if>
+            <if test="avatarUrl != null">
+                avatar_url = #{avatarUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null">
+                gender = #{gender,jdbcType=BIT},
+            </if>
+            <if test="country != null">
+                country = #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="province != null">
+                province = #{province,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                city = #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="language != null">
+                language = #{language,jdbcType=VARCHAR},
+            </if>
+            <if test="passWord != null">
+                pass_word = #{passWord,jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null">
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="channel != null">
+                channel = #{channel,jdbcType=VARCHAR},
+            </if>
+            <if test="brand != null">
+                brand = #{brand,jdbcType=VARCHAR},
+            </if>
+            <if test="model != null">
+                model = #{model,jdbcType=VARCHAR},
+            </if>
+            <if test="wxLanguage != null">
+                wx_language = #{wxLanguage,jdbcType=VARCHAR},
+            </if>
+            <if test="system != null">
+                system = #{system,jdbcType=VARCHAR},
+            </if>
+            <if test="platform != null">
+                platform = #{platform,jdbcType=VARCHAR},
+            </if>
+            <if test="birthday != null">
+                birthday = #{birthday,jdbcType=DATE},
+            </if>
+            <if test="sex != null">
+                sex = #{sex,jdbcType=TINYINT},
+            </if>
+            <if test="personSign != null">
+                person_sign = #{personSign,jdbcType=VARCHAR},
+            </if>
+            <if test="bgImg != null">
+                bg_img = #{bgImg,jdbcType=INTEGER},
+            </if>
+            <if test="personalPageVisitNum != null">
+                personal_page_visit_num = #{personalPageVisitNum,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
     </update>
-
+    <update id="updateByPrimaryKey" parameterType="com.dlion.life.base.entity.User">
+    update user
+    set open_id = #{openId,jdbcType=VARCHAR},
+      nick_name = #{nickName,jdbcType=VARCHAR},
+      avatar_url = #{avatarUrl,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=BIT},
+      country = #{country,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      language = #{language,jdbcType=VARCHAR},
+      pass_word = #{passWord,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      channel = #{channel,jdbcType=VARCHAR},
+      brand = #{brand,jdbcType=VARCHAR},
+      model = #{model,jdbcType=VARCHAR},
+      wx_language = #{wxLanguage,jdbcType=VARCHAR},
+      system = #{system,jdbcType=VARCHAR},
+      platform = #{platform,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=DATE},
+      sex = #{sex,jdbcType=TINYINT},
+      person_sign = #{personSign,jdbcType=VARCHAR},
+      bg_img = #{bgImg,jdbcType=INTEGER},
+      personal_page_visit_num = #{personalPageVisitNum,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
 </mapper>

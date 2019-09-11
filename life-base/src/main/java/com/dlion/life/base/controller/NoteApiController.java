@@ -26,7 +26,7 @@ public class NoteApiController implements NoteApi {
     }
 
     @Override
-    public Note getById(@RequestParam("id") Integer id) {
+    public Note getById(Integer id) {
         return noteService.getById(id);
     }
 

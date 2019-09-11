@@ -42,5 +42,11 @@ public class UserApiController implements UserApi {
 
     }
 
+    @Override
+    public void updateUser(User user) {
+
+        userService.updateUser(user);
+    }
+
 
 }

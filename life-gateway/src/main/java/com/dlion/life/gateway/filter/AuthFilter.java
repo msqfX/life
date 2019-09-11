@@ -40,7 +40,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
         result.put("code", HttpStatus.UNAUTHORIZED.value());
         result.put("msg", "用户身份认证失败！");
 
-        if (StringUtils.isEmpty(token)) {
+        if (StringUtils.isNotEmpty(token)) {
 
             ObjectMapper mapper = new ObjectMapper();
             try {

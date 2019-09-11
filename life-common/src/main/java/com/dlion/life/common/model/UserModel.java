@@ -2,6 +2,8 @@ package com.dlion.life.common.model;
 
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * @author 李正元
  * @date 2019-07-21
@@ -82,5 +84,31 @@ public class UserModel {
      * 客户端平台
      */
     private String platform;
+
+    /**
+     * 生日
+     */
+    private Date birthday;
+
+    /**
+     * 性别
+     */
+    private Byte sex;
+
+    /**
+     * 个性签名
+     */
+    private String personSign;
+
+    /**
+     * 北京图片
+     */
+    private Integer bgImg;
+
+    /**
+     * 个人页面访问量
+     */
+    private Integer personalPageVisitNum;
+
 
 }

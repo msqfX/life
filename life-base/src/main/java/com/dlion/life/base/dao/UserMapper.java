@@ -1,6 +1,7 @@
 package com.dlion.life.base.dao;
 
 import com.dlion.life.base.entity.User;
+import com.dlion.life.common.data.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -9,13 +10,8 @@ import org.apache.ibatis.annotations.Param;
  * @date 2019/7/19
  */
 @Mapper
-public interface UserMapper {
-
-    int inserUser(@Param("user") User user);
-
-    User selectUserById(Integer id);
-
-    int updateUser(User user);
+public interface UserMapper extends BaseMapper<User, Integer> {
 
     User selectByOpenId(@Param("openId") String openId);
+
 }
