@@ -5,6 +5,10 @@ import lombok.Data;
 import java.math.BigDecimal;
 import java.util.Date;
 
+/**
+ * @author 李正元
+ * @date 2019-09-15
+ */
 @Data
 public class Water {
 

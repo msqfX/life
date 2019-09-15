@@ -22,7 +22,13 @@ public class UserApiFallback implements UserApi {
     }
 
     @Override
-    public void addUser(User user) {
+    public Integer addUser(User user) {
+
+        return 0;
+    }
+
+    @Override
+    public void updateUser(User user) {
 
     }
 

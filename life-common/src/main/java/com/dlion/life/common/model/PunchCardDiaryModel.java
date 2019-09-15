@@ -1,5 +1,7 @@
 package com.dlion.life.common.model;
 
+import lombok.Data;
+
 import java.util.Date;
 
 /**
@@ -8,6 +10,7 @@ import java.util.Date;
  * @author 李正元
  * @date 2019/9/11
  */
+@Data
 public class PunchCardDiaryModel {
 
     private Integer id;
@@ -26,13 +29,13 @@ public class PunchCardDiaryModel {
 
     private Double addressLatitude;
 
-    private Byte visibleType;
+    private Integer visibleType;
 
     private Integer currDiaryPunchCardDayNum;
 
-    private Byte haveSticky;
+    private Integer haveSticky;
 
-    private Byte isRepairDiary;
+    private Integer isRepairDiary;
 
     private Date repairPunchCardTime;
 

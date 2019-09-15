@@ -22,4 +22,10 @@ public interface PunchCardDiaryApi {
     @GetMapping("/life-base-punchCardDiary/listByProjectId")
     List<PunchCardDiary> getByProjectId(@RequestParam("projectId") Integer projectId);
 
+    @GetMapping("/life-base-punchCardDiary/getByMoreLikeNum")
+    List<PunchCardDiary> getByMoreLikeNum(@RequestParam("userId") Integer userId);
+
+    @PostMapping("/life-base-punchCardDiary/listByUserId")
+    List<PunchCardDiary> listByUserId(@RequestParam("userId") Integer userId, @RequestParam("pageNo") Integer pageNo,
+                                      @RequestParam("dataNum") Integer dataNum, @RequestParam("isDiaryCreator") Integer isDiaryCreator);
 }

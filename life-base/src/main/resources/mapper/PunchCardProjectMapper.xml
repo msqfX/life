@@ -31,6 +31,20 @@
         from punch_card_project
         where creator_id = #{userId,jdbcType=INTEGER}
     </select>
+    <select id="getMorePunchCard" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from punch_card_project
+        where all_punch_card_num <![CDATA[ >= ]]> #{num,jdbcType=INTEGER}
+        limit #{pageNo,jdbcType=INTEGER} , #{dataNum, jdbcType=INTEGER}
+    </select>
+    <select id="search" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from punch_card_project
+        where project_name like CONCAT('%',#{keyword,jdbcType=VARCHAR},'%')
+        limit #{pageNo,jdbcType=INTEGER} , #{dataNum, jdbcType=INTEGER}
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from punch_card_project
     where id = #{id,jdbcType=INTEGER}

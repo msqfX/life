@@ -21,7 +21,7 @@ public interface UserApi {
     User getByOpenId(@RequestParam("openId") String openId);
 
     @PostMapping("/life-base-user/addUser")
-    void addUser(@RequestBody User user);
+    Integer addUser(@RequestBody User user);
 
     @PostMapping("/life-base-user/updateUser")
     void updateUser(@RequestBody User user);

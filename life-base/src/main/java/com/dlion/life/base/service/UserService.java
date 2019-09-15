@@ -23,8 +23,11 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
-    public void addUser(User user) {
+    public Integer addUser(User user) {
+
         userMapper.insertSelective(user);
+
+        return user.getId();
     }
 
     public User getUser(Integer id) {
@@ -37,7 +40,7 @@ public class UserService {
 
         User userNew = userMapper.selectByPrimaryKey(user.getId());
 
-        if (userNew.getChannel().equals(ChannelConstant.WEIXIN_MINIPROGRAM)) {
+        if (Objects.equals(userNew.getChannel(), ChannelConstant.WEIXIN_MINIPROGRAM)) {
 
             String key = String.format(UserRedisKey.USER_INFO_OPENID, userNew.getOpenId());
 

@@ -92,11 +92,6 @@ public class User {
     private Date birthday;
 
     /**
-     * 性别
-     */
-    private Byte sex;
-
-    /**
      * 个性签名
      */
     private String personSign;

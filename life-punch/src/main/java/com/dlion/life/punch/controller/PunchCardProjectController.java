@@ -1,7 +1,12 @@
 package com.dlion.life.punch.controller;
 
 import com.dlion.life.base.api.PunchCardProjectApi;
+import com.dlion.life.base.api.UserApi;
 import com.dlion.life.base.entity.PunchCardProject;
+import com.dlion.life.base.entity.User;
+import com.dlion.life.common.constant.ResultConstant;
+import com.dlion.life.common.model.PunchCardProjectListHomeModel;
+import com.dlion.life.common.model.PunchCardProjectListModel;
 import com.dlion.life.common.model.PunchCardProjectModel;
 import com.dlion.life.common.model.ResponseModel;
 import org.springframework.beans.BeanUtils;
@@ -17,11 +22,14 @@ import java.util.stream.Collectors;
  * @date 2019/9/11
  */
 @RestController
-@RequestMapping("/api/PunchCardProject")
+@RequestMapping("/api/punchCardProject")
 public class PunchCardProjectController {
 
     @Autowired
     private PunchCardProjectApi punchCardProjectApi;
+
+    @Autowired
+    private UserApi userApi;
 
     @PostMapping
     public Object add(@RequestBody PunchCardProjectModel punchCardProjectModel) {
@@ -33,20 +41,40 @@ public class PunchCardProjectController {
         return new ResponseModel();
     }
 
-    @GetMapping("{userId}")
+    @GetMapping("/getProjectInfoByUserId/{userId}")
     public Object listByUserId(@PathVariable Integer userId) {
+
+        User user = userApi.getUserById(userId);
+
+        if (Objects.isNull(user)) {
+            return new ResponseModel(ResultConstant.ERROR, "用户信息不存在");
+        }
+
+        PunchCardProjectListHomeModel projectHomeModel = new PunchCardProjectListHomeModel();
+        projectHomeModel.setId(userId);
+        projectHomeModel.setGender(user.getGender());
+        projectHomeModel.setNickName(user.getNickName());
 
         List<PunchCardProject> projectList = punchCardProjectApi.getByUserId(userId);
 
-        List<PunchCardProjectModel> modelList = projectList.stream().map(project -> {
+        List<PunchCardProjectListModel> modelList = projectList.stream().map(project -> {
 
-            PunchCardProjectModel model = new PunchCardProjectModel();
+            PunchCardProjectListModel model = new PunchCardProjectListModel();
 
             BeanUtils.copyProperties(project, model);
+
+            if (Objects.equals(project.getCreatorId(), userId)) {
+                model.setIsCreator(1);
+            } else {
+                model.setIsCreator(0);
+            }
+
             return model;
         }).collect(Collectors.toList());
 
-        return new ResponseModel(modelList);
+        projectHomeModel.setPunchCardProjectList(modelList);
+
+        return new ResponseModel(projectHomeModel);
     }
 
     @DeleteMapping("{id}")
@@ -75,5 +103,20 @@ public class PunchCardProjectController {
 
         return new ResponseModel();
     }
+
+    /**
+     * 获取圈子详情
+     *
+     * @param id 圈子id
+     * @return
+     */
+    @GetMapping("{id}")
+    public Object getProjectInfoById(@PathVariable Integer id){
+
+
+        return new ResponseModel();
+    }
+
+
 
 }

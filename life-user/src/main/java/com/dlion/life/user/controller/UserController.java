@@ -65,6 +65,9 @@ public class UserController {
 
         String openId = userModel.getOpenId();
 
+        //目前默认渠道为微信小程序
+        userModel.setChannel(ChannelConstant.WEIXIN_MINIPROGRAM);
+
         if (ChannelConstant.WEIXIN_MINIPROGRAM.equals(userModel.getChannel())) {
             if (StringUtils.isEmpty(openId)) {
                 return new ResponseModel(ResultConstant.ERROR, "小程序渠道openId不能为空");
@@ -80,11 +83,13 @@ public class UserController {
             temUser.setId(dbUser.getId());
 
             userApi.updateUser(temUser);
+            userModel.setId(dbUser.getId());
         } else {
-            userApi.addUser(temUser);
+            Integer userId = userApi.addUser(temUser);
+            userModel.setId(userId);
         }
 
-        return new ResponseModel();
+        return new ResponseModel(userModel);
     }
 
     @PutMapping("{id}")

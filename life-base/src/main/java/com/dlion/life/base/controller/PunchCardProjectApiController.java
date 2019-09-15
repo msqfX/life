@@ -47,4 +47,16 @@ public class PunchCardProjectApiController implements PunchCardProjectApi {
 
         return punchCardProjectService.getById(id);
     }
+
+    @Override
+    public List<PunchCardProject> getMorePunchCard(Integer num, Integer pageNo, Integer dataNum) {
+
+        return punchCardProjectService.getMorePunchCard(num, pageNo, dataNum);
+    }
+
+    @Override
+    public List<PunchCardProject> search(String keyword, Integer pageNo, Integer dataNum) {
+
+        return punchCardProjectService.search(keyword, pageNo, dataNum);
+    }
 }

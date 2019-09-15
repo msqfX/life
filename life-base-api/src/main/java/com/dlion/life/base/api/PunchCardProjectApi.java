@@ -29,4 +29,28 @@ public interface PunchCardProjectApi {
     @GetMapping("/life-base-punchCardProject/getById")
     PunchCardProject getById(@RequestParam("id") Integer id);
 
+    /**
+     * 获取打卡数超过一定数量的圈子
+     *
+     * @param num     打卡数
+     * @param dataNum 页码
+     * @param pageNo  条数
+     * @return
+     */
+    @GetMapping("/life-base-punchCardProject/getMorePunchCard")
+    List<PunchCardProject> getMorePunchCard(@RequestParam Integer num, @RequestParam Integer pageNo, @RequestParam Integer dataNum);
+
+
+    /**
+     * 根据关键字查询
+     *
+     * @param keyword 关键字
+     * @param dataNum 页码
+     * @param pageNo  条数
+     * @return
+     */
+    @GetMapping("/life-base-punchCardProject/search")
+    List<PunchCardProject> search(@RequestParam String keyword, @RequestParam Integer pageNo, @RequestParam Integer dataNum);
+
+
 }

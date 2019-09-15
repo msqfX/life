@@ -1,9 +1,7 @@
 package com.dlion.life.gateway.filter;
 
-import com.dlion.life.common.model.ResponseModel;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -40,7 +38,8 @@ public class AuthFilter implements GlobalFilter, Ordered {
         result.put("code", HttpStatus.UNAUTHORIZED.value());
         result.put("msg", "用户身份认证失败！");
 
-        if (StringUtils.isNotEmpty(token)) {
+        //TODO 接口权限校验
+        if (false) {
 
             ObjectMapper mapper = new ObjectMapper();
             try {

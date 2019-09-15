@@ -7,6 +7,10 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+/**
+ * @author 李正元
+ * @date 2019-09-15
+ */
 @Mapper
 public interface DiaryCommentMapper extends BaseMapper {
 

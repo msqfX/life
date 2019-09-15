@@ -28,3 +28,12 @@ management:
     web:
       exposure:
         include: "*"
+
+# 七牛云配置
+qiniu:
+  accessKey: 2ie-m1-FlAoNq1MvNasgXYVFqnxda9ZPgEzr30A8
+  secretKey: fWGgBM8ddddE6SBd6TLdvEgVR9JYqYHXjffdxx9V
+# 七牛空间名
+  bucket: life-punch
+# 外链访问路径
+  cdn.prefix: life-punch.s3-cn-north-1.qiniucs.com

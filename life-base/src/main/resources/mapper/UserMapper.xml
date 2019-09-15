@@ -20,7 +20,6 @@
         <result column="system" property="system" jdbcType="VARCHAR"/>
         <result column="platform" property="platform" jdbcType="VARCHAR"/>
         <result column="birthday" property="birthday" jdbcType="DATE"/>
-        <result column="sex" property="sex" jdbcType="TINYINT"/>
         <result column="person_sign" property="personSign" jdbcType="VARCHAR"/>
         <result column="bg_img" property="bgImg" jdbcType="INTEGER"/>
         <result column="personal_page_visit_num" property="personalPageVisitNum" jdbcType="INTEGER"/>
@@ -29,7 +28,7 @@
     </resultMap>
     <sql id="Base_Column_List">
     id, open_id, nick_name, avatar_url, gender, country, province, city, language, pass_word,
-    user_name, channel, brand, model, wx_language, system, platform, birthday, sex, person_sign,
+    user_name, channel, brand, model, wx_language, system, platform, birthday, person_sign,
     bg_img, personal_page_visit_num, create_time, update_time
   </sql>
 
@@ -39,7 +38,7 @@
     from user
     where id = #{id,jdbcType=INTEGER}
    </select>
-   <select id="selectByOpenId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+   <select id="selectByOpenId" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
     from user
@@ -56,7 +55,7 @@
       pass_word, user_name, channel,
       brand, model, wx_language,
       system, platform, birthday,
-      sex, person_sign, bg_img,
+      person_sign, bg_img,
       personal_page_visit_num, create_time, update_time
       )
     values (#{id,jdbcType=INTEGER}, #{openId,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR},
@@ -65,11 +64,11 @@
       #{passWord,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{channel,jdbcType=VARCHAR},
       #{brand,jdbcType=VARCHAR}, #{model,jdbcType=VARCHAR}, #{wxLanguage,jdbcType=VARCHAR},
       #{system,jdbcType=VARCHAR}, #{platform,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE},
-      #{sex,jdbcType=TINYINT}, #{personSign,jdbcType=VARCHAR}, #{bgImg,jdbcType=INTEGER},
+      #{personSign,jdbcType=VARCHAR}, #{bgImg,jdbcType=INTEGER},
       #{personalPageVisitNum,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
       )
   </insert>
-    <insert id="insertSelective" parameterType="com.dlion.life.base.entity.User">
+    <insert id="insertSelective" parameterType="com.dlion.life.base.entity.User" useGeneratedKeys="true" keyProperty="id">
         insert into user
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -125,9 +124,6 @@
             </if>
             <if test="birthday != null">
                 birthday,
-            </if>
-            <if test="sex != null">
-                sex,
             </if>
             <if test="personSign != null">
                 person_sign,
@@ -200,9 +196,6 @@
             <if test="birthday != null">
                 #{birthday,jdbcType=DATE},
             </if>
-            <if test="sex != null">
-                #{sex,jdbcType=TINYINT},
-            </if>
             <if test="personSign != null">
                 #{personSign,jdbcType=VARCHAR},
             </if>
@@ -274,9 +267,6 @@
             <if test="birthday != null">
                 birthday = #{birthday,jdbcType=DATE},
             </if>
-            <if test="sex != null">
-                sex = #{sex,jdbcType=TINYINT},
-            </if>
             <if test="personSign != null">
                 person_sign = #{personSign,jdbcType=VARCHAR},
             </if>
@@ -314,7 +304,6 @@
       system = #{system,jdbcType=VARCHAR},
       platform = #{platform,jdbcType=VARCHAR},
       birthday = #{birthday,jdbcType=DATE},
-      sex = #{sex,jdbcType=TINYINT},
       person_sign = #{personSign,jdbcType=VARCHAR},
       bg_img = #{bgImg,jdbcType=INTEGER},
       personal_page_visit_num = #{personalPageVisitNum,jdbcType=INTEGER},

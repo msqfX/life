@@ -36,14 +36,13 @@ public class UserApiController implements UserApi {
     }
 
     @Override
-    public void addUser(@RequestBody User user) {
+    public Integer addUser(@RequestBody User user) {
 
-        userService.addUser(user);
-
+        return userService.addUser(user);
     }
 
     @Override
-    public void updateUser(User user) {
+    public void updateUser(@RequestBody User user) {
 
         userService.updateUser(user);
     }

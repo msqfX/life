@@ -29,13 +29,13 @@ public class PunchCardDiary {
 
     private Double addressLatitude;
 
-    private Byte visibleType;
+    private Integer visibleType;
 
     private Integer currDiaryPunchCardDayNum;
 
-    private Byte haveSticky;
+    private Integer haveSticky;
 
-    private Byte isRepairDiary;
+    private Integer isRepairDiary;
 
     private Date repairPunchCardTime;
 

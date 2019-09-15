@@ -44,12 +44,12 @@ public class UserService {
 
         Map<String, Object> result = new HashMap<>(3);
 
-        logger.info("获取用户身份信息result:{}", result);
-
         try {
             String res = httpService.doGet(url);
 
             JSONObject json = (JSONObject) JSONObject.parse(res);
+
+            logger.info("获取用户身份信息result:{}", json);
 
             result.put("openId", json.getString("openid"));
             result.put("sessionKey", json.getString("session_key"));

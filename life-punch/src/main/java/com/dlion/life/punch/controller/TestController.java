@@ -27,12 +27,6 @@ public class TestController {
     @Autowired
     LoadBalancerClient loadBalancerClient;
 
-    @GetMapping("/hello")
-    public String hello(@RequestParam String name) {
-        logger.info("invoked name = " + name);
-        return "hello " + name+"from feign "+userApi.hello("fesfe");
-    }
-
     @GetMapping("/test")
     public String test() {
         // 通过spring cloud common中的负载均衡接口选取服务提供节点实现接口调用

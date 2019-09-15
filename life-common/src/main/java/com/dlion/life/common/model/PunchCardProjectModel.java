@@ -29,10 +29,16 @@ public class PunchCardProjectModel {
 
     private String weixinNum;
 
+    /**
+     * 总打卡人数
+     */
     private Integer allPunchCardNum;
 
     private Integer todayPunchCardNum;
 
+    /**
+     * 参数人数
+     */
     private Integer attendUserNum;
 
 }

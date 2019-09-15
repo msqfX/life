@@ -17,22 +17,22 @@ public class PunchCardProjectService {
     @Autowired
     private PunchCardProjectMapper punchCardProjectMapper;
 
-    public void addPunchCardProject(PunchCardProject punchCardProject){
+    public void addPunchCardProject(PunchCardProject punchCardProject) {
 
         punchCardProjectMapper.insertSelective(punchCardProject);
     }
 
-    public void updatePunchCardProject(PunchCardProject punchCardProject){
+    public void updatePunchCardProject(PunchCardProject punchCardProject) {
 
         punchCardProjectMapper.updateByPrimaryKeySelective(punchCardProject);
     }
 
-    public void delete(Integer id){
+    public void delete(Integer id) {
 
         punchCardProjectMapper.deleteByPrimaryKey(id);
     }
 
-    public List<PunchCardProject> getByUserId(Integer userId){
+    public List<PunchCardProject> getByUserId(Integer userId) {
 
         return punchCardProjectMapper.selectByUserId(userId);
     }
@@ -41,5 +41,15 @@ public class PunchCardProjectService {
     public PunchCardProject getById(Integer id) {
 
         return punchCardProjectMapper.selectByPrimaryKey(id);
+    }
+
+    public List<PunchCardProject> getMorePunchCard(Integer num, Integer pageNo, Integer dataNum) {
+
+        return punchCardProjectMapper.getMorePunchCard(num, pageNo, dataNum);
+    }
+
+    public List<PunchCardProject> search(String keyword, Integer pageNo, Integer dataNum) {
+
+        return punchCardProjectMapper.search(keyword, pageNo, dataNum);
     }
 }

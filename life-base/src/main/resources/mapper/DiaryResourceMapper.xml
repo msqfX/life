@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dlion.life.base.dao.DiaryResourceMapper" >
+  <resultMap id="BaseResultMap" type="com.dlion.life.base.entity.DiaryResource" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="diary_id" property="diaryId" jdbcType="INTEGER" />
+    <result column="resource_url" property="resourceUrl" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="TINYINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, diary_id, resource_url, type, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from diary_resource
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+    <select id="getByDiaryId" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List" />
+      from diary_resource
+      where diary_id = #{diaryId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from diary_resource
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.dlion.life.base.entity.DiaryResource" >
+    insert into diary_resource (id, diary_id, resource_url, 
+      type, create_time)
+    values (#{id,jdbcType=INTEGER}, #{diaryId,jdbcType=INTEGER}, #{resourceUrl,jdbcType=VARCHAR}, 
+      #{type,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dlion.life.base.entity.DiaryResource" >
+    insert into diary_resource
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="diaryId != null" >
+        diary_id,
+      </if>
+      <if test="resourceUrl != null" >
+        resource_url,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="diaryId != null" >
+        #{diaryId,jdbcType=INTEGER},
+      </if>
+      <if test="resourceUrl != null" >
+        #{resourceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dlion.life.base.entity.DiaryResource" >
+    update diary_resource
+    <set >
+      <if test="diaryId != null" >
+        diary_id = #{diaryId,jdbcType=INTEGER},
+      </if>
+      <if test="resourceUrl != null" >
+        resource_url = #{resourceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dlion.life.base.entity.DiaryResource" >
+    update diary_resource
+    set diary_id = #{diaryId,jdbcType=INTEGER},
+      resource_url = #{resourceUrl,jdbcType=VARCHAR},
+      type = #{type,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

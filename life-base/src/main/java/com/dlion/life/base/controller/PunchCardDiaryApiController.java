@@ -30,4 +30,15 @@ public class PunchCardDiaryApiController implements PunchCardDiaryApi {
 
         return punchCardDiaryService.getByProjectId(projectId);
     }
+
+    @Override
+    public List<PunchCardDiary> getByMoreLikeNum(Integer userId) {
+        return null;
+    }
+
+    @Override
+    public List<PunchCardDiary> listByUserId(Integer userId, Integer pageNo, Integer dataNum, Integer isDiaryCreator) {
+
+        return punchCardDiaryService.listByUserId(userId, pageNo, dataNum, isDiaryCreator);
+    }
 }

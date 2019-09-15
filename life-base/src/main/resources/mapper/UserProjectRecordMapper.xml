@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dlion.life.base.dao.UserProjectRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.dlion.life.base.entity.UserProjectRecord" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="is_creator" property="isCreator" jdbcType="TINYINT" />
+    <result column="attend_status" property="attendStatus" jdbcType="TINYINT" />
+    <result column="all_punch_card_num" property="allPunchCardNum" jdbcType="INTEGER" />
+    <result column="attend_time" property="attendTime" jdbcType="DATE" />
+    <result column="last_punch_card_time" property="lastPunchCardTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, project_id, is_creator, attend_status, all_punch_card_num, attend_time, 
+    last_punch_card_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_project_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByUserId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user_project_record
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from user_project_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.dlion.life.base.entity.UserProjectRecord" >
+    insert into user_project_record (id, user_id, project_id, 
+      is_creator, attend_status, all_punch_card_num, 
+      attend_time, last_punch_card_time)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, 
+      #{isCreator,jdbcType=TINYINT}, #{attendStatus,jdbcType=TINYINT}, #{allPunchCardNum,jdbcType=INTEGER}, 
+      #{attendTime,jdbcType=DATE}, #{lastPunchCardTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dlion.life.base.entity.UserProjectRecord" >
+    insert into user_project_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="projectId != null" >
+        project_id,
+      </if>
+      <if test="isCreator != null" >
+        is_creator,
+      </if>
+      <if test="attendStatus != null" >
+        attend_status,
+      </if>
+      <if test="allPunchCardNum != null" >
+        all_punch_card_num,
+      </if>
+      <if test="attendTime != null" >
+        attend_time,
+      </if>
+      <if test="lastPunchCardTime != null" >
+        last_punch_card_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="projectId != null" >
+        #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="isCreator != null" >
+        #{isCreator,jdbcType=TINYINT},
+      </if>
+      <if test="attendStatus != null" >
+        #{attendStatus,jdbcType=TINYINT},
+      </if>
+      <if test="allPunchCardNum != null" >
+        #{allPunchCardNum,jdbcType=INTEGER},
+      </if>
+      <if test="attendTime != null" >
+        #{attendTime,jdbcType=DATE},
+      </if>
+      <if test="lastPunchCardTime != null" >
+        #{lastPunchCardTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dlion.life.base.entity.UserProjectRecord" >
+    update user_project_record
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="isCreator != null" >
+        is_creator = #{isCreator,jdbcType=TINYINT},
+      </if>
+      <if test="attendStatus != null" >
+        attend_status = #{attendStatus,jdbcType=TINYINT},
+      </if>
+      <if test="allPunchCardNum != null" >
+        all_punch_card_num = #{allPunchCardNum,jdbcType=INTEGER},
+      </if>
+      <if test="attendTime != null" >
+        attend_time = #{attendTime,jdbcType=DATE},
+      </if>
+      <if test="lastPunchCardTime != null" >
+        last_punch_card_time = #{lastPunchCardTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dlion.life.base.entity.UserProjectRecord" >
+    update user_project_record
+    set user_id = #{userId,jdbcType=INTEGER},
+      project_id = #{projectId,jdbcType=INTEGER},
+      is_creator = #{isCreator,jdbcType=TINYINT},
+      attend_status = #{attendStatus,jdbcType=TINYINT},
+      all_punch_card_num = #{allPunchCardNum,jdbcType=INTEGER},
+      attend_time = #{attendTime,jdbcType=DATE},
+      last_punch_card_time = #{lastPunchCardTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

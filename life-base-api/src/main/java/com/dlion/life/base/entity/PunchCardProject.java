@@ -2,6 +2,10 @@ package com.dlion.life.base.entity;
 
 import lombok.Data;
 
+/**
+ * @author 李正元
+ * @date 2019-09-15
+ */
 @Data
 public class PunchCardProject {
 

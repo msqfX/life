@@ -2,6 +2,7 @@ package com.dlion.life.base.service;
 
 import com.dlion.life.base.dao.PunchCardDiaryMapper;
 import com.dlion.life.base.entity.PunchCardDiary;
+import com.dlion.life.common.bo.PunchCardDiarySearch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,4 +30,8 @@ public class PunchCardDiaryService {
         return punchCardDiaryMapper.selectByProjectId(projectId);
     }
 
+    public List<PunchCardDiary> listByUserId(Integer userId, Integer pageNo, Integer dataNum, Integer isDiaryCreator) {
+
+        return punchCardDiaryMapper.listByUserId(userId, pageNo, dataNum, isDiaryCreator);
+    }
 }
