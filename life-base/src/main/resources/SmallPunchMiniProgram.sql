@@ -266,7 +266,7 @@ CREATE TABLE `pro_intr_detail_info`  (
   `project_id` int(10) UNSIGNED NOT NULL COMMENT '所属圈子id，外键',
   `content` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'type为1存储文本、 2--存储图片url、3--音频文件url、4--视频文件url',
   `type` tinyint(3) NOT NULL COMMENT ' 简介内容类型，1--文字、2--图片，3--录音，4--视频',
-  `order` tinyint(3) NOT NULL COMMENT '当前简介内容处于对应圈子简介的位置顺序',
+  `sort` tinyint(3) NOT NULL COMMENT '当前简介内容处于对应圈子简介的位置顺序',
   create_time timestamp  not NULL DEFAULT CURRENT_TIMESTAMP,
   update_time timestamp  not NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE,

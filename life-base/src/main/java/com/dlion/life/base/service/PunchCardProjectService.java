@@ -17,9 +17,11 @@ public class PunchCardProjectService {
     @Autowired
     private PunchCardProjectMapper punchCardProjectMapper;
 
-    public void addPunchCardProject(PunchCardProject punchCardProject) {
+    public Integer addPunchCardProject(PunchCardProject punchCardProject) {
 
         punchCardProjectMapper.insertSelective(punchCardProject);
+
+        return punchCardProject.getId();
     }
 
     public void updatePunchCardProject(PunchCardProject punchCardProject) {

@@ -9,11 +9,14 @@ import com.dlion.life.common.model.PunchCardProjectListHomeModel;
 import com.dlion.life.common.model.PunchCardProjectListModel;
 import com.dlion.life.common.model.PunchCardProjectModel;
 import com.dlion.life.common.model.ResponseModel;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -38,7 +41,13 @@ public class PunchCardProjectController {
 
         BeanUtils.copyProperties(punchCardProjectModel, punchCardProject);
 
-        return new ResponseModel();
+        Integer id = punchCardProjectApi.add(punchCardProject);
+
+        Map<String, Integer> result = new HashMap<>(1);
+
+        result.put("id", id);
+
+        return new ResponseModel(result);
     }
 
     @GetMapping("/getProjectInfoByUserId/{userId}")
@@ -104,6 +113,31 @@ public class PunchCardProjectController {
         return new ResponseModel();
     }
 
+    @PutMapping("/{projectId}/updateName")
+    public Object updateName(@PathVariable Integer projectId, @RequestBody PunchCardProjectModel punchCardProjectModel) {
+
+        String projectName = punchCardProjectModel.getProjectName();
+
+        if (StringUtils.isEmpty(projectName)) {
+            return new ResponseModel(ResultConstant.ERROR, "圈子名称不能为空");
+        }
+
+        PunchCardProject punchCardProject = punchCardProjectApi.getById(projectId);
+
+        if (Objects.isNull(punchCardProject)) {
+            return new ResponseModel(ResultConstant.ERROR, "圈子不存在");
+        }
+
+        punchCardProject = new PunchCardProject();
+
+        punchCardProject.setId(projectId);
+        punchCardProject.setProjectName(projectName);
+
+        punchCardProjectApi.update(punchCardProject);
+
+        return new ResponseModel();
+    }
+
     /**
      * 获取圈子详情
      *
@@ -111,12 +145,11 @@ public class PunchCardProjectController {
      * @return
      */
     @GetMapping("{id}")
-    public Object getProjectInfoById(@PathVariable Integer id){
+    public Object getProjectInfoById(@PathVariable Integer id) {
 
 
         return new ResponseModel();
     }
-
 
 
 }

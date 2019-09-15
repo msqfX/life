@@ -61,7 +61,7 @@
       #{allPunchCardNum,jdbcType=INTEGER}, #{todayPunchCardNum,jdbcType=INTEGER}, #{attendUserNum,jdbcType=INTEGER}
       )
   </insert>
-    <insert id="insertSelective" parameterType="com.dlion.life.base.entity.PunchCardProject">
+    <insert id="insertSelective" parameterType="com.dlion.life.base.entity.PunchCardProject" useGeneratedKeys="true" keyProperty="id">
         insert into punch_card_project
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">

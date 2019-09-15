@@ -4,6 +4,8 @@ import com.dlion.life.base.entity.ProjectTypeLabel;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @author 李正元
  * @date 2019/9/13
@@ -22,4 +24,7 @@ public interface ProjectTypeLabelApi {
 
     @GetMapping("/life-base-projectTypeLabel/getById")
     ProjectTypeLabel getById(@RequestParam("id") Integer id);
+
+    @GetMapping("/life-base-projectTypeLabel/listByType")
+    List<ProjectTypeLabel> listByType(@RequestParam("type") Integer type);
 }

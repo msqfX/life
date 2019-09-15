@@ -4,6 +4,7 @@ import com.dlion.life.base.api.ProIntrDetailInfoApi;
 import com.dlion.life.base.entity.ProIntrDetailInfo;
 import com.dlion.life.base.service.ProIntrDetailInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class ProIntrDetailInfoApiController implements ProIntrDetailInfoApi {
     }
 
     @Override
-    public void add(ProIntrDetailInfo proIntrDetailInfo) {
+    public void add(@RequestBody ProIntrDetailInfo proIntrDetailInfo) {
 
         proIntrDetailInfoService.add(proIntrDetailInfo);
     }

@@ -4,6 +4,7 @@ import com.dlion.life.base.api.PunchCardProjectApi;
 import com.dlion.life.base.entity.PunchCardProject;
 import com.dlion.life.base.service.PunchCardProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -19,13 +20,13 @@ public class PunchCardProjectApiController implements PunchCardProjectApi {
     private PunchCardProjectService punchCardProjectService;
 
     @Override
-    public void add(PunchCardProject punchCardProject) {
+    public Integer add(@RequestBody PunchCardProject punchCardProject) {
 
-        punchCardProjectService.addPunchCardProject(punchCardProject);
+        return punchCardProjectService.addPunchCardProject(punchCardProject);
     }
 
     @Override
-    public void update(PunchCardProject punchCardProject) {
+    public void update(@RequestBody PunchCardProject punchCardProject) {
 
         punchCardProjectService.updatePunchCardProject(punchCardProject);
     }

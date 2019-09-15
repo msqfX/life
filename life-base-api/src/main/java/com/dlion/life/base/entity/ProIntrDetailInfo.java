@@ -17,9 +17,9 @@ public class ProIntrDetailInfo {
 
     private String content;
 
-    private Byte type;
+    private Integer type;
 
-    private Byte order;
+    private Integer sort;
 
     private Date createTime;
 

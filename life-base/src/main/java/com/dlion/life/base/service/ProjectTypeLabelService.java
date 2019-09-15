@@ -5,6 +5,8 @@ import com.dlion.life.base.entity.ProjectTypeLabel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author 李正元
  * @date 2019/9/13
@@ -36,4 +38,8 @@ public class ProjectTypeLabelService {
     }
 
 
+    public List<ProjectTypeLabel> listByType(Integer type) {
+
+        return projectTypeLabelMapper.listByType(type);
+    }
 }

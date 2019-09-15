@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * @author 李正元
  * @date 2019/9/13
@@ -39,5 +41,11 @@ public class ProjectTypeLabelApiController implements ProjectTypeLabelApi {
     public ProjectTypeLabel getById(Integer id) {
 
         return projectTypeLabelService.getById(id);
+    }
+
+    @Override
+    public List<ProjectTypeLabel> listByType(Integer type) {
+
+        return projectTypeLabelService.listByType(type);
     }
 }

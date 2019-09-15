@@ -6,12 +6,12 @@
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
     <result column="content" property="content" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="TINYINT" />
-    <result column="order" property="order" jdbcType="TINYINT" />
+    <result column="sort" property="sort" jdbcType="TINYINT" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, project_id, content, type, order, create_time, update_time
+    id, project_id, content, type, sort, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -31,10 +31,10 @@
   </delete>
   <insert id="insert" parameterType="com.dlion.life.base.entity.ProIntrDetailInfo" >
     insert into pro_intr_detail_info (id, project_id, content, 
-      type, order, create_time, 
+      type, sort, create_time, 
       update_time)
     values (#{id,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, 
-      #{type,jdbcType=TINYINT}, #{order,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{type,jdbcType=TINYINT}, #{sort,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.dlion.life.base.entity.ProIntrDetailInfo" >
@@ -52,8 +52,8 @@
       <if test="type != null" >
         type,
       </if>
-      <if test="order != null" >
-        order,
+      <if test="sort != null" >
+        sort,
       </if>
       <if test="createTime != null" >
         create_time,
@@ -75,8 +75,8 @@
       <if test="type != null" >
         #{type,jdbcType=TINYINT},
       </if>
-      <if test="order != null" >
-        #{order,jdbcType=TINYINT},
+      <if test="sort != null" >
+        #{sort,jdbcType=TINYINT},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
@@ -98,8 +98,8 @@
       <if test="type != null" >
         type = #{type,jdbcType=TINYINT},
       </if>
-      <if test="order != null" >
-        order = #{order,jdbcType=TINYINT},
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=TINYINT},
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -115,7 +115,7 @@
     set project_id = #{projectId,jdbcType=INTEGER},
       content = #{content,jdbcType=VARCHAR},
       type = #{type,jdbcType=TINYINT},
-      order = #{order,jdbcType=TINYINT},
+      sort = #{sort,jdbcType=TINYINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

@@ -15,7 +15,7 @@ import java.util.List;
 public interface PunchCardProjectApi {
 
     @PostMapping("/life-base-punchCardProject/add")
-    void add(@RequestBody PunchCardProject punchCardProject);
+    Integer add(@RequestBody PunchCardProject punchCardProject);
 
     @PutMapping("/life-base-punchCardProject/update")
     void update(@RequestBody PunchCardProject punchCardProject);
