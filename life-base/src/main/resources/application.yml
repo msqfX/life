@@ -18,7 +18,7 @@ spring:
     driverClassName: com.mysql.jdbc.Driver
     username: life
     password: 123456
-    url: jdbc:mysql://106.13.139.156:3306/life
+    url: jdbc:mysql://106.13.139.156:3306/life?useSSL=false
   redis:
     host: 106.13.139.156
     port: 6379

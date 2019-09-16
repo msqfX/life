@@ -18,6 +18,10 @@ spring:
           input: {consumer.orderly: true}
       bindings:
         input: {destination: test-topic, content-type: text/plain, group: test-group, consumer.maxAttempts: 1}
+  http:
+    multipart:
+      max-file-size: 10M
+      max-request-size: 50M
 
 
 server:
