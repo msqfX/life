@@ -1,7 +1,9 @@
 package com.dlion.life.punch.controller;
 
+import com.dlion.life.base.api.ProIntrDetailInfoApi;
 import com.dlion.life.base.api.PunchCardProjectApi;
 import com.dlion.life.base.api.UserApi;
+import com.dlion.life.base.entity.ProIntrDetailInfo;
 import com.dlion.life.base.entity.PunchCardProject;
 import com.dlion.life.base.entity.User;
 import com.dlion.life.common.constant.ResultConstant;
@@ -9,6 +11,8 @@ import com.dlion.life.common.model.PunchCardProjectListHomeModel;
 import com.dlion.life.common.model.PunchCardProjectListModel;
 import com.dlion.life.common.model.PunchCardProjectModel;
 import com.dlion.life.common.model.ResponseModel;
+import com.dlion.life.punch.model.ProIntrDetailInfoModel;
+import com.dlion.life.punch.model.ProjectInfoModel;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +37,9 @@ public class PunchCardProjectController {
 
     @Autowired
     private UserApi userApi;
+
+    @Autowired
+    private ProIntrDetailInfoApi proIntrDetailInfoApi;
 
     @PostMapping
     public Object add(@RequestBody PunchCardProjectModel punchCardProjectModel) {
@@ -145,10 +152,35 @@ public class PunchCardProjectController {
      * @return
      */
     @GetMapping("{id}")
-    public Object getProjectInfoById(@PathVariable Integer id) {
+    public Object getProjectInfoById(@PathVariable Integer id, @RequestParam String userId) {
+
+        PunchCardProject cardProject = punchCardProjectApi.getById(id);
+
+        ProjectInfoModel projectInfoModel = new ProjectInfoModel();
+
+        User user = userApi.getUserById(cardProject.getCreatorId());
+
+        BeanUtils.copyProperties(cardProject, projectInfoModel);
+
+        projectInfoModel.setCreatorGender(user.getGender());
+        projectInfoModel.setCreatorAvatarUrl(user.getAvatarUrl());
+        projectInfoModel.setCreatorNickName(user.getNickName());
 
 
-        return new ResponseModel();
+        List<ProIntrDetailInfo> proIntrDetailInfoList = proIntrDetailInfoApi.getByProjectId(id);
+        List<ProIntrDetailInfoModel> proIntrDetailInfoModels = proIntrDetailInfoList.stream().map(proIntrDetailInfo -> {
+
+            ProIntrDetailInfoModel proIntrDetailInfoModel = new ProIntrDetailInfoModel();
+            BeanUtils.copyProperties(proIntrDetailInfo, proIntrDetailInfoModel);
+
+            return proIntrDetailInfoModel;
+        }).collect(Collectors.toList());
+
+        projectInfoModel.setProjectIntrInfo(proIntrDetailInfoModels);
+
+
+
+        return new ResponseModel(projectInfoModel);
     }
 
 

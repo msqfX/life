@@ -24,6 +24,7 @@
     <include refid="Base_Column_List" />
     from pro_intr_detail_info
     where project_id = #{projectId,jdbcType=INTEGER}
+    order by sort
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from pro_intr_detail_info
