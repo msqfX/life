@@ -96,5 +96,27 @@ public class PunchCardDiaryController {
         return new ResponseModel(modelList);
     }
 
+    /**
+     * 圈子详情打卡日记列表ø
+     *
+     * @param userId
+     * @param projectId
+     * @param pageNo
+     * @param dataNum
+     * @return
+     */
+    @GetMapping("/getDiaryListByProjectId")
+    public Object getDiaryListByProjectId(@RequestParam Integer userId, @RequestParam Integer projectId,
+                                          @RequestParam Integer pageNo, @RequestParam Integer dataNum) {
+
+
+        List<PunchCardDiary> punchCardDiaries = punchCardDiaryApi.getByCno(userId, projectId, pageNo, dataNum);
+
+
+
+
+        return new ResponseModel();
+    }
+
 
 }

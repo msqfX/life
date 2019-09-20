@@ -3,16 +3,23 @@ package com.dlion.life.punch.controller;
 import com.dlion.life.base.api.ProIntrDetailInfoApi;
 import com.dlion.life.base.api.PunchCardProjectApi;
 import com.dlion.life.base.api.UserApi;
+import com.dlion.life.base.api.UserProjectRecordApi;
 import com.dlion.life.base.entity.ProIntrDetailInfo;
 import com.dlion.life.base.entity.PunchCardProject;
 import com.dlion.life.base.entity.User;
+import com.dlion.life.base.entity.UserProjectRecord;
+import com.dlion.life.common.constant.DatePattern;
 import com.dlion.life.common.constant.ResultConstant;
 import com.dlion.life.common.model.PunchCardProjectListHomeModel;
 import com.dlion.life.common.model.PunchCardProjectListModel;
 import com.dlion.life.common.model.PunchCardProjectModel;
 import com.dlion.life.common.model.ResponseModel;
+import com.dlion.life.common.utils.DateUtil;
+import com.dlion.life.punch.model.AttendUserModel;
 import com.dlion.life.punch.model.ProIntrDetailInfoModel;
 import com.dlion.life.punch.model.ProjectInfoModel;
+import com.dlion.life.punch.vo.PivotVo;
+import lombok.val;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +47,9 @@ public class PunchCardProjectController {
 
     @Autowired
     private ProIntrDetailInfoApi proIntrDetailInfoApi;
+
+    @Autowired
+    private UserProjectRecordApi userProjectRecordApi;
 
     @PostMapping
     public Object add(@RequestBody PunchCardProjectModel punchCardProjectModel) {
@@ -156,31 +166,76 @@ public class PunchCardProjectController {
 
         PunchCardProject cardProject = punchCardProjectApi.getById(id);
 
+        if (Objects.isNull(cardProject)) {
+            return new ResponseModel(ResultConstant.ERROR, "圈子不存在");
+        }
+
         ProjectInfoModel projectInfoModel = new ProjectInfoModel();
 
         User user = userApi.getUserById(cardProject.getCreatorId());
+        if (Objects.nonNull(user)) {
 
-        BeanUtils.copyProperties(cardProject, projectInfoModel);
+            BeanUtils.copyProperties(cardProject, projectInfoModel);
 
-        projectInfoModel.setCreatorGender(user.getGender());
-        projectInfoModel.setCreatorAvatarUrl(user.getAvatarUrl());
-        projectInfoModel.setCreatorNickName(user.getNickName());
-
-
-        List<ProIntrDetailInfo> proIntrDetailInfoList = proIntrDetailInfoApi.getByProjectId(id);
-        List<ProIntrDetailInfoModel> proIntrDetailInfoModels = proIntrDetailInfoList.stream().map(proIntrDetailInfo -> {
-
-            ProIntrDetailInfoModel proIntrDetailInfoModel = new ProIntrDetailInfoModel();
-            BeanUtils.copyProperties(proIntrDetailInfo, proIntrDetailInfoModel);
-
-            return proIntrDetailInfoModel;
-        }).collect(Collectors.toList());
-
-        projectInfoModel.setProjectIntrInfo(proIntrDetailInfoModels);
+            projectInfoModel.setCreatorGender(user.getGender());
+            projectInfoModel.setCreatorAvatarUrl(user.getAvatarUrl());
+            projectInfoModel.setCreatorNickName(user.getNickName());
 
 
+            List<ProIntrDetailInfo> proIntrDetailInfoList = proIntrDetailInfoApi.getByProjectId(id);
+            List<ProIntrDetailInfoModel> proIntrDetailInfoModels = proIntrDetailInfoList.stream().map(proIntrDetailInfo -> {
+
+                ProIntrDetailInfoModel proIntrDetailInfoModel = new ProIntrDetailInfoModel();
+
+                BeanUtils.copyProperties(proIntrDetailInfo, proIntrDetailInfoModel);
+                proIntrDetailInfoModel.setProjectId(proIntrDetailInfo.getProjectId());
+
+                return proIntrDetailInfoModel;
+            }).collect(Collectors.toList());
+
+            projectInfoModel.setProjectIntrInfo(proIntrDetailInfoModels);
+
+            List<UserProjectRecord> projectRecordList = userProjectRecordApi.listByProjectId(id);
+
+            List<AttendUserModel> attendUserModelList = projectRecordList.stream().map(userProjectRecord -> {
+
+                AttendUserModel attendUserModel = new AttendUserModel();
+
+                User userInfo = userApi.getUserById(userProjectRecord.getUserId());
+                attendUserModel.setAvatarUrl(userInfo.getAvatarUrl());
+                attendUserModel.setId(userInfo.getId());
+                attendUserModel.setNickName(userInfo.getNickName());
+                attendUserModel.setGender(userInfo.getGender());
+
+                PivotVo pivotVo = new PivotVo();
+                pivotVo.setId(userProjectRecord.getId());
+                val attendTime = DateUtil.formatDate(userProjectRecord.getAttendTime(), DatePattern.YYYY_MM_DD);
+                pivotVo.setAttendTime(attendTime);
+
+                attendUserModel.setPivot(pivotVo);
+
+                return attendUserModel;
+            }).collect(Collectors.toList());
+
+            projectInfoModel.setAttendUserList(attendUserModelList);
+        }
 
         return new ResponseModel(projectInfoModel);
+    }
+
+    @GetMapping("/checkUserIsAttend")
+    public Object checkUserIsAttend(@RequestParam Integer userId, @RequestParam Integer projectId) {
+
+        Map<String, Boolean> result = new HashMap<>();
+
+        UserProjectRecord projectRecord = userProjectRecordApi.getByUserId(userId, projectId);
+        if (Objects.isNull(projectRecord)) {
+            result.put("checkUserIsAttendRes", false);
+        } else {
+            result.put("checkUserIsAttendRes", true);
+        }
+
+        return new ResponseModel(result);
     }
 
 

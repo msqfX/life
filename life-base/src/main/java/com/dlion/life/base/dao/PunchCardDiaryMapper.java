@@ -18,4 +18,7 @@ public interface PunchCardDiaryMapper extends BaseMapper {
 
     List<PunchCardDiary> listByUserId(@Param("userId") Integer userId, @Param("pageNo") Integer pageNo,
                                       @Param("dataNum") Integer dataNum, @Param("isDiaryCreato") Integer isDiaryCreato);
+
+    List<PunchCardDiary> listByCno(@Param("userId") Integer userId, @Param("projectId") Integer projectId,
+                                   @Param("pageNo") Integer pageNo, @Param("dataNum") Integer dataNum);
 }

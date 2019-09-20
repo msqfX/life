@@ -28,4 +28,8 @@ public interface PunchCardDiaryApi {
     @PostMapping("/life-base-punchCardDiary/listByUserId")
     List<PunchCardDiary> listByUserId(@RequestParam("userId") Integer userId, @RequestParam("pageNo") Integer pageNo,
                                       @RequestParam("dataNum") Integer dataNum, @RequestParam("isDiaryCreator") Integer isDiaryCreator);
+
+    @GetMapping("/life-base-punchCardDiary/getByCno")
+    List<PunchCardDiary> getByCno(@RequestParam("userId") Integer userId, @RequestParam("projectId") Integer projectId,
+                                  @RequestParam("pageNo") Integer pageNo, @RequestParam("dataNum") Integer dataNum);
 }

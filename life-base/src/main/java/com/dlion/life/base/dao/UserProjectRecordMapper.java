@@ -20,7 +20,7 @@ public interface UserProjectRecordMapper extends BaseMapper<UserProjectRecord, I
      * @param userId
      * @return
      */
-    List<UserProjectRecord> selectByUserId(@Param("userId") Integer userId);
+    UserProjectRecord selectByUserId(@Param("userId") Integer userId, @Param("projectId") Integer projectId);
 
-
+    List<UserProjectRecord> selectByProjectId(@Param("projectId") Integer projectId);
 }

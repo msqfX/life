@@ -34,4 +34,9 @@ public class PunchCardDiaryService {
 
         return punchCardDiaryMapper.listByUserId(userId, pageNo, dataNum, isDiaryCreator);
     }
+
+    public List<PunchCardDiary> listByCno(Integer userId, Integer projectId, Integer pageNo, Integer dataNum) {
+
+        return punchCardDiaryMapper.listByCno(userId, projectId, pageNo, dataNum);
+    }
 }

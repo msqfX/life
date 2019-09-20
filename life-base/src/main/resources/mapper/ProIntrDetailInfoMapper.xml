@@ -19,7 +19,7 @@
     from pro_intr_detail_info
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectByProjectId" resultType="com.dlion.life.base.entity.ProIntrDetailInfo">
+  <select id="selectByProjectId" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from pro_intr_detail_info

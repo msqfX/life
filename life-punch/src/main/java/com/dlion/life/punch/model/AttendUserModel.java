@@ -16,7 +16,7 @@ public class AttendUserModel {
 
     private String nickName;
 
-    private Integer sex;
+    private Integer gender;
 
     private PivotVo pivot;
 

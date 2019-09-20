@@ -41,4 +41,10 @@ public class PunchCardDiaryApiController implements PunchCardDiaryApi {
 
         return punchCardDiaryService.listByUserId(userId, pageNo, dataNum, isDiaryCreator);
     }
+
+    @Override
+    public List<PunchCardDiary> getByCno(Integer userId, Integer projectId, Integer pageNo, Integer dataNum) {
+
+        return punchCardDiaryService.listByCno(userId, projectId, pageNo, dataNum);
+    }
 }
