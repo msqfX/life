@@ -50,7 +50,7 @@ public class FileService {
             retry++;
         }
         if (response.statusCode == 200) {
-            return new StringBuffer().append("http://").append(cdnPrefix).append("/").append(fileName).toString();
+            return new StringBuffer().append(cdnPrefix).append("/").append(fileName).toString();
         }
         return null;
     }

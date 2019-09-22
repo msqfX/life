@@ -28,6 +28,15 @@
         </if>
       </where>
     </select>
+    <select id="listByParentLabelName" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List" />
+      from project_type_label
+      where parent_id = (
+      select id
+      from project_type_label
+      where label_name = #{parentLabelName,jdbcType=VARCHAR})
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from project_type_label
     where id = #{id,jdbcType=INTEGER}

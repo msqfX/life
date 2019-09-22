@@ -16,9 +16,9 @@ public class UserProjectRecord {
 
     private Integer projectId;
 
-    private Byte isCreator;
+    private Integer isCreator;
 
-    private Byte attendStatus;
+    private Integer attendStatus;
 
     private Integer allPunchCardNum;
 

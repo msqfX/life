@@ -15,9 +15,7 @@ import com.dlion.life.common.model.PunchCardProjectListModel;
 import com.dlion.life.common.model.PunchCardProjectModel;
 import com.dlion.life.common.model.ResponseModel;
 import com.dlion.life.common.utils.DateUtil;
-import com.dlion.life.punch.model.AttendUserModel;
-import com.dlion.life.punch.model.ProIntrDetailInfoModel;
-import com.dlion.life.punch.model.ProjectInfoModel;
+import com.dlion.life.punch.model.*;
 import com.dlion.life.punch.vo.PivotVo;
 import lombok.val;
 import org.apache.commons.lang.StringUtils;
@@ -25,10 +23,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -236,6 +231,57 @@ public class PunchCardProjectController {
         }
 
         return new ResponseModel(result);
+    }
+
+    /**
+     * 加入圈子
+     *
+     * @param joinProjectModel
+     * @return
+     */
+    @PutMapping("/joinProject")
+    public Object joinProject(@RequestBody JoinProjectModel joinProjectModel) {
+
+        PunchCardProject punchCardProject = punchCardProjectApi.getById(joinProjectModel.getProjectId());
+
+        if (Objects.isNull(punchCardProject)) {
+            return new ResponseModel(ResultConstant.ERROR, "圈子不存在");
+        }
+
+        UserProjectRecord userProjectRecord = new UserProjectRecord();
+        userProjectRecord.setProjectId(joinProjectModel.getProjectId());
+        if (Objects.equals(punchCardProject.getCreatorId(), joinProjectModel.getUserId())) {
+            userProjectRecord.setIsCreator(1);
+        } else {
+            userProjectRecord.setIsCreator(0);
+        }
+
+        userProjectRecord.setUserId(joinProjectModel.getUserId());
+        userProjectRecord.setAttendTime(new Date());
+        userProjectRecord.setAttendStatus(1);
+
+        userProjectRecordApi.add(userProjectRecord);
+
+        return new ResponseModel();
+    }
+
+
+    @GetMapping("/getProjectListByType")
+    public Object getProjectListByType(@RequestParam String typeName, @RequestParam Integer pageNo,
+                                       @RequestParam Integer pageSize) {
+
+        List<PunchCardProject> punchCardProjects = punchCardProjectApi.getProjectListByType(typeName, pageNo, pageSize);
+
+        List<SearchPunchCardProjectModel> modelList = punchCardProjects.stream().map(punchCardProject -> {
+
+            SearchPunchCardProjectModel model = new SearchPunchCardProjectModel();
+
+            BeanUtils.copyProperties(punchCardProject, model);
+
+            return model;
+        }).collect(Collectors.toList());
+
+        return new ResponseModel(modelList);
     }
 
 

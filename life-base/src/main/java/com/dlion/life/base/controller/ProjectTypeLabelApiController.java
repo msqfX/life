@@ -48,4 +48,10 @@ public class ProjectTypeLabelApiController implements ProjectTypeLabelApi {
 
         return projectTypeLabelService.listByType(type);
     }
+
+    @Override
+    public List<ProjectTypeLabel> listByParentLabelName(String parentLabelName) {
+
+        return projectTypeLabelService.listByParentLabelName(parentLabelName);
+    }
 }

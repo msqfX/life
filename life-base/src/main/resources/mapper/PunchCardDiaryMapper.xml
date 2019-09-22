@@ -14,14 +14,14 @@
         <result column="curr_diary_punch_card_day_num" property="currDiaryPunchCardDayNum" jdbcType="INTEGER"/>
         <result column="have_sticky" property="haveSticky" jdbcType="TINYINT"/>
         <result column="is_repair_diary" property="isRepairDiary" jdbcType="TINYINT"/>
-        <result column=" repair_punch_card_time" property="repairPunchCardTime" jdbcType="TIMESTAMP"/>
+        <result column="repair_punch_card_time" property="repairPunchCardTime" jdbcType="TIMESTAMP"/>
         <result column="like_user_num" property="likeUserNum" jdbcType="INTEGER"/>
         <result column="comment_num" property="commentNum" jdbcType="INTEGER"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, project_id, user_id, text_content, punch_card_time, punch_card_address, address_longitude, 
-    address_latitude, visible_type, curr_diary_punch_card_day_num, have_sticky, is_repair_diary, 
-    " repair_punch_card_time", like_user_num, comment_num
+    id, project_id, user_id, text_content, punch_card_time, punch_card_address, address_longitude,
+    address_latitude, visible_type, curr_diary_punch_card_day_num, have_sticky, is_repair_diary,
+    repair_punch_card_time, like_user_num, comment_num
   </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
@@ -46,15 +46,12 @@
         </where>
         limit #{pageNo,jdbcType=INTEGER} , #{dataNum, jdbcType=INTEGER}
     </select>
-    <select id="listByCno" resultType="com.dlion.life.base.entity.PunchCardDiary">
+    <select id="listByCno" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from punch_card_diary
         <where>
-            <if test="userId != null">
-                user_id = #{userId,jdbcType=INTEGER}
-            </if>
-            <if test="userId != null">
+            <if test="projectId != null">
                 project_id = #{projectId,jdbcType=INTEGER}
             </if>
         </where>
@@ -65,20 +62,20 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
     <insert id="insert" parameterType="com.dlion.life.base.entity.PunchCardDiary">
-    insert into punch_card_diary (id, project_id, user_id, 
-      text_content, punch_card_time, punch_card_address, 
-      address_longitude, address_latitude, visible_type, 
-      curr_diary_punch_card_day_num, have_sticky, is_repair_diary, 
-      " repair_punch_card_time", like_user_num, comment_num
+    insert into punch_card_diary (id, project_id, user_id,
+      text_content, punch_card_time, punch_card_address,
+      address_longitude, address_latitude, visible_type,
+      curr_diary_punch_card_day_num, have_sticky, is_repair_diary,
+      repair_punch_card_time, like_user_num, comment_num
       )
-    values (#{id,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
-      #{textContent,jdbcType=VARCHAR}, #{punchCardTime,jdbcType=TIMESTAMP}, #{punchCardAddress,jdbcType=VARCHAR}, 
-      #{addressLongitude,jdbcType=DOUBLE}, #{addressLatitude,jdbcType=DOUBLE}, #{visibleType,jdbcType=TINYINT}, 
-      #{currDiaryPunchCardDayNum,jdbcType=INTEGER}, #{haveSticky,jdbcType=TINYINT}, #{isRepairDiary,jdbcType=TINYINT}, 
+    values (#{id,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER},
+      #{textContent,jdbcType=VARCHAR}, #{punchCardTime,jdbcType=TIMESTAMP}, #{punchCardAddress,jdbcType=VARCHAR},
+      #{addressLongitude,jdbcType=DOUBLE}, #{addressLatitude,jdbcType=DOUBLE}, #{visibleType,jdbcType=TINYINT},
+      #{currDiaryPunchCardDayNum,jdbcType=INTEGER}, #{haveSticky,jdbcType=TINYINT}, #{isRepairDiary,jdbcType=TINYINT},
       #{repairPunchCardTime,jdbcType=TIMESTAMP}, #{likeUserNum,jdbcType=INTEGER}, #{commentNum,jdbcType=INTEGER}
       )
   </insert>
-    <insert id="insertSelective" parameterType="com.dlion.life.base.entity.PunchCardDiary">
+    <insert id="insertSelective" parameterType="com.dlion.life.base.entity.PunchCardDiary" useGeneratedKeys="true" keyProperty="id">
         insert into punch_card_diary
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -118,7 +115,7 @@
                 is_repair_diary,
             </if>
             <if test="repairPunchCardTime != null">
-                " repair_punch_card_time",
+                repair_punch_card_time,
             </if>
             <if test="likeUserNum != null">
                 like_user_num,
@@ -212,7 +209,7 @@
                 is_repair_diary = #{isRepairDiary,jdbcType=TINYINT},
             </if>
             <if test="repairPunchCardTime != null">
-                " repair_punch_card_time" = #{repairPunchCardTime,jdbcType=TIMESTAMP},
+                repair_punch_card_time = #{repairPunchCardTime,jdbcType=TIMESTAMP},
             </if>
             <if test="likeUserNum != null">
                 like_user_num = #{likeUserNum,jdbcType=INTEGER},
@@ -236,7 +233,7 @@
       curr_diary_punch_card_day_num = #{currDiaryPunchCardDayNum,jdbcType=INTEGER},
       have_sticky = #{haveSticky,jdbcType=TINYINT},
       is_repair_diary = #{isRepairDiary,jdbcType=TINYINT},
-      " repair_punch_card_time" = #{repairPunchCardTime,jdbcType=TIMESTAMP},
+      repair_punch_card_time = #{repairPunchCardTime,jdbcType=TIMESTAMP},
       like_user_num = #{likeUserNum,jdbcType=INTEGER},
       comment_num = #{commentNum,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}

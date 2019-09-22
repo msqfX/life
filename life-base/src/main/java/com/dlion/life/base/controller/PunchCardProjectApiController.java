@@ -60,4 +60,10 @@ public class PunchCardProjectApiController implements PunchCardProjectApi {
 
         return punchCardProjectService.search(keyword, pageNo, dataNum);
     }
+
+    @Override
+    public List<PunchCardProject> getProjectListByType(String typeName, Integer pageNo, Integer pageSize) {
+
+        return punchCardProjectService.getProjectListByType(typeName, pageNo, pageSize);
+    }
 }

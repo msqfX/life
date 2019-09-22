@@ -5,6 +5,8 @@ import com.dlion.life.common.data.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * @author 李正元
  * @date 2019-09-15
@@ -14,5 +16,7 @@ public interface DiaryLikeMapper extends BaseMapper<DiaryLike, Integer> {
 
     DiaryLike seleteByDiaryIdAndUserId(@Param("diaryId") Integer diaryId, @Param("userId") Integer userId);
 
+
+    List<DiaryLike> listByDiaryId(@Param("diaryId") Integer diaryId);
 
 }

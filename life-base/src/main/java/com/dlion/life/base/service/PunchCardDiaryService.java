@@ -2,7 +2,6 @@ package com.dlion.life.base.service;
 
 import com.dlion.life.base.dao.PunchCardDiaryMapper;
 import com.dlion.life.base.entity.PunchCardDiary;
-import com.dlion.life.common.bo.PunchCardDiarySearch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +19,10 @@ public class PunchCardDiaryService {
     @Autowired
     private PunchCardDiaryMapper punchCardDiaryMapper;
 
-    public void add(PunchCardDiary punchCardDiary) {
+    public Integer add(PunchCardDiary punchCardDiary) {
 
         punchCardDiaryMapper.insertSelective(punchCardDiary);
+        return punchCardDiary.getId();
     }
 
     public List<PunchCardDiary> getByProjectId(Integer projectId) {
@@ -35,8 +35,18 @@ public class PunchCardDiaryService {
         return punchCardDiaryMapper.listByUserId(userId, pageNo, dataNum, isDiaryCreator);
     }
 
-    public List<PunchCardDiary> listByCno(Integer userId, Integer projectId, Integer pageNo, Integer dataNum) {
+    public List<PunchCardDiary> listByCno(Integer projectId, Integer pageNo, Integer dataNum) {
 
-        return punchCardDiaryMapper.listByCno(userId, projectId, pageNo, dataNum);
+        return punchCardDiaryMapper.listByCno(projectId, pageNo, dataNum);
+    }
+
+    public PunchCardDiary getById(Integer diaryId) {
+
+        return punchCardDiaryMapper.selectByPrimaryKey(diaryId);
+    }
+
+    public void update(PunchCardDiary punchCardDiary) {
+
+        punchCardDiaryMapper.updateByPrimaryKeySelective(punchCardDiary);
     }
 }

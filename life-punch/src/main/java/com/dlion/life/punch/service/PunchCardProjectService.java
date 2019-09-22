@@ -10,6 +10,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 /**
  * @author 李正元
  * @date 2019/9/15
@@ -24,6 +26,10 @@ public class PunchCardProjectService {
     private UserApi userApi;
 
     public PunchCardProjectVo punchCardProject(Integer projectId) {
+
+        if(Objects.isNull(projectId)){
+            return null;
+        }
 
         PunchCardProjectVo punchCardProjectVo = new PunchCardProjectVo();
 

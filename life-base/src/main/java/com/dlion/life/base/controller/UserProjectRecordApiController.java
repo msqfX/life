@@ -4,6 +4,8 @@ import com.dlion.life.base.api.UserProjectRecordApi;
 import com.dlion.life.base.entity.UserProjectRecord;
 import com.dlion.life.base.service.UserProjectRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -28,5 +30,11 @@ public class UserProjectRecordApiController implements UserProjectRecordApi {
     public UserProjectRecord getByUserId(Integer userId, Integer projectId) {
 
         return userProjectRecordService.getByUserId(userId, projectId);
+    }
+
+    @Override
+    public void add(@RequestBody UserProjectRecord userProjectRecord) {
+
+        userProjectRecordService.add(userProjectRecord);
     }
 }

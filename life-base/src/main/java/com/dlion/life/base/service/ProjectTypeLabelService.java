@@ -42,4 +42,9 @@ public class ProjectTypeLabelService {
 
         return projectTypeLabelMapper.listByType(type);
     }
+
+    public List<ProjectTypeLabel> listByParentLabelName(String parentLabelName) {
+
+        return projectTypeLabelMapper.listByParentLabelName(parentLabelName);
+    }
 }

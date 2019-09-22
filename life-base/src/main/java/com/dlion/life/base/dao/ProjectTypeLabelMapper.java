@@ -15,4 +15,6 @@ import java.util.List;
 public interface ProjectTypeLabelMapper extends BaseMapper<ProjectTypeLabel, Integer> {
 
     List<ProjectTypeLabel> listByType(@Param("type") Integer type);
+
+    List<ProjectTypeLabel> listByParentLabelName(@Param("parentLabelName") String parentLabelName);
 }

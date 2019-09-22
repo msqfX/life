@@ -2,10 +2,7 @@ package com.dlion.life.base.api;
 
 import com.dlion.life.base.entity.PunchCardDiary;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,7 +14,7 @@ import java.util.List;
 public interface PunchCardDiaryApi {
 
     @PostMapping("/life-base-punchCardDiary/add")
-    void add(@RequestBody PunchCardDiary punchCardDiary);
+    Integer add(@RequestBody PunchCardDiary punchCardDiary);
 
     @GetMapping("/life-base-punchCardDiary/listByProjectId")
     List<PunchCardDiary> getByProjectId(@RequestParam("projectId") Integer projectId);
@@ -26,10 +23,19 @@ public interface PunchCardDiaryApi {
     List<PunchCardDiary> getByMoreLikeNum(@RequestParam("userId") Integer userId);
 
     @PostMapping("/life-base-punchCardDiary/listByUserId")
-    List<PunchCardDiary> listByUserId(@RequestParam("userId") Integer userId, @RequestParam("pageNo") Integer pageNo,
-                                      @RequestParam("dataNum") Integer dataNum, @RequestParam("isDiaryCreator") Integer isDiaryCreator);
+    List<PunchCardDiary> listByUserId(@RequestParam("userId") Integer userId,
+                                      @RequestParam("pageNo") Integer pageNo,
+                                      @RequestParam("dataNum") Integer dataNum,
+                                      @RequestParam("isDiaryCreator") Integer isDiaryCreator);
 
     @GetMapping("/life-base-punchCardDiary/getByCno")
-    List<PunchCardDiary> getByCno(@RequestParam("userId") Integer userId, @RequestParam("projectId") Integer projectId,
-                                  @RequestParam("pageNo") Integer pageNo, @RequestParam("dataNum") Integer dataNum);
+    List<PunchCardDiary> getByCno(@RequestParam("projectId") Integer projectId,
+                                  @RequestParam("pageNo") Integer pageNo,
+                                  @RequestParam("dataNum") Integer dataNum);
+
+    @GetMapping("/life-base-punchCardDiary/getById")
+    PunchCardDiary getById(@RequestParam("diaryId") Integer diaryId);
+
+    @PutMapping("/life-base-punchCardDiary/update")
+    void update(@RequestBody PunchCardDiary punchCardDiary);
 }

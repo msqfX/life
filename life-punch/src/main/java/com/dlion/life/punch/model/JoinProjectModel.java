@@ -7,10 +7,10 @@ import lombok.Data;
  * @date 2019/9/22
  */
 @Data
-public class ProjectTypeLabelModel {
+public class JoinProjectModel {
 
-    private Integer id;
+    private Integer userId;
 
-    private String labelName;
+    private Integer projectId;
 
 }

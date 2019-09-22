@@ -12,13 +12,14 @@ import java.util.List;
  * @date 2019-09-15
  */
 @Mapper
-public interface PunchCardDiaryMapper extends BaseMapper {
+public interface PunchCardDiaryMapper extends BaseMapper<PunchCardDiary, Integer> {
 
     List<PunchCardDiary> selectByProjectId(@Param("projectId") Integer projectId);
 
     List<PunchCardDiary> listByUserId(@Param("userId") Integer userId, @Param("pageNo") Integer pageNo,
                                       @Param("dataNum") Integer dataNum, @Param("isDiaryCreato") Integer isDiaryCreato);
 
-    List<PunchCardDiary> listByCno(@Param("userId") Integer userId, @Param("projectId") Integer projectId,
-                                   @Param("pageNo") Integer pageNo, @Param("dataNum") Integer dataNum);
+    List<PunchCardDiary> listByCno(@Param("projectId") Integer projectId,
+                                   @Param("pageNo") Integer pageNo,
+                                   @Param("dataNum") Integer dataNum);
 }

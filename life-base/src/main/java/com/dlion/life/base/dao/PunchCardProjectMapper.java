@@ -29,7 +29,8 @@ public interface PunchCardProjectMapper extends BaseMapper<PunchCardProject, Int
      * @param num 打卡数
      * @return
      */
-    List<PunchCardProject> getMorePunchCard(@Param("num") Integer num, @Param("pageNo") Integer pageNo,
+    List<PunchCardProject> getMorePunchCard(@Param("num") Integer num,
+                                            @Param("pageNo") Integer pageNo,
                                             @Param("dataNum") Integer dataNum
     );
 
@@ -41,5 +42,12 @@ public interface PunchCardProjectMapper extends BaseMapper<PunchCardProject, Int
      * @param pageNo  条数
      * @return
      */
-    List<PunchCardProject> search(@Param("keyword") String keyword, @Param("pageNo") Integer pageNo, @Param("dataNum") Integer dataNum);
+    List<PunchCardProject> search(@Param("keyword") String keyword,
+                                  @Param("pageNo") Integer pageNo,
+                                  @Param("dataNum") Integer dataNum);
+
+
+    List<PunchCardProject> getProjectListByType(@Param("typeName") String typeName,
+                                                @Param("pageNo") Integer pageNo,
+                                                @Param("pageSize") Integer pageSize);
 }

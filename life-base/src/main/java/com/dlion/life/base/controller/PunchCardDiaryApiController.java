@@ -20,9 +20,9 @@ public class PunchCardDiaryApiController implements PunchCardDiaryApi {
     private PunchCardDiaryService punchCardDiaryService;
 
     @Override
-    public void add(@RequestBody PunchCardDiary punchCardDiary) {
+    public Integer add(@RequestBody PunchCardDiary punchCardDiary) {
 
-        punchCardDiaryService.add(punchCardDiary);
+        return punchCardDiaryService.add(punchCardDiary);
     }
 
     @Override
@@ -43,8 +43,20 @@ public class PunchCardDiaryApiController implements PunchCardDiaryApi {
     }
 
     @Override
-    public List<PunchCardDiary> getByCno(Integer userId, Integer projectId, Integer pageNo, Integer dataNum) {
+    public List<PunchCardDiary> getByCno(Integer projectId, Integer pageNo, Integer dataNum) {
 
-        return punchCardDiaryService.listByCno(userId, projectId, pageNo, dataNum);
+        return punchCardDiaryService.listByCno(projectId, pageNo, dataNum);
+    }
+
+    @Override
+    public PunchCardDiary getById(Integer diaryId) {
+
+        return punchCardDiaryService.getById(diaryId);
+    }
+
+    @Override
+    public void update(@RequestBody PunchCardDiary punchCardDiary) {
+
+        punchCardDiaryService.update(punchCardDiary);
     }
 }

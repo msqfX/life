@@ -54,4 +54,9 @@ public class PunchCardProjectService {
 
         return punchCardProjectMapper.search(keyword, pageNo, dataNum);
     }
+
+    public List<PunchCardProject> getProjectListByType(String typeName, Integer pageNo, Integer pageSize) {
+
+       return punchCardProjectMapper.getProjectListByType(typeName,pageNo,pageSize);
+    }
 }

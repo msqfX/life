@@ -24,6 +24,13 @@
     where diary_id = #{diaryId,jdbcType=INTEGER}
     and admirer_id = #{userId,jdbcType=INTEGER}
   </select>
+  <select id="listByDiaryId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from diary_like
+    where diary_id = #{diaryId,jdbcType=INTEGER}
+    limit 10
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from diary_like
     where id = #{id,jdbcType=INTEGER}
@@ -34,7 +41,7 @@
     values (#{id,jdbcType=INTEGER}, #{diaryId,jdbcType=INTEGER}, #{likedUserId,jdbcType=INTEGER}, 
       #{admirerId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.dlion.life.base.entity.DiaryLike" >
+  <insert id="insertSelective" parameterType="com.dlion.life.base.entity.DiaryLike" useGeneratedKeys="true" keyProperty="id">
     insert into diary_like
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

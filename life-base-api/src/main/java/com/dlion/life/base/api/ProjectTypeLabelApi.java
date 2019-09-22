@@ -27,4 +27,7 @@ public interface ProjectTypeLabelApi {
 
     @GetMapping("/life-base-projectTypeLabel/listByType")
     List<ProjectTypeLabel> listByType(@RequestParam("type") Integer type);
+
+    @GetMapping("/life-base-projectTypeLabel/listByParentLabelName")
+    List<ProjectTypeLabel> listByParentLabelName(@RequestParam("parentLabelName") String parentLabelName);
 }

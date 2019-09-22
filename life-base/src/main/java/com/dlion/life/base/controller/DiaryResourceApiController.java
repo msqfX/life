@@ -5,6 +5,7 @@ import com.dlion.life.base.entity.DiaryLike;
 import com.dlion.life.base.entity.DiaryResource;
 import com.dlion.life.base.service.DiaryResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public class DiaryResourceApiController implements DiaryResourceApi {
     }
 
     @Override
-    public void add(DiaryResource diaryResource) {
+    public void add(@RequestBody DiaryResource diaryResource) {
 
         diaryResourceService.add(diaryResource);
     }

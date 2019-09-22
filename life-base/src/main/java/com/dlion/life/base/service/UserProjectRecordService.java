@@ -26,4 +26,9 @@ public class UserProjectRecordService {
 
         return projectRecordMapper.selectByUserId(userId, projectId);
     }
+
+    public void add(UserProjectRecord userProjectRecord) {
+
+        projectRecordMapper.insertSelective(userProjectRecord);
+    }
 }

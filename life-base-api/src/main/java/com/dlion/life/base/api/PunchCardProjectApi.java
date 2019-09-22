@@ -38,7 +38,9 @@ public interface PunchCardProjectApi {
      * @return
      */
     @GetMapping("/life-base-punchCardProject/getMorePunchCard")
-    List<PunchCardProject> getMorePunchCard(@RequestParam Integer num, @RequestParam Integer pageNo, @RequestParam Integer dataNum);
+    List<PunchCardProject> getMorePunchCard(@RequestParam Integer num,
+                                            @RequestParam Integer pageNo,
+                                            @RequestParam Integer dataNum);
 
 
     /**
@@ -50,7 +52,11 @@ public interface PunchCardProjectApi {
      * @return
      */
     @GetMapping("/life-base-punchCardProject/search")
-    List<PunchCardProject> search(@RequestParam String keyword, @RequestParam Integer pageNo, @RequestParam Integer dataNum);
+    List<PunchCardProject> search(@RequestParam String keyword, @RequestParam Integer pageNo,
+                                  @RequestParam Integer dataNum);
 
-
+    @GetMapping("/life-base-punchCardProject/getProjectListByType")
+    List<PunchCardProject> getProjectListByType(@RequestParam("typeName") String typeName,
+                                                @RequestParam("pageNo") Integer pageNo,
+                                                @RequestParam("pageSize") Integer pageSize);
 }

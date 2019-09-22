@@ -45,6 +45,13 @@
         where project_name like CONCAT('%',#{keyword,jdbcType=VARCHAR},'%')
         limit #{pageNo,jdbcType=INTEGER} , #{dataNum, jdbcType=INTEGER}
     </select>
+    <select id="getProjectListByType" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from punch_card_project
+        where type_label like CONCAT('%',#{typeName,jdbcType=VARCHAR},'%')
+        limit #{pageNo,jdbcType=INTEGER} , #{pageSize, jdbcType=INTEGER}
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from punch_card_project
     where id = #{id,jdbcType=INTEGER}
