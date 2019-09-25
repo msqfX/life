@@ -3,10 +3,8 @@ package com.dlion.life.punch.model;
 import com.dlion.life.common.vo.DiaryResourceVo;
 import com.dlion.life.common.vo.Publisher;
 import com.dlion.life.common.vo.PunchCardProjectVo;
-import com.dlion.life.common.vo.TenLikeInfo;
 import lombok.Data;
 
-import java.util.Date;
 import java.util.List;
 
 /**

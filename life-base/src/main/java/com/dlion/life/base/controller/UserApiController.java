@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * @author 李正元
  * @date 2019-06-08
@@ -45,6 +47,12 @@ public class UserApiController implements UserApi {
     public void updateUser(@RequestBody User user) {
 
         userService.updateUser(user);
+    }
+
+    @Override
+    public List<User> list(String userName, Integer pageNum, Integer pageSize) {
+
+        return userService.list(userName, pageNum, pageSize);
     }
 
 

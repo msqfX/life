@@ -6,7 +6,10 @@ import com.dlion.life.common.model.ResponseModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * @author 李正元
@@ -25,5 +28,14 @@ public class UserController {
         User user = userApi.getUserById(1);
         return new ResponseModel(user);
     }
+
+    @GetMapping
+    public Object list(@RequestParam String userName, @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+
+        List<User> userList = userApi.list(userName, pageNum, pageSize);
+
+        return new ResponseModel(userList);
+    }
+
 
 }

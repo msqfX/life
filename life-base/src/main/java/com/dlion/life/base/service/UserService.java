@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -71,4 +72,8 @@ public class UserService {
     }
 
 
+    public List<User> list(String userName, Integer pageNum, Integer pageSize) {
+
+        return userMapper.list(userName, pageNum, pageSize);
+    }
 }

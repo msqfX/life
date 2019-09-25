@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 /**
  * @author 李正元
  * @date 2019-06-08
@@ -26,4 +28,8 @@ public interface UserApi {
     @PostMapping("/life-base-user/updateUser")
     void updateUser(@RequestBody User user);
 
+    @GetMapping("/life-base-user/list")
+    List<User> list(@RequestParam("userName") String userName,
+                    @RequestParam("pageNum") Integer pageNum,
+                    @RequestParam("pageSize") Integer pageSize);
 }
