@@ -20,7 +20,8 @@ public interface UserProjectRecordApi {
     List<UserProjectRecord> listByProjectId(@RequestParam("projectId") Integer projectId);
 
     @GetMapping("/life-base-userProjectRecord/getByUserId")
-    UserProjectRecord getByUserId(@RequestParam("userId") Integer userId, @RequestParam("projectId") Integer projectId);
+    UserProjectRecord getByUserId(@RequestParam("userId") Integer userId,
+                                  @RequestParam("projectId") Integer projectId);
 
     @PostMapping("/life-base-userProjectRecord/add")
     void add(@RequestBody UserProjectRecord userProjectRecord);
