@@ -6,6 +6,7 @@ import com.dlion.life.common.constant.ChannelConstant;
 import com.dlion.life.common.constant.ResultConstant;
 import com.dlion.life.common.model.ResponseModel;
 import com.dlion.life.common.model.UserModel;
+import com.dlion.life.user.model.UserHomePageModel;
 import com.dlion.life.user.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -117,6 +118,24 @@ public class UserController {
         Map<String, Object> wxUserInfo = userService.getWxUserInfo(code);
 
         return new ResponseModel(wxUserInfo);
+    }
+
+
+    @GetMapping("/getUserDetailInfoById")
+    public Object getUserDetailInfoById(@RequestParam Integer userId) {
+
+        User user = userApi.getUserById(userId);
+
+        UserHomePageModel homePageModel = new UserHomePageModel();
+
+        BeanUtils.copyProperties(user, homePageModel);
+
+
+
+
+
+
+        return new ResponseModel();
     }
 
 
