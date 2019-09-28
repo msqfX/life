@@ -26,4 +26,12 @@ public interface UserProjectRecordApi {
     @PostMapping("/life-base-userProjectRecord/add")
     void add(@RequestBody UserProjectRecord userProjectRecord);
 
+    /**
+     * 查询用户参与的圈子
+     *
+     * @param userId 用户ID
+     * @return
+     */
+    @GetMapping("/life-base-userProjectRecord/listByUserId")
+    List<UserProjectRecord> listByUserId(@RequestParam("userId") Integer userId);
 }

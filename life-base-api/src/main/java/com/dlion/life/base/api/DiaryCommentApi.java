@@ -22,4 +22,12 @@ public interface DiaryCommentApi {
     @GetMapping("/life-base-diaryComment/getByDiaryId")
     List<DiaryComment> getByDiaryId(@RequestParam("diaryId") Integer diaryId);
 
+    /**
+     * 根据被评论者的ID查询
+     *
+     * @param respondentId
+     * @return
+     */
+    @GetMapping("/life-base-diaryComment/ListByRespondentId")
+    List<DiaryComment> ListByRespondentId(@RequestParam("respondentId") Integer respondentId);
 }

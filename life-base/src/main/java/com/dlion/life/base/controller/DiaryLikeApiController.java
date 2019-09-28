@@ -42,4 +42,10 @@ public class DiaryLikeApiController implements DiaryLikeApi {
 
         diaryLikeService.delete(likeRecordId);
     }
+
+    @Override
+    public List<DiaryLike> listByAdmirerId(Integer admirerId) {
+
+        return diaryLikeService.listByAdmirerId(admirerId);
+    }
 }

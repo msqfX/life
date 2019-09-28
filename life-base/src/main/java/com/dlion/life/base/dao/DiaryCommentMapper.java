@@ -16,4 +16,5 @@ public interface DiaryCommentMapper extends BaseMapper {
 
     List<DiaryComment> selectByDiaryId(@Param("diaryId") Integer diaryId);
 
+    List<DiaryComment> ListByRespondentId(@Param("respondentId") Integer respondentId);
 }

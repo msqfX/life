@@ -34,7 +34,13 @@
     from user_project_record
     where project_id = #{projectId,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    <select id="listByUserId" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List" />
+      from user_project_record
+      where user_id = #{userId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from user_project_record
     where id = #{id,jdbcType=INTEGER}
   </delete>

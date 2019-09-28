@@ -2,8 +2,8 @@ package com.dlion.life.user.model;
 
 import lombok.Data;
 
-import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author 李正元
@@ -47,5 +47,7 @@ public class UserHomePageModel {
      * 个人页面访问量
      */
     private Integer personalPageVisitNum;
+
+    private List<PersonalPageVisitRecordModel> fivePersonalPageVisitRecord;
 
 }

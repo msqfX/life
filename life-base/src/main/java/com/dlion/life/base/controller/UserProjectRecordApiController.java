@@ -37,4 +37,10 @@ public class UserProjectRecordApiController implements UserProjectRecordApi {
 
         userProjectRecordService.add(userProjectRecord);
     }
+
+    @Override
+    public List<UserProjectRecord> listByUserId(Integer userId) {
+
+        return userProjectRecordService.listByUserId(userId);
+    }
 }

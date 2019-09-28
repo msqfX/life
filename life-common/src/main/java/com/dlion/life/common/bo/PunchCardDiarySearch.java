@@ -15,7 +15,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PunchCardDiarySearch {
 
-    private Integer userId;
+    /**
+     * 被查看打卡日记列表的用户的id
+     */
+    private Integer visitedUserId;
+
+    private  Integer visitorUserId;
 
     /**
      * 是否为创建者：0：否，1：是

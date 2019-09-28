@@ -24,4 +24,7 @@ public interface DiaryLikeApi {
 
     @DeleteMapping("/life-base-diaryLike/delete")
     void delete(@RequestParam("likeRecordId") Integer likeRecordId);
+
+    @GetMapping("/life-base-diaryLike/listByAdmirerId")
+    List<DiaryLike> listByAdmirerId(@RequestParam("admirerId") Integer admirerId);
 }

@@ -30,4 +30,12 @@ public class DiaryCommentApiController implements DiaryCommentApi {
 
         return diaryCommentService.getByDiaryId(diaryId);
     }
+
+    @Override
+    public List<DiaryComment> ListByRespondentId(Integer respondentId) {
+
+        return diaryCommentService.ListByRespondentId(respondentId);
+    }
+
+
 }

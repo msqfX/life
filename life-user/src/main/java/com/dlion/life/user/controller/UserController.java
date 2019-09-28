@@ -1,11 +1,14 @@
 package com.dlion.life.user.controller;
 
+import com.dlion.life.base.api.PersonalPageVisitRecordApi;
 import com.dlion.life.base.api.UserApi;
+import com.dlion.life.base.entity.PersonalPageVisitRecord;
 import com.dlion.life.base.entity.User;
 import com.dlion.life.common.constant.ChannelConstant;
 import com.dlion.life.common.constant.ResultConstant;
 import com.dlion.life.common.model.ResponseModel;
 import com.dlion.life.common.model.UserModel;
+import com.dlion.life.user.model.PersonalPageVisitRecordModel;
 import com.dlion.life.user.model.UserHomePageModel;
 import com.dlion.life.user.service.UserService;
 import org.apache.commons.lang3.StringUtils;
@@ -13,8 +16,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @author 李正元
@@ -27,6 +32,9 @@ public class UserController {
 
     @Autowired
     private UserApi userApi;
+
+    @Autowired
+    private PersonalPageVisitRecordApi personalPageVisitRecordApi;
 
     @Autowired
     private UserService userService;
@@ -122,20 +130,26 @@ public class UserController {
 
 
     @GetMapping("/getUserDetailInfoById")
-    public Object getUserDetailInfoById(@RequestParam Integer userId) {
+    public Object getUserDetailInfoById(@RequestParam Integer visitedId, @RequestParam Integer visitorId) {
 
-        User user = userApi.getUserById(userId);
+        User user = userApi.getUserById(visitedId);
 
         UserHomePageModel homePageModel = new UserHomePageModel();
 
         BeanUtils.copyProperties(user, homePageModel);
 
+        List<PersonalPageVisitRecord> personalPageVisitRecords = personalPageVisitRecordApi.getByUserId(visitedId);
 
+        List<PersonalPageVisitRecordModel> personalPageVisitRecordModels = personalPageVisitRecords.stream().map(personalPageVisitRecord -> {
+            PersonalPageVisitRecordModel pageVisitRecordModel = new PersonalPageVisitRecordModel();
+            User visitorInfo = userApi.getUserById(personalPageVisitRecord.getVisitorId());
+            BeanUtils.copyProperties(visitorInfo, user);
+            return pageVisitRecordModel;
+        }).collect(Collectors.toList());
 
+        homePageModel.setFivePersonalPageVisitRecord(personalPageVisitRecordModels);
 
-
-
-        return new ResponseModel();
+        return new ResponseModel(homePageModel);
     }
 
 

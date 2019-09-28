@@ -26,6 +26,12 @@
         from diary_comment
         where diary_id = #{diaryId,jdbcType=INTEGER}
     </select>
+    <select id="ListByRespondentId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from diary_comment
+        where respondent_id = #{respondentId,jdbcType=INTEGER}
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from diary_comment
     where id = #{id,jdbcType=INTEGER}

@@ -113,10 +113,16 @@ public class PunchCardDiaryController {
         return new ResponseModel(modelList);
     }
 
+    /**
+     * 查询用户打卡日记列表
+     *
+     * @param punchCardDiarySearch 查询条件
+     * @return
+     */
     @GetMapping("/listUserPunchCardDiary")
     public Object listUserPunchCardDiary(PunchCardDiarySearch punchCardDiarySearch) {
 
-        List<PunchCardDiary> punchCardDiaryList = punchCardDiaryApi.listByUserId(punchCardDiarySearch.getUserId(),
+        List<PunchCardDiary> punchCardDiaryList = punchCardDiaryApi.listByUserId(punchCardDiarySearch.getVisitedUserId(),
                 punchCardDiarySearch.getPageNo(), punchCardDiarySearch.getDataNum(), punchCardDiarySearch.getIsDiaryCreator());
 
         List<MyPunchCardDiaryModel> modelList = punchCardDiaryList.stream().map(punchCardDiary -> {
@@ -126,7 +132,7 @@ public class PunchCardDiaryController {
             BeanUtils.copyProperties(punchCardDiary, myPunchCardDiaryModel);
             myPunchCardDiaryModel.setPunchCardTime(DateUtil.formatDate(punchCardDiary.getPunchCardTime(), DatePattern.YYYY_MM_DD_HH_mm));
 
-            myPunchCardDiaryModel.setHaveLike(punchCardDiaryService.hasLike(punchCardDiary.getId(), punchCardDiarySearch.getUserId()));
+            myPunchCardDiaryModel.setHaveLike(punchCardDiaryService.hasLike(punchCardDiary.getId(), punchCardDiarySearch.getVisitorUserId()));
 
             myPunchCardDiaryModel.setPunchCardProject(punchCardProjectService.punchCardProject(punchCardDiary.getProjectId()));
 

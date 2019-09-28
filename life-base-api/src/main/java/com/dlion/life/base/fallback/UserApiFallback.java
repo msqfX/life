@@ -4,6 +4,8 @@ import com.dlion.life.base.api.UserApi;
 import com.dlion.life.base.entity.User;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * @author 李正元
  * @date 2019-06-08
@@ -30,6 +32,11 @@ public class UserApiFallback implements UserApi {
     @Override
     public void updateUser(User user) {
 
+    }
+
+    @Override
+    public List<User> list(String userName, Integer pageNum, Integer pageSize) {
+        return null;
     }
 
 }

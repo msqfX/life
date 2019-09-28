@@ -1,5 +1,6 @@
 package com.dlion.life.base.api;
 
+import com.dlion.life.base.entity.DiaryComment;
 import com.dlion.life.base.entity.PunchCardDiary;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
@@ -38,4 +39,5 @@ public interface PunchCardDiaryApi {
 
     @PutMapping("/life-base-punchCardDiary/update")
     void update(@RequestBody PunchCardDiary punchCardDiary);
+
 }

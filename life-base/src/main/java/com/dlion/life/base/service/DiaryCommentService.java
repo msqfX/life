@@ -27,4 +27,8 @@ public class DiaryCommentService {
         return diaryCommentMapper.selectByDiaryId(diaryId);
     }
 
+    public List<DiaryComment> ListByRespondentId(Integer respondentId) {
+
+        return diaryCommentMapper.ListByRespondentId(respondentId);
+    }
 }

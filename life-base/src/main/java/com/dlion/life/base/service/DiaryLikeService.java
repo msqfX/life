@@ -44,4 +44,9 @@ public class DiaryLikeService {
 
         diaryLikeMapper.deleteByPrimaryKey(likeRecordId);
     }
+
+    public List<DiaryLike> listByAdmirerId(Integer admirerId) {
+
+        return diaryLikeMapper.listByAdmirerId(admirerId);
+    }
 }

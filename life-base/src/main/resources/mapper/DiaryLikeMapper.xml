@@ -31,7 +31,13 @@
     where diary_id = #{diaryId,jdbcType=INTEGER}
     limit 10
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    <select id="listByAdmirerId" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List" />
+      from diary_like
+      where admirer_id = #{admirerId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from diary_like
     where id = #{id,jdbcType=INTEGER}
   </delete>

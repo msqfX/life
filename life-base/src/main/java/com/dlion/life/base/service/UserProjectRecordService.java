@@ -31,4 +31,9 @@ public class UserProjectRecordService {
 
         projectRecordMapper.insertSelective(userProjectRecord);
     }
+
+    public List<UserProjectRecord> listByUserId(Integer userId) {
+
+        return projectRecordMapper.listByUserId(userId);
+    }
 }

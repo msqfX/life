@@ -17,7 +17,13 @@
     from personal_page_visit_record
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    <select id="getByUserId" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List" />
+      from personal_page_visit_record
+      where visited_id = #{visitedId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from personal_page_visit_record
     where id = #{id,jdbcType=INTEGER}
   </delete>
