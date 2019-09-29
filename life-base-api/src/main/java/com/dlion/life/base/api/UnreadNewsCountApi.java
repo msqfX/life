@@ -11,7 +11,7 @@ import java.util.List;
  * @author 李正元
  * @date 2019/9/13
  */
-@FeignClient(name = "life-base-unreadNewsCount", url = "http://localhost:8081")
+@FeignClient(value = "life-base")
 public interface UnreadNewsCountApi {
 
     /**

@@ -66,4 +66,10 @@ public class PunchCardProjectApiController implements PunchCardProjectApi {
 
         return punchCardProjectService.getProjectListByType(typeName, pageNo, pageSize);
     }
+
+    @Override
+    public void refreshTodayPunchCardNum() {
+
+        punchCardProjectService.refreshTodayPunchCardNum();
+    }
 }

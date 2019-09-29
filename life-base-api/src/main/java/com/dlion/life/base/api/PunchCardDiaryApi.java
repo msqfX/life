@@ -11,7 +11,7 @@ import java.util.List;
  * @author 李正元
  * @date 2019/9/11
  */
-@FeignClient(name = "life-base-punchCardDiary", url = "localhost:8081")
+@FeignClient(value = "life-base")
 public interface PunchCardDiaryApi {
 
     @PostMapping("/life-base-punchCardDiary/add")

@@ -1,8 +1,10 @@
 package com.dlion.life.punch.controller;
 
 import com.dlion.life.base.api.DiaryLikeApi;
+import com.dlion.life.base.api.PunchCardDiaryApi;
 import com.dlion.life.base.api.UserApi;
 import com.dlion.life.base.entity.DiaryLike;
+import com.dlion.life.base.entity.PunchCardDiary;
 import com.dlion.life.base.entity.User;
 import com.dlion.life.common.constant.ResultConstant;
 import com.dlion.life.common.model.ResponseModel;
@@ -29,6 +31,9 @@ public class DiaryLikeController {
     @Autowired
     private UserApi userApi;
 
+    @Autowired
+    private PunchCardDiaryApi punchCardDiaryApi;
+
     /**
      * 喜欢
      *
@@ -37,6 +42,11 @@ public class DiaryLikeController {
      */
     @PostMapping("/like")
     public Object like(@RequestBody DiaryLike diaryLike) {
+
+        PunchCardDiary punchCardDiary = punchCardDiaryApi.getById(diaryLike.getDiaryId());
+        if (Objects.isNull(punchCardDiary)) {
+            return new ResponseModel(ResultConstant.ERROR, "日记不存在");
+        }
 
         DiaryLike like = diaryLikeApi.getByDiaryIdAndUserId(diaryLike.getDiaryId(), diaryLike.getLikedUserId());
         if (Objects.nonNull(like)) {
@@ -56,6 +66,12 @@ public class DiaryLikeController {
 
         diaryLikeInfoVo.setAdmirer(admirer);
 
+        //update like_num
+        PunchCardDiary newPunchCardDiary = new PunchCardDiary();
+        newPunchCardDiary.setId(diaryLike.getDiaryId());
+        newPunchCardDiary.setLikeUserNum(punchCardDiary.getLikeUserNum() + 1);
+        punchCardDiaryApi.update(newPunchCardDiary);
+
         return new ResponseModel(diaryLikeInfoVo);
     }
 
@@ -68,7 +84,18 @@ public class DiaryLikeController {
     @DeleteMapping("/cancelLike")
     public Object cancelLike(@RequestBody CancelLikeModel cancelLikeModel) {
 
+        PunchCardDiary punchCardDiary = punchCardDiaryApi.getById(cancelLikeModel.getDiaryId());
+        if (Objects.isNull(punchCardDiary)) {
+            return new ResponseModel(ResultConstant.ERROR, "日记不存在");
+        }
+
         diaryLikeApi.delete(cancelLikeModel.getLikeRecordId());
+
+        //update like_num
+        PunchCardDiary newPunchCardDiary = new PunchCardDiary();
+        newPunchCardDiary.setId(cancelLikeModel.getDiaryId());
+        newPunchCardDiary.setLikeUserNum(punchCardDiary.getLikeUserNum() - 1);
+        punchCardDiaryApi.update(newPunchCardDiary);
 
         return new ResponseModel();
     }

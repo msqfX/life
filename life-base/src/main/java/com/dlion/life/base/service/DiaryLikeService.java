@@ -49,4 +49,9 @@ public class DiaryLikeService {
 
         return diaryLikeMapper.listByAdmirerId(admirerId);
     }
+
+    public List<DiaryLike> listByLikedUserId(Integer likedUserId) {
+
+        return diaryLikeMapper.listByLikedUserId(likedUserId);
+    }
 }

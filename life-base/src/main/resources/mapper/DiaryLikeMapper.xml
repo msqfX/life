@@ -37,6 +37,12 @@
       from diary_like
       where admirer_id = #{admirerId,jdbcType=INTEGER}
     </select>
+    <select id="listByLikedUserId" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List" />
+      from diary_like
+      where liked_user_id = #{likedUserId,jdbcType=INTEGER}
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from diary_like
     where id = #{id,jdbcType=INTEGER}

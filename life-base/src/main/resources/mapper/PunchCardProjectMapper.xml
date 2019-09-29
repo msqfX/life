@@ -201,4 +201,8 @@
       attend_user_num = #{attendUserNum,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+    <update id="refreshTodayPunchCardNum">
+        update punch_card_project
+        set today_punch_card_num = 0
+    </update>
 </mapper>

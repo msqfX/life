@@ -10,7 +10,7 @@ import java.util.List;
  * @author 李正元
  * @date 2019/9/13
  */
-@FeignClient(name = "life-base-projectTypeLabel", url = "localhost:8081")
+@FeignClient(value = "life-base")
 public interface ProjectTypeLabelApi {
 
     @PostMapping("/life-base-projectTypeLabel/add")

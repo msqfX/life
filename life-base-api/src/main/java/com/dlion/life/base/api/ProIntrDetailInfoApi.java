@@ -10,7 +10,7 @@ import java.util.List;
  * @author 李正元
  * @date 2019/9/14
  */
-@FeignClient(name = "life-base-proIntrDetailInfo", url = "localhost:8081")
+@FeignClient(value = "life-base")
 public interface ProIntrDetailInfoApi {
 
     @GetMapping("/life-base-proIntrDetailInfo/getByProjectId")

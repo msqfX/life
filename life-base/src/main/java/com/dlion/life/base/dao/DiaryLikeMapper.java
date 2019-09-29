@@ -20,4 +20,6 @@ public interface DiaryLikeMapper extends BaseMapper<DiaryLike, Integer> {
     List<DiaryLike> listByDiaryId(@Param("diaryId") Integer diaryId);
 
     List<DiaryLike> listByAdmirerId(@Param("admirerId") Integer admirerId);
+
+    List<DiaryLike> listByLikedUserId(@Param("likedUserId") Integer likedUserId);
 }

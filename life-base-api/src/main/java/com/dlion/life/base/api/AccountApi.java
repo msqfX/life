@@ -12,7 +12,7 @@ import java.util.List;
  * @author 李正元
  * @date 2019-07-21
  */
-@FeignClient(name = "life-base-account",url = "http://localhost:8081")
+@FeignClient(value = "life-base")
 public interface AccountApi {
 
     @PostMapping("/life-base-account/addAccount")

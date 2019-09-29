@@ -12,7 +12,7 @@ import java.util.List;
  * @author 李正元
  * @date 2019/7/19
  */
-@FeignClient(name = "life-base-note",url = "localhost:8081",fallback = UserApiFallback.class)
+@FeignClient(value = "life-base")
 public interface NoteApi {
 
     @GetMapping("/life-base-note/listByUserId")

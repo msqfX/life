@@ -106,7 +106,7 @@ public class NewsController {
     @GetMapping("/getMyLikedList")
     public Object getMyLikedList(@RequestParam Integer userId) {
 
-        List<DiaryLike> diaryLikes = diaryLikeApi.listByAdmirerId(userId);
+        List<DiaryLike> diaryLikes = diaryLikeApi.listByLikedUserId(userId);
 
         List<DiaryLikeModel> diaryLikeModels = diaryLikes.stream().map(diaryLike -> {
             DiaryLikeModel diaryLikeModel = new DiaryLikeModel();

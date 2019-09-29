@@ -11,7 +11,7 @@ import java.util.List;
  * @author 李正元
  * @date 2019/9/15
  */
-@FeignClient(name = "life-base-diaryResource", url = "localhost:8081")
+@FeignClient(value = "life-base")
 public interface DiaryResourceApi {
 
     @GetMapping("/life-base-diaryResource/getById")

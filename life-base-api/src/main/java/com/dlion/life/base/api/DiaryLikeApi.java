@@ -10,7 +10,7 @@ import java.util.List;
  * @author 李正元
  * @date 2019/9/13
  */
-@FeignClient(name = "life-base-diaryLike", url = "localhost:8081")
+@FeignClient(value = "life-base")
 public interface DiaryLikeApi {
 
     @GetMapping("/life-base-diaryLike/getByDiaryIdAndUserId")
@@ -27,4 +27,7 @@ public interface DiaryLikeApi {
 
     @GetMapping("/life-base-diaryLike/listByAdmirerId")
     List<DiaryLike> listByAdmirerId(@RequestParam("admirerId") Integer admirerId);
+
+    @GetMapping("/life-base-diaryLike/listByLikedUserId")
+    List<DiaryLike> listByLikedUserId(@RequestParam("likedUserId") Integer likedUserId);
 }

@@ -13,7 +13,7 @@ import java.util.List;
  * @author 李正元
  * @date 2019/9/11
  */
-@FeignClient(name = "life-base-diaryComment", url = "localhost:8081")
+@FeignClient(value = "life-base")
 public interface DiaryCommentApi {
 
     @PostMapping("/life-base-diaryComment/add")

@@ -77,6 +77,11 @@ public class PunchCardDiaryController {
     @PostMapping
     public Object add(@RequestBody PunchCardDiaryModel punchCardDiaryModel) {
 
+        PunchCardProject punchCardProject = punchCardProjectApi.getById(punchCardDiaryModel.getProjectId());
+        if (Objects.isNull(punchCardProject)) {
+            return new ResponseModel(ResultConstant.ERROR, "圈子不存在");
+        }
+
         PunchCardDiary punchCardDiary = new PunchCardDiary();
 
         BeanUtils.copyProperties(punchCardDiaryModel, punchCardDiary);
@@ -92,6 +97,13 @@ public class PunchCardDiaryController {
 
         Map<String, Object> result = new HashMap<>();
         result.put("id", id);
+
+        //update punch_card_num
+        PunchCardProject newProject = new PunchCardProject();
+        newProject.setId(punchCardDiaryModel.getProjectId());
+        newProject.setTodayPunchCardNum(punchCardProject.getTodayPunchCardNum() + 1);
+        newProject.setAllPunchCardNum(punchCardProject.getAllPunchCardNum() + 1);
+        punchCardProjectApi.update(newProject);
 
         return new ResponseModel(result);
     }

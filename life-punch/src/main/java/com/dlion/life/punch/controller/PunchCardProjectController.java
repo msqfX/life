@@ -262,6 +262,12 @@ public class PunchCardProjectController {
 
         userProjectRecordApi.add(userProjectRecord);
 
+        //update attend_num
+        PunchCardProject punchProject = new PunchCardProject();
+        punchProject.setId(joinProjectModel.getProjectId());
+        punchProject.setAttendUserNum(punchCardProject.getAttendUserNum() + 1);
+        punchCardProjectApi.update(punchProject);
+
         return new ResponseModel();
     }
 

@@ -48,4 +48,10 @@ public class DiaryLikeApiController implements DiaryLikeApi {
 
         return diaryLikeService.listByAdmirerId(admirerId);
     }
+
+    @Override
+    public List<DiaryLike> listByLikedUserId(Integer likedUserId) {
+
+        return diaryLikeService.listByLikedUserId(likedUserId);
+    }
 }

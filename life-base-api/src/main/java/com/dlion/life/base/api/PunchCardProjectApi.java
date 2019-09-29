@@ -1,7 +1,6 @@
 package com.dlion.life.base.api;
 
 import com.dlion.life.base.entity.PunchCardProject;
-import com.dlion.life.base.fallback.UserApiFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,7 +10,7 @@ import java.util.List;
  * @author 李正元
  * @date 2019/9/11
  */
-@FeignClient(name = "life-base-punchCardProject", url = "localhost:8081", fallback = UserApiFallback.class)
+@FeignClient(value = "life-base")
 public interface PunchCardProjectApi {
 
     @PostMapping("/life-base-punchCardProject/add")
@@ -59,4 +58,7 @@ public interface PunchCardProjectApi {
     List<PunchCardProject> getProjectListByType(@RequestParam("typeName") String typeName,
                                                 @RequestParam("pageNo") Integer pageNo,
                                                 @RequestParam("pageSize") Integer pageSize);
+
+    @PutMapping("/life-base-punchCardProject/refreshTodayPunchCardNum")
+    void refreshTodayPunchCardNum();
 }

@@ -14,7 +14,7 @@ import java.util.List;
  * @author 李正元
  * @date 2019/8/23
  */
-@FeignClient(name = "life-base-water", url = "http://localhost:8081")
+@FeignClient(value = "life-base")
 public interface WaterApi {
 
     /**

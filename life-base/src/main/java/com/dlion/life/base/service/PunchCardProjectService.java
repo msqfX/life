@@ -57,6 +57,11 @@ public class PunchCardProjectService {
 
     public List<PunchCardProject> getProjectListByType(String typeName, Integer pageNo, Integer pageSize) {
 
-       return punchCardProjectMapper.getProjectListByType(typeName,pageNo,pageSize);
+        return punchCardProjectMapper.getProjectListByType(typeName, pageNo, pageSize);
+    }
+
+    public void refreshTodayPunchCardNum() {
+
+        punchCardProjectMapper.refreshTodayPunchCardNum();
     }
 }

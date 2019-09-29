@@ -13,7 +13,7 @@ import java.util.List;
  * @author 李正元
  * @date 2019-06-08
  */
-@FeignClient(name = "life-base-user", url = "http://localhost:8081")
+@FeignClient(value = "life-base")
 public interface UserApi {
 
     @GetMapping("/life-base-user/getUserById")

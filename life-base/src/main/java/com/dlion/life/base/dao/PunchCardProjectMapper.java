@@ -50,4 +50,6 @@ public interface PunchCardProjectMapper extends BaseMapper<PunchCardProject, Int
     List<PunchCardProject> getProjectListByType(@Param("typeName") String typeName,
                                                 @Param("pageNo") Integer pageNo,
                                                 @Param("pageSize") Integer pageSize);
+
+    void refreshTodayPunchCardNum();
 }
