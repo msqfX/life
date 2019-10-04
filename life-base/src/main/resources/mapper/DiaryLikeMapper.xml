@@ -47,7 +47,11 @@
     delete from diary_like
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.dlion.life.base.entity.DiaryLike" >
+    <delete id="deleteByDiaryId">
+      delete from diary_like
+      where diary_id = #{diaryId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.dlion.life.base.entity.DiaryLike" >
     insert into diary_like (id, diary_id, liked_user_id, 
       admirer_id, create_time)
     values (#{id,jdbcType=INTEGER}, #{diaryId,jdbcType=INTEGER}, #{likedUserId,jdbcType=INTEGER}, 

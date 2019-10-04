@@ -16,4 +16,6 @@ import java.util.List;
 public interface DiaryResourceMapper extends BaseMapper<DiaryResource, Integer> {
 
     List<DiaryResource> getByDiaryId(@Param("diaryId") Integer diaryId);
+
+    void deleteByDiaryId(@Param("diaryId") Integer diaryId);
 }

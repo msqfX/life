@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -54,9 +55,6 @@ public class PunchCardDiaryController {
     private DiaryResourceApi diaryResourceApi;
 
     @Autowired
-    private DiaryCommentApi diaryCommentApi;
-
-    @Autowired
     private PunchCardDiaryService punchCardDiaryService;
 
     @Autowired
@@ -74,7 +72,17 @@ public class PunchCardDiaryController {
     @Autowired
     private FileService fileService;
 
+    @Autowired
+    private UserService userService;
+
+    /**
+     * 打卡
+     *
+     * @param punchCardDiaryModel
+     * @return
+     */
     @PostMapping
+    @Transactional(rollbackFor = Exception.class)
     public Object add(@RequestBody PunchCardDiaryModel punchCardDiaryModel) {
 
         PunchCardProject punchCardProject = punchCardProjectApi.getById(punchCardDiaryModel.getProjectId());
@@ -104,6 +112,14 @@ public class PunchCardDiaryController {
         newProject.setTodayPunchCardNum(punchCardProject.getTodayPunchCardNum() + 1);
         newProject.setAllPunchCardNum(punchCardProject.getAllPunchCardNum() + 1);
         punchCardProjectApi.update(newProject);
+
+        //update user_project_record
+        UserProjectRecord userProjectRecord = userProjectRecordApi.getByUserId(punchCardDiaryModel.getUserId(), punchCardDiaryModel.getProjectId());
+        UserProjectRecord newUserProjectRecord = new UserProjectRecord();
+        newUserProjectRecord.setId(userProjectRecord.getId());
+        newUserProjectRecord.setLastPunchCardTime(new Date());
+        newUserProjectRecord.setAllPunchCardNum(userProjectRecord.getAllPunchCardNum() + 1);
+        userProjectRecordApi.update(newUserProjectRecord);
 
         return new ResponseModel(result);
     }
@@ -191,7 +207,7 @@ public class PunchCardDiaryController {
 
             myPunchCardDiaryModel.setDiaryResource(diaryResourceService.listByDiaryId(punchCardDiary.getId()));
 
-            myPunchCardDiaryModel.setPublisher(punchCardProjectService.getPublister(punchCardDiary.getProjectId()));
+            myPunchCardDiaryModel.setPublisher(userService.getPublister(userId));
 
             myPunchCardDiaryModel.setTenLikeInfo(diaryLikeService.listLikeInfo(punchCardDiary.getId()));
 
@@ -329,35 +345,32 @@ public class PunchCardDiaryController {
         return new ResponseModel(ResultConstant.ERROR, "上传失败");
     }
 
-
     /**
-     * 评论
+     * 删除打卡日记
      *
-     * @param diaryCommentModel
+     * @param projectId
+     * @param diaryId
+     * @param userId
      * @return
      */
-    @PostMapping("/comment")
-    public Object comment(@RequestBody DiaryCommentModel diaryCommentModel) {
+    @DeleteMapping("/deleteDiaryById")
+    public Object deleteDiaryById(@RequestParam Integer projectId, @RequestParam Integer diaryId, @RequestParam Integer userId) {
 
-        PunchCardDiary cardDiary = punchCardDiaryApi.getById(diaryCommentModel.getDiaryId());
+        if (Objects.isNull(projectId) || Objects.isNull(diaryId) || Objects.isNull(userId)) {
+            return new ResponseModel(ResultConstant.ERROR, "请求参数异常");
+        }
+
+        PunchCardDiary cardDiary = punchCardDiaryApi.getById(diaryId);
         if (Objects.isNull(cardDiary)) {
             return new ResponseModel(ResultConstant.ERROR, "日记不存在");
         }
 
-        DiaryComment diaryComment = new DiaryComment();
-
-        BeanUtils.copyProperties(diaryCommentModel, diaryComment);
-
-        diaryCommentApi.add(diaryComment);
-
-        // 更新日记评论的数量
-        PunchCardDiary punchCardDiary = new PunchCardDiary();
-        punchCardDiary.setId(diaryCommentModel.getDiaryId());
-        punchCardDiary.setCommentNum(cardDiary.getCommentNum() + 1);
-
-        punchCardDiaryService.updateComment(punchCardDiary);
+        if (Objects.equals(cardDiary.getUserId(), userId)) {
+            punchCardDiaryApi.delete(diaryId);
+        }
 
         return new ResponseModel();
     }
+
 
 }

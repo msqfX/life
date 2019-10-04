@@ -32,11 +32,13 @@ public class PunchCardDiaryService {
 
     public List<PunchCardDiary> listByUserId(Integer userId, Integer pageNo, Integer dataNum, Integer isDiaryCreator) {
 
+        pageNo = (pageNo - 1) * dataNum;
         return punchCardDiaryMapper.listByUserId(userId, pageNo, dataNum, isDiaryCreator);
     }
 
     public List<PunchCardDiary> listByCno(Integer projectId, Integer pageNo, Integer dataNum) {
 
+        pageNo = (pageNo - 1) * dataNum;
         return punchCardDiaryMapper.listByCno(projectId, pageNo, dataNum);
     }
 
@@ -48,5 +50,10 @@ public class PunchCardDiaryService {
     public void update(PunchCardDiary punchCardDiary) {
 
         punchCardDiaryMapper.updateByPrimaryKeySelective(punchCardDiary);
+    }
+
+    public void delete(Integer diaryId) {
+
+        punchCardDiaryMapper.deleteByPrimaryKey(diaryId);
     }
 }

@@ -74,6 +74,17 @@ public class UserService {
 
     public List<User> list(String userName, Integer pageNum, Integer pageSize) {
 
+        pageNum = (pageNum - 1) * pageSize;
         return userMapper.list(userName, pageNum, pageSize);
+    }
+
+    public User getUserByToken(String token) {
+
+        Object obj = redisTemplate.opsForValue().get(token);
+        if (Objects.nonNull(obj)) {
+            return (User) obj;
+        }
+
+        return null;
     }
 }

@@ -17,7 +17,7 @@ public interface ProIntrDetailInfoApi {
     List<ProIntrDetailInfo> getByProjectId(@RequestParam Integer projectId);
 
     @PostMapping("/life-base-proIntrDetailInfo/add")
-    void add(@RequestBody ProIntrDetailInfo proIntrDetailInfo);
+    Integer add(@RequestBody ProIntrDetailInfo proIntrDetailInfo);
 
     @PutMapping("/life-base-proIntrDetailInfo/update")
     void update(@RequestBody ProIntrDetailInfo proIntrDetailInfo);
@@ -25,4 +25,6 @@ public interface ProIntrDetailInfoApi {
     @DeleteMapping("/life-base-proIntrDetailInfo/delete")
     void delete(@RequestParam("id") Integer id);
 
+    @GetMapping("/life-base-proIntrDetailInfo/getById")
+    ProIntrDetailInfo getById(@RequestParam("id") Integer id);
 }

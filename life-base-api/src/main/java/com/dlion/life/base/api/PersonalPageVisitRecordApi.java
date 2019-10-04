@@ -11,7 +11,7 @@ import java.util.List;
  * @author 李正元
  * @date 2019/9/28
  */
-@FeignClient(name = "life-base-PersonalPageVisitRecord", url = "localhost:8081")
+@FeignClient(value = "life-base")
 public interface PersonalPageVisitRecordApi {
 
     @GetMapping("/life-base-PersonalPageVisitRecord/getByUserId")

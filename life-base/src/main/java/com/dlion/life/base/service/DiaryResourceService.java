@@ -37,4 +37,9 @@ public class DiaryResourceService {
 
         return diaryResourceMapper.getByDiaryId(diaryId);
     }
+
+    public void deleteByDiaryId(Integer diaryId) {
+
+        diaryResourceMapper.deleteByDiaryId(diaryId);
+    }
 }

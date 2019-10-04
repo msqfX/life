@@ -105,5 +105,9 @@ public class UserModel {
      */
     private Integer personalPageVisitNum;
 
+    /**
+     * 用户认证token，用于接口鉴权
+     */
+    private String token;
 
 }

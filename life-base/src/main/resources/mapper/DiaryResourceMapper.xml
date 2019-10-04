@@ -27,6 +27,10 @@
     delete from diary_resource
     where id = #{id,jdbcType=INTEGER}
   </delete>
+  <delete id="deleteByDiaryId">
+    delete from diary_resource
+    where diary_id = #{diaryId,jdbcType=INTEGER}
+  </delete>
   <insert id="insert" parameterType="com.dlion.life.base.entity.DiaryResource" >
     insert into diary_resource (id, diary_id, resource_url, 
       type, create_time)

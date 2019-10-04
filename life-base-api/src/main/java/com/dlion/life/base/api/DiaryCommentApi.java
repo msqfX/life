@@ -2,10 +2,7 @@ package com.dlion.life.base.api;
 
 import com.dlion.life.base.entity.DiaryComment;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,7 +14,7 @@ import java.util.List;
 public interface DiaryCommentApi {
 
     @PostMapping("/life-base-diaryComment/add")
-    void add(@RequestBody DiaryComment diaryComment);
+    Integer add(@RequestBody DiaryComment diaryComment);
 
     @GetMapping("/life-base-diaryComment/getByDiaryId")
     List<DiaryComment> getByDiaryId(@RequestParam("diaryId") Integer diaryId);
@@ -30,4 +27,11 @@ public interface DiaryCommentApi {
      */
     @GetMapping("/life-base-diaryComment/ListByRespondentId")
     List<DiaryComment> ListByRespondentId(@RequestParam("respondentId") Integer respondentId);
+
+    @GetMapping("/life-base-diaryComment/getById")
+    DiaryComment getById(@RequestParam("id") Integer id);
+
+    @DeleteMapping("/life-base-diaryComment/delete")
+    void delete(@RequestParam("id") Integer id);
+
 }

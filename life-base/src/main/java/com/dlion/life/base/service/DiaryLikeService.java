@@ -54,4 +54,9 @@ public class DiaryLikeService {
 
         return diaryLikeMapper.listByLikedUserId(likedUserId);
     }
+
+    public void deleteByDiaryId(Integer diaryId) {
+
+        diaryLikeMapper.deleteByDiaryId(diaryId);
+    }
 }

@@ -8,16 +8,18 @@ import com.dlion.life.common.constant.ChannelConstant;
 import com.dlion.life.common.constant.ResultConstant;
 import com.dlion.life.common.model.ResponseModel;
 import com.dlion.life.common.model.UserModel;
+import com.dlion.life.user.auth.TokenService;
 import com.dlion.life.user.model.PersonalPageVisitRecordModel;
 import com.dlion.life.user.model.UserHomePageModel;
+import com.dlion.life.user.model.WxUserAuthModel;
 import com.dlion.life.user.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -38,6 +40,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private TokenService tokenService;
 
     @GetMapping("/{id}")
     public Object getById(@PathVariable Integer id) {
@@ -70,7 +75,7 @@ public class UserController {
     }
 
     @PostMapping
-    public Object addUser(@RequestBody UserModel userModel) {
+    public Object addUser(HttpServletRequest request, @RequestBody UserModel userModel) {
 
         String openId = userModel.getOpenId();
 
@@ -98,6 +103,9 @@ public class UserController {
             userModel.setId(userId);
         }
 
+        String token = request.getHeader("token");
+        userService.setUserInfoCache(token);
+
         return new ResponseModel(userModel);
     }
 
@@ -111,7 +119,6 @@ public class UserController {
         user.setChannel(ChannelConstant.WEIXIN_MINIPROGRAM);
 
         return new ResponseModel();
-
     }
 
     /**
@@ -123,7 +130,7 @@ public class UserController {
     @GetMapping("/getWxUserInfo")
     public Object getWxUserInfo(@RequestParam String code) {
 
-        Map<String, Object> wxUserInfo = userService.getWxUserInfo(code);
+        WxUserAuthModel wxUserInfo = userService.getWxUserInfo(code);
 
         return new ResponseModel(wxUserInfo);
     }

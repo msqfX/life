@@ -44,7 +44,7 @@
       #{reviewerId,jdbcType=INTEGER}, #{respondentId,jdbcType=INTEGER}, #{textComment,jdbcType=VARCHAR}, 
       #{soundComment,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
-    <insert id="insertSelective" parameterType="com.dlion.life.base.entity.DiaryComment">
+    <insert id="insertSelective" parameterType="com.dlion.life.base.entity.DiaryComment" useGeneratedKeys="true" keyProperty="id">
         insert into diary_comment
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">

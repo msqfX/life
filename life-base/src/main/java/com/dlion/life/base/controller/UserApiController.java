@@ -55,5 +55,11 @@ public class UserApiController implements UserApi {
         return userService.list(userName, pageNum, pageSize);
     }
 
+    @Override
+    public User getUserByToken(String token) {
+
+        return userService.getUserByToken(token);
+    }
+
 
 }

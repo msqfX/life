@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
@@ -62,13 +63,16 @@ public class FileService {
      * @return
      * @throws QiniuException
      */
-    public String delete(String key) throws QiniuException {
+    public void delete(String key) throws QiniuException {
         Response response = bucketManager.delete(this.bucket, key);
+        logger.info("文件删除结果：{}", response);
         int retry = 0;
         while (response.needRetry() && retry++ < 3) {
             response = bucketManager.delete(bucket, key);
         }
-        return response.statusCode == 200 ? "删除成功!" : "删除失败!";
+        if (response.statusCode != HttpStatus.OK.value()) {
+            logger.error("文件删除失败：{}", response);
+        }
     }
 
     /**

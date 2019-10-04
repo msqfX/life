@@ -2,10 +2,7 @@ package com.dlion.life.base.api;
 
 import com.dlion.life.base.entity.UserProjectRecord;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,4 +31,7 @@ public interface UserProjectRecordApi {
      */
     @GetMapping("/life-base-userProjectRecord/listByUserId")
     List<UserProjectRecord> listByUserId(@RequestParam("userId") Integer userId);
+
+    @PutMapping("/life-base-userProjectRecord/update")
+    void update(@RequestBody UserProjectRecord newUserProjectRecord);
 }

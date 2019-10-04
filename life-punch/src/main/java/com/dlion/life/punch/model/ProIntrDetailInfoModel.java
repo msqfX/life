@@ -2,6 +2,8 @@ package com.dlion.life.punch.model;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * 圈子描述信息
  *
@@ -10,6 +12,9 @@ import lombok.Data;
  */
 @Data
 public class ProIntrDetailInfoModel {
+
+    @NotNull(message = "参数异常")
+    private Integer id;
 
     private Integer projectId;
 

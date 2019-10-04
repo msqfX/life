@@ -36,4 +36,9 @@ public class UserProjectRecordService {
 
         return projectRecordMapper.listByUserId(userId);
     }
+
+    public void update(UserProjectRecord newUserProjectRecord) {
+
+        projectRecordMapper.updateByPrimaryKeySelective(newUserProjectRecord);
+    }
 }

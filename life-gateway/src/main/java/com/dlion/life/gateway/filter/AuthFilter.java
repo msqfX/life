@@ -1,7 +1,10 @@
 package com.dlion.life.gateway.filter;
 
+import com.dlion.life.gateway.auth.TokenUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -25,24 +28,29 @@ import java.util.Map;
 @Component
 public class AuthFilter implements GlobalFilter, Ordered {
 
+    @Autowired
+    private TokenUtil tokenUtil;
+
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
 
-        //String token = exchange.getRequest().getQueryParams().getFirst("token");
         ServerHttpRequest request = exchange.getRequest();
-        String token = request.getHeaders().getFirst("token");
+        if (StringUtils.contains(request.getURI().toString(), "/api/user/getWxUserInfo")) {
+            return chain.filter(exchange);
+        }
 
+        String token = request.getHeaders().getFirst("token");
         ServerHttpResponse response = exchange.getResponse();
 
-        Map<String, Object> result = new HashMap<>(2);
-        result.put("code", HttpStatus.UNAUTHORIZED.value());
-        result.put("msg", "用户身份认证失败！");
-
         //TODO 接口权限校验
-        if (false) {
+        if (!tokenUtil.verify(token)) {
 
             ObjectMapper mapper = new ObjectMapper();
             try {
+                Map<String, Object> result = new HashMap<>(2);
+                result.put("code", HttpStatus.UNAUTHORIZED.value());
+                result.put("msg", "用户身份认证失败！");
+
                 byte[] data = mapper.writeValueAsBytes(result);
                 DataBuffer buffer = response.bufferFactory().wrap(data);
                 response.setStatusCode(HttpStatus.UNAUTHORIZED);
@@ -56,7 +64,6 @@ public class AuthFilter implements GlobalFilter, Ordered {
             }
 
         }
-
 
         return chain.filter(exchange);
     }

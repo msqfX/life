@@ -39,4 +39,9 @@ public class UserApiFallback implements UserApi {
         return null;
     }
 
+    @Override
+    public User getUserByToken(String token) {
+        return null;
+    }
+
 }

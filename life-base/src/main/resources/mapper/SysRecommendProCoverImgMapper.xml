@@ -18,7 +18,15 @@
     from sys_recommend_pro_cover_img
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    <select id="list" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List" />
+      from sys_recommend_pro_cover_img
+      where is_recommend = 1
+      order by use_num desc
+      limit 10
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from sys_recommend_pro_cover_img
     where id = #{id,jdbcType=INTEGER}
   </delete>

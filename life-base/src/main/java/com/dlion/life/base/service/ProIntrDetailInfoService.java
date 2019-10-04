@@ -27,13 +27,19 @@ public class ProIntrDetailInfoService {
         proIntrDetailInfoMapper.updateByPrimaryKeySelective(proIntrDetailInfo);
     }
 
-    public void add(ProIntrDetailInfo proIntrDetailInfo) {
+    public Integer add(ProIntrDetailInfo proIntrDetailInfo) {
 
         proIntrDetailInfoMapper.insertSelective(proIntrDetailInfo);
+        return proIntrDetailInfo.getId();
     }
 
     public void delete(Integer id) {
 
         proIntrDetailInfoMapper.deleteByPrimaryKey(id);
+    }
+
+    public ProIntrDetailInfo getById(Integer id) {
+
+        return proIntrDetailInfoMapper.selectByPrimaryKey(id);
     }
 }

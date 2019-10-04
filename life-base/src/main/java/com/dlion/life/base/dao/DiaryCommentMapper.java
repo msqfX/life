@@ -12,7 +12,7 @@ import java.util.List;
  * @date 2019-09-15
  */
 @Mapper
-public interface DiaryCommentMapper extends BaseMapper {
+public interface DiaryCommentMapper extends BaseMapper<DiaryComment, Integer> {
 
     List<DiaryComment> selectByDiaryId(@Param("diaryId") Integer diaryId);
 

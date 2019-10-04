@@ -17,9 +17,9 @@ public class DiaryCommentService {
     @Autowired
     private DiaryCommentMapper diaryCommentMapper;
 
-    public void add(DiaryComment diaryComment) {
+    public Integer add(DiaryComment diaryComment) {
 
-        diaryCommentMapper.insertSelective(diaryComment);
+        return diaryCommentMapper.insertSelective(diaryComment);
     }
 
     public List<DiaryComment> getByDiaryId(Integer diaryId) {
@@ -30,5 +30,15 @@ public class DiaryCommentService {
     public List<DiaryComment> ListByRespondentId(Integer respondentId) {
 
         return diaryCommentMapper.ListByRespondentId(respondentId);
+    }
+
+    public DiaryComment getById(Integer id) {
+
+        return diaryCommentMapper.selectByPrimaryKey(id);
+    }
+
+    public void delete(Integer id) {
+
+        diaryCommentMapper.deleteByPrimaryKey(id);
     }
 }

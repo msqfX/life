@@ -26,13 +26,13 @@ public class ProIntrDetailInfoApiController implements ProIntrDetailInfoApi {
     }
 
     @Override
-    public void add(@RequestBody ProIntrDetailInfo proIntrDetailInfo) {
+    public Integer add(@RequestBody ProIntrDetailInfo proIntrDetailInfo) {
 
-        proIntrDetailInfoService.add(proIntrDetailInfo);
+        return proIntrDetailInfoService.add(proIntrDetailInfo);
     }
 
     @Override
-    public void update(ProIntrDetailInfo proIntrDetailInfo) {
+    public void update(@RequestBody ProIntrDetailInfo proIntrDetailInfo) {
 
         proIntrDetailInfoService.update(proIntrDetailInfo);
     }
@@ -41,5 +41,11 @@ public class ProIntrDetailInfoApiController implements ProIntrDetailInfoApi {
     public void delete(Integer id) {
 
         proIntrDetailInfoService.delete(id);
+    }
+
+    @Override
+    public ProIntrDetailInfo getById(Integer id) {
+
+        return proIntrDetailInfoService.getById(id);
     }
 }

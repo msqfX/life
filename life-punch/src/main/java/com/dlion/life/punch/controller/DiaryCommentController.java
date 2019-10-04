@@ -2,15 +2,24 @@ package com.dlion.life.punch.controller;
 
 import com.dlion.life.base.api.DiaryCommentApi;
 import com.dlion.life.base.api.PunchCardDiaryApi;
+import com.dlion.life.base.api.UserApi;
 import com.dlion.life.base.entity.DiaryComment;
 import com.dlion.life.base.entity.PunchCardDiary;
+import com.dlion.life.base.entity.User;
+import com.dlion.life.common.constant.DatePattern;
 import com.dlion.life.common.constant.ResultConstant;
 import com.dlion.life.common.model.DiaryCommentModel;
 import com.dlion.life.common.model.ResponseModel;
+import com.dlion.life.common.utils.DateUtil;
+import com.dlion.life.punch.model.DiaryCommentResultModel;
+import com.dlion.life.punch.vo.ReviewerVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -31,8 +40,17 @@ public class DiaryCommentController {
     @Autowired
     private PunchCardDiaryApi punchCardDiaryApi;
 
+    @Autowired
+    private UserApi userApi;
+
+    /**
+     * 日记评论
+     *
+     * @param diaryCommentModel
+     * @return
+     */
     @PostMapping
-    public Object add(DiaryCommentModel diaryCommentModel) {
+    public Object add(@RequestBody @Valid DiaryCommentModel diaryCommentModel) {
 
         PunchCardDiary punchCardDiary = punchCardDiaryApi.getById(diaryCommentModel.getDiaryId());
         if (Objects.isNull(punchCardDiary)) {
@@ -43,7 +61,7 @@ public class DiaryCommentController {
 
         BeanUtils.copyProperties(diaryCommentModel, diaryComment);
 
-        diaryCommentApi.add(diaryComment);
+        Integer id = diaryCommentApi.add(diaryComment);
 
         // update comment_num
         PunchCardDiary newPunchCardDiary = new PunchCardDiary();
@@ -51,7 +69,22 @@ public class DiaryCommentController {
         newPunchCardDiary.setCommentNum(punchCardDiary.getCommentNum() + 1);
         punchCardDiaryApi.update(newPunchCardDiary);
 
-        return new ResponseModel();
+        DiaryCommentResultModel diaryCommentResultModel = new DiaryCommentResultModel();
+        BeanUtils.copyProperties(diaryCommentModel, diaryCommentResultModel);
+        diaryCommentResultModel.setCreateTime(DateUtil.formatDate(new Date(), DatePattern.YYYY_MM_DD_HH_mm_ss));
+        diaryCommentResultModel.setId(id);
+
+        User reviewerUser = userApi.getUserById(diaryCommentModel.getReviewerId());
+        ReviewerVo reviewer = new ReviewerVo();
+        BeanUtils.copyProperties(reviewerUser, reviewer);
+        diaryCommentResultModel.setReviewer(reviewer);
+
+        User respondentUser = userApi.getUserById(diaryCommentModel.getRespondentId());
+        ReviewerVo respondent = new ReviewerVo();
+        BeanUtils.copyProperties(respondentUser, respondent);
+        diaryCommentResultModel.setRespondent(respondent);
+
+        return new ResponseModel(diaryCommentResultModel);
     }
 
     @GetMapping("/getByDiaryId/{diaryId}")
@@ -69,6 +102,28 @@ public class DiaryCommentController {
         }).collect(Collectors.toList());
 
         return new ResponseModel();
+    }
+
+    @DeleteMapping("{id}")
+    public Object delete(@PathVariable Integer id, @RequestBody DiaryCommentModel diaryCommentModel, HttpServletRequest request) {
+
+        PunchCardDiary punchCardDiary = punchCardDiaryApi.getById(diaryCommentModel.getDiaryId());
+        if (Objects.isNull(punchCardDiary)) {
+            return new ResponseModel(ResultConstant.ERROR, "日记不存在");
+        } else {
+            String token = request.getHeader("token");
+            User user = userApi.getUserByToken(token);
+
+            DiaryComment diaryComment = diaryCommentApi.getById(id);
+            if (Objects.nonNull(diaryComment) && Objects.nonNull(user)) {
+                if (Objects.equals(diaryComment.getRespondentId(), user.getId())) {
+                    diaryCommentApi.delete(id);
+                }
+            }
+
+            return new ResponseModel();
+        }
+
     }
 
 }

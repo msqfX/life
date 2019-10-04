@@ -2,8 +2,11 @@ package com.dlion.life.base.controller;
 
 import com.dlion.life.base.api.PunchCardDiaryApi;
 import com.dlion.life.base.entity.PunchCardDiary;
+import com.dlion.life.base.service.DiaryLikeService;
+import com.dlion.life.base.service.DiaryResourceService;
 import com.dlion.life.base.service.PunchCardDiaryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,6 +21,12 @@ public class PunchCardDiaryApiController implements PunchCardDiaryApi {
 
     @Autowired
     private PunchCardDiaryService punchCardDiaryService;
+
+    @Autowired
+    private DiaryResourceService diaryResourceService;
+
+    @Autowired
+    private DiaryLikeService diaryLikeService;
 
     @Override
     public Integer add(@RequestBody PunchCardDiary punchCardDiary) {
@@ -58,5 +67,19 @@ public class PunchCardDiaryApiController implements PunchCardDiaryApi {
     public void update(@RequestBody PunchCardDiary punchCardDiary) {
 
         punchCardDiaryService.update(punchCardDiary);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void delete(Integer diaryId) {
+
+        punchCardDiaryService.delete(diaryId);
+
+        //删除日记的资源记录
+        diaryResourceService.deleteByDiaryId(diaryId);
+
+        //删除日记的点赞记录
+        diaryLikeService.deleteByDiaryId(diaryId);
+
     }
 }

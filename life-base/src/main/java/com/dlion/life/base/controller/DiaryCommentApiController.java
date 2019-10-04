@@ -20,9 +20,9 @@ public class DiaryCommentApiController implements DiaryCommentApi {
     private DiaryCommentService diaryCommentService;
 
     @Override
-    public void add(@RequestBody DiaryComment diaryComment) {
+    public Integer add(@RequestBody DiaryComment diaryComment) {
 
-        diaryCommentService.add(diaryComment);
+        return diaryCommentService.add(diaryComment);
     }
 
     @Override
@@ -35,6 +35,18 @@ public class DiaryCommentApiController implements DiaryCommentApi {
     public List<DiaryComment> ListByRespondentId(Integer respondentId) {
 
         return diaryCommentService.ListByRespondentId(respondentId);
+    }
+
+    @Override
+    public DiaryComment getById(Integer id) {
+
+        return diaryCommentService.getById(id);
+    }
+
+    @Override
+    public void delete(Integer id) {
+
+        diaryCommentService.delete(id);
     }
 
 

@@ -47,16 +47,19 @@ public class PunchCardProjectService {
 
     public List<PunchCardProject> getMorePunchCard(Integer num, Integer pageNo, Integer dataNum) {
 
+        pageNo = (pageNo - 1) * dataNum;
         return punchCardProjectMapper.getMorePunchCard(num, pageNo, dataNum);
     }
 
     public List<PunchCardProject> search(String keyword, Integer pageNo, Integer dataNum) {
 
+        pageNo = (pageNo - 1) * dataNum;
         return punchCardProjectMapper.search(keyword, pageNo, dataNum);
     }
 
     public List<PunchCardProject> getProjectListByType(String typeName, Integer pageNo, Integer pageSize) {
 
+        pageNo = (pageNo - 1) * pageSize;
         return punchCardProjectMapper.getProjectListByType(typeName, pageNo, pageSize);
     }
 

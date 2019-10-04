@@ -14,15 +14,23 @@ import com.dlion.life.common.model.PunchCardProjectListHomeModel;
 import com.dlion.life.common.model.PunchCardProjectListModel;
 import com.dlion.life.common.model.PunchCardProjectModel;
 import com.dlion.life.common.model.ResponseModel;
+import com.dlion.life.common.utils.CommonUtil;
 import com.dlion.life.common.utils.DateUtil;
 import com.dlion.life.punch.model.*;
+import com.dlion.life.punch.service.FileService;
 import com.dlion.life.punch.vo.PivotVo;
+import com.dlion.life.punch.vo.UpdateCoverImgVo;
 import lombok.val;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -33,6 +41,8 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/punchCardProject")
 public class PunchCardProjectController {
+
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private PunchCardProjectApi punchCardProjectApi;
@@ -45,6 +55,9 @@ public class PunchCardProjectController {
 
     @Autowired
     private UserProjectRecordApi userProjectRecordApi;
+
+    @Autowired
+    private FileService fileService;
 
     @PostMapping
     public Object add(@RequestBody PunchCardProjectModel punchCardProjectModel) {
@@ -290,5 +303,90 @@ public class PunchCardProjectController {
         return new ResponseModel(modelList);
     }
 
+    /**
+     * 获取创建者信息
+     *
+     * @param projectId 圈子ID
+     * @return
+     */
+    @GetMapping("/getCreatorInfo")
+    public Object getCreatorInfo(@RequestParam Integer projectId) {
+
+        PunchCardProject punchCardProject = punchCardProjectApi.getById(projectId);
+        if (Objects.isNull(punchCardProject)) {
+            return new ResponseModel(ResultConstant.ERROR, "圈子不存在");
+        }
+
+        CreatorInfoModel model = new CreatorInfoModel();
+        model.setCreatorIntroduce(punchCardProject.getCreatorIntroduce());
+        model.setWeixinNum(punchCardProject.getWeixinNum());
+
+        return new ResponseModel(model);
+    }
+
+    /**
+     * 更新圈子背景图片
+     *
+     * @param updateCoverImg
+     * @return
+     */
+    @PutMapping("/updateCoverImg")
+    public Object updateCoverImg(@RequestBody UpdateCoverImgVo updateCoverImg) {
+
+        PunchCardProject punchCardProject = punchCardProjectApi.getById(updateCoverImg.getProjectId());
+        if (Objects.isNull(punchCardProject)) {
+            return new ResponseModel(ResultConstant.ERROR, "圈子不存在");
+        }
+
+        PunchCardProject newPunchCardProject = new PunchCardProject();
+        newPunchCardProject.setId(updateCoverImg.getProjectId());
+        newPunchCardProject.setCoverImgUrl(updateCoverImg.getCurCoverImgUrl());
+
+        punchCardProjectApi.update(newPunchCardProject);
+
+        return new ResponseModel();
+    }
+
+    /**
+     * 上传本地图片
+     *
+     * @return
+     */
+    @PostMapping(value = "/uploadCoverImg", consumes = "multipart/form-data")
+    public Object uploadCoverImg(HttpServletRequest request, @RequestParam("image") MultipartFile multipartFile) {
+
+        String preSysRecommendCoverImgId = request.getParameter("preSysRecommendCoverImgId");
+        String curCoverImgUrl = request.getParameter("curCoverImgUrl");
+        String projectId = request.getParameter("projectId");
+
+        if (StringUtils.isEmpty(projectId)) {
+            return new ResponseModel(ResultConstant.ERROR, "参数异常");
+        }
+
+        PunchCardProject punchCardProject = punchCardProjectApi.getById(Integer.valueOf(projectId));
+        if (Objects.isNull(punchCardProject)) {
+            return new ResponseModel(ResultConstant.ERROR, "圈子不存在");
+        }
+
+        Map<String, Object> result = new HashMap<>(1);
+
+        if (!multipartFile.isEmpty()) {
+            try {
+                String fileUrl = fileService.uploadFile(multipartFile.getInputStream(), CommonUtil.getFileName());
+                result.put("coverImgUrl", fileUrl);
+
+                PunchCardProject newPunchCardProject = new PunchCardProject();
+                newPunchCardProject.setId(Integer.valueOf(projectId));
+                newPunchCardProject.setCoverImgUrl(fileUrl);
+
+                punchCardProjectApi.update(newPunchCardProject);
+
+            } catch (IOException e) {
+                logger.error("上传圈子背景图片异常，参数:{}", request.getParameterMap(), e);
+            }
+        }
+
+        return new ResponseModel(result);
+    }
 
 }

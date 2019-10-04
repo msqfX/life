@@ -32,4 +32,7 @@ public interface UserApi {
     List<User> list(@RequestParam("userName") String userName,
                     @RequestParam("pageNum") Integer pageNum,
                     @RequestParam("pageSize") Integer pageSize);
+
+    @GetMapping("/life-base-user/getUserByToken")
+    User getUserByToken(@RequestParam("token") String token);
 }

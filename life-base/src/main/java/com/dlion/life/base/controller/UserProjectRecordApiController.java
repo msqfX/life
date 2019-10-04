@@ -43,4 +43,10 @@ public class UserProjectRecordApiController implements UserProjectRecordApi {
 
         return userProjectRecordService.listByUserId(userId);
     }
+
+    @Override
+    public void update(UserProjectRecord newUserProjectRecord) {
+
+        userProjectRecordService.update(newUserProjectRecord);
+    }
 }
