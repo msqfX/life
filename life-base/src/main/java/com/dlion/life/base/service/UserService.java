@@ -45,10 +45,7 @@ public class UserService {
 
             String key = String.format(UserRedisKey.USER_INFO_OPENID, userNew.getOpenId());
 
-            Object obj = redisTemplate.opsForValue().get(key);
-            if (Objects.nonNull(obj)) {
-                redisTemplate.opsForValue().set(key, userNew);
-            }
+            redisTemplate.opsForValue().set(key, userNew);
         }
     }
 
