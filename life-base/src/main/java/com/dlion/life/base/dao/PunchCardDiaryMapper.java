@@ -1,6 +1,7 @@
 package com.dlion.life.base.dao;
 
 import com.dlion.life.base.entity.PunchCardDiary;
+import com.dlion.life.common.bo.DiarySearchPo;
 import com.dlion.life.common.data.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -22,4 +23,6 @@ public interface PunchCardDiaryMapper extends BaseMapper<PunchCardDiary, Integer
     List<PunchCardDiary> listByCno(@Param("projectId") Integer projectId,
                                    @Param("pageNo") Integer pageNo,
                                    @Param("dataNum") Integer dataNum);
+
+    List<PunchCardDiary> list(DiarySearchPo diarySearchPo);
 }

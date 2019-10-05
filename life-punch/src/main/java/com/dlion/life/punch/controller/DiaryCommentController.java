@@ -104,6 +104,14 @@ public class DiaryCommentController {
         return new ResponseModel();
     }
 
+    /**
+     * 删除日记评论
+     *
+     * @param id
+     * @param diaryCommentModel
+     * @param request
+     * @return
+     */
     @DeleteMapping("{id}")
     public Object delete(@PathVariable Integer id, @RequestBody DiaryCommentModel diaryCommentModel, HttpServletRequest request) {
 
@@ -120,6 +128,12 @@ public class DiaryCommentController {
                     diaryCommentApi.delete(id);
                 }
             }
+
+            // 日记更新评论数量
+            PunchCardDiary newPunchCardDiary = new PunchCardDiary();
+            newPunchCardDiary.setId(punchCardDiary.getId());
+            newPunchCardDiary.setCommentNum(punchCardDiary.getCommentNum() - 1);
+            punchCardDiaryApi.update(newPunchCardDiary);
 
             return new ResponseModel();
         }

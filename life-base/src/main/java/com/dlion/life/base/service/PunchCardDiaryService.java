@@ -2,6 +2,7 @@ package com.dlion.life.base.service;
 
 import com.dlion.life.base.dao.PunchCardDiaryMapper;
 import com.dlion.life.base.entity.PunchCardDiary;
+import com.dlion.life.common.bo.DiarySearchPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,5 +56,10 @@ public class PunchCardDiaryService {
     public void delete(Integer diaryId) {
 
         punchCardDiaryMapper.deleteByPrimaryKey(diaryId);
+    }
+
+    public List<PunchCardDiary> list(DiarySearchPo diarySearchPo) {
+
+        return punchCardDiaryMapper.list(diarySearchPo);
     }
 }

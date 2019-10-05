@@ -45,7 +45,7 @@ public class UserProjectRecordApiController implements UserProjectRecordApi {
     }
 
     @Override
-    public void update(UserProjectRecord newUserProjectRecord) {
+    public void update(@RequestBody UserProjectRecord newUserProjectRecord) {
 
         userProjectRecordService.update(newUserProjectRecord);
     }

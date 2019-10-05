@@ -5,6 +5,7 @@ import com.dlion.life.base.entity.PunchCardDiary;
 import com.dlion.life.base.service.DiaryLikeService;
 import com.dlion.life.base.service.DiaryResourceService;
 import com.dlion.life.base.service.PunchCardDiaryService;
+import com.dlion.life.common.bo.DiarySearchPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -81,5 +82,11 @@ public class PunchCardDiaryApiController implements PunchCardDiaryApi {
         //删除日记的点赞记录
         diaryLikeService.deleteByDiaryId(diaryId);
 
+    }
+
+    @Override
+    public List<PunchCardDiary> list(@RequestBody DiarySearchPo diarySearchPo) {
+
+        return punchCardDiaryService.list(diarySearchPo);
     }
 }

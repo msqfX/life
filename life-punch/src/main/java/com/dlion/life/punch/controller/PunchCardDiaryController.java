@@ -2,10 +2,11 @@ package com.dlion.life.punch.controller;
 
 import com.dlion.life.base.api.*;
 import com.dlion.life.base.entity.*;
+import com.dlion.life.common.bo.DiarySearchPo;
 import com.dlion.life.common.bo.PunchCardDiarySearch;
+import com.dlion.life.common.constant.CharacterConstant;
 import com.dlion.life.common.constant.DatePattern;
 import com.dlion.life.common.constant.ResultConstant;
-import com.dlion.life.common.model.DiaryCommentModel;
 import com.dlion.life.common.model.PunchCardDiaryModel;
 import com.dlion.life.common.model.ResponseModel;
 import com.dlion.life.common.utils.CommonUtil;
@@ -13,7 +14,9 @@ import com.dlion.life.common.utils.DateUtil;
 import com.dlion.life.punch.model.DiaryDetailModel;
 import com.dlion.life.punch.model.MyPunchCardDiaryModel;
 import com.dlion.life.punch.service.*;
+import com.dlion.life.punch.vo.DeleteDiaryVo;
 import com.dlion.life.punch.vo.DiaryProjectInfoVo;
+import com.qiniu.common.QiniuException;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +33,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
+ * 打卡日记
+ *
  * @author 李正元
  * @date 2019/9/11
  */
@@ -166,7 +171,7 @@ public class PunchCardDiaryController {
 
             myPunchCardDiaryModel.setDiaryResource(diaryResourceService.listByDiaryId(punchCardDiary.getId()));
 
-            myPunchCardDiaryModel.setPublisher(punchCardProjectService.getPublister(punchCardDiary.getProjectId()));
+            myPunchCardDiaryModel.setPublisher(userService.getPublister(punchCardDiary.getUserId()));
 
             myPunchCardDiaryModel.setTenLikeInfo(new ArrayList());
 
@@ -191,7 +196,14 @@ public class PunchCardDiaryController {
     public Object getDiaryListByProjectId(@RequestParam Integer userId, @RequestParam Integer projectId,
                                           @RequestParam Integer pageNo, @RequestParam Integer dataNum) {
 
-        List<PunchCardDiary> punchCardDiaries = punchCardDiaryApi.getByCno(projectId, pageNo, dataNum);
+        PunchCardProject punchCardProject = punchCardProjectApi.getById(projectId);
+        if (Objects.isNull(punchCardProject)) {
+            return new ResponseModel(ResultConstant.ERROR, "圈子不存在");
+        }
+        Integer visibleType = Objects.equals(punchCardProject.getCreatorId(), userId) ? null : 0;
+
+        DiarySearchPo diarySearchPo = new DiarySearchPo(null, null, visibleType, projectId, pageNo, dataNum);
+        List<PunchCardDiary> punchCardDiaries = punchCardDiaryApi.list(diarySearchPo);
 
         List<MyPunchCardDiaryModel> modelList = punchCardDiaries.stream().map(punchCardDiary -> {
 
@@ -235,7 +247,7 @@ public class PunchCardDiaryController {
 
             myPunchCardDiaryModel.setDiaryResource(diaryResourceService.listByDiaryId(punchCardDiary.getId()));
 
-            myPunchCardDiaryModel.setPublisher(punchCardProjectService.getPublister(punchCardDiary.getProjectId()));
+            myPunchCardDiaryModel.setPublisher(userService.getPublister(punchCardDiary.getUserId()));
 
             myPunchCardDiaryModel.setTenLikeInfo(new ArrayList());
 
@@ -290,7 +302,7 @@ public class PunchCardDiaryController {
 
         diaryDetailModel.setDiaryResource(diaryResourceService.listByDiaryId(diaryId));
 
-        diaryDetailModel.setPublisher(punchCardProjectService.getPublister(punchCardProject.getId()));
+        diaryDetailModel.setPublisher(userService.getPublister(punchCardDiary.getUserId()));
 
         diaryDetailModel.setAllLikeInfo(diaryLikeService.listLikeInfo(diaryId));
 
@@ -348,25 +360,32 @@ public class PunchCardDiaryController {
     /**
      * 删除打卡日记
      *
-     * @param projectId
-     * @param diaryId
-     * @param userId
+     * @param deleteDiaryVo
      * @return
      */
     @DeleteMapping("/deleteDiaryById")
-    public Object deleteDiaryById(@RequestParam Integer projectId, @RequestParam Integer diaryId, @RequestParam Integer userId) {
+    public Object deleteDiaryById(@RequestBody DeleteDiaryVo deleteDiaryVo) {
 
-        if (Objects.isNull(projectId) || Objects.isNull(diaryId) || Objects.isNull(userId)) {
-            return new ResponseModel(ResultConstant.ERROR, "请求参数异常");
-        }
-
-        PunchCardDiary cardDiary = punchCardDiaryApi.getById(diaryId);
+        PunchCardDiary cardDiary = punchCardDiaryApi.getById(deleteDiaryVo.getDiaryId());
         if (Objects.isNull(cardDiary)) {
             return new ResponseModel(ResultConstant.ERROR, "日记不存在");
         }
 
-        if (Objects.equals(cardDiary.getUserId(), userId)) {
-            punchCardDiaryApi.delete(diaryId);
+        if (Objects.equals(cardDiary.getUserId(), deleteDiaryVo.getUserId())) {
+            punchCardDiaryApi.delete(deleteDiaryVo.getDiaryId());
+
+            //删除对应的文件资源
+            List<DiaryResource> resourceList = diaryResourceApi.getByDiaryId(deleteDiaryVo.getDiaryId());
+            resourceList.stream().forEach(e -> {
+                diaryResourceApi.delete(e.getId());
+                //删除文件
+                String fileName = StringUtils.substringAfterLast(e.getResourceUrl(), CharacterConstant.URL_SPLIT_STR);
+                try {
+                    fileService.delete(fileName);
+                } catch (QiniuException ex) {
+                    logger.error("日记资源文件删除失败，diaryId：{}，filename：{}", deleteDiaryVo.getDiaryId(), fileName);
+                }
+            });
         }
 
         return new ResponseModel();

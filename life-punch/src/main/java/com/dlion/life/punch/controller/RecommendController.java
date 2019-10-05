@@ -8,25 +8,31 @@ import com.dlion.life.base.entity.DiaryLike;
 import com.dlion.life.base.entity.PunchCardDiary;
 import com.dlion.life.base.entity.PunchCardProject;
 import com.dlion.life.base.entity.User;
+import com.dlion.life.common.bo.DiarySearchPo;
 import com.dlion.life.common.constant.CharacterConstant;
+import com.dlion.life.common.constant.DatePattern;
 import com.dlion.life.common.model.PunchCardDiaryRecommendModel;
 import com.dlion.life.common.model.RecentThreeAttendUserListModel;
 import com.dlion.life.common.model.ResponseModel;
+import com.dlion.life.common.utils.DateUtil;
+import com.dlion.life.common.vo.DiaryResourceVo;
 import com.dlion.life.common.vo.ProjectInfo;
 import com.dlion.life.common.vo.Publisher;
 import com.dlion.life.common.vo.TypeLabel;
 import com.dlion.life.punch.model.ProjectListRecommendModel;
-import com.dlion.life.punch.service.PunchCardDiaryService;
+import com.dlion.life.punch.service.DiaryResourceService;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -51,6 +57,9 @@ public class RecommendController {
     @Autowired
     private DiaryLikeApi diaryLikeApi;
 
+    @Autowired
+    private DiaryResourceService diaryResourceService;
+
     /**
      * 打卡系统推荐列表
      *
@@ -64,83 +73,70 @@ public class RecommendController {
         return new ResponseModel();
     }
 
+    /**
+     * 首页推荐列表
+     *
+     * @param userId
+     * @param pageNo
+     * @param dataNum
+     * @return
+     */
     @GetMapping("/listDiary")
     public Object listDiary(@RequestParam Integer userId, @RequestParam Integer pageNo, @RequestParam Integer dataNum) {
 
-        List<PunchCardProject> punchCardProjectList = punchCardProjectApi.getMorePunchCard(3, pageNo, dataNum);
+        DiarySearchPo diarySearchPo = new DiarySearchPo(1, 1, 0, null, pageNo, dataNum);
+        List<PunchCardDiary> punchCardDiaryList = punchCardDiaryApi.list(diarySearchPo);
 
-        List<PunchCardDiaryRecommendModel> modelList = punchCardProjectList.stream().map(punchCardProject -> {
-
+        List<PunchCardDiaryRecommendModel> modelList = punchCardDiaryList.stream().map(punchCardDiary -> {
             PunchCardDiaryRecommendModel model = new PunchCardDiaryRecommendModel();
 
-            List<PunchCardDiary> punchCardDiaryList = punchCardDiaryApi.getByProjectId(punchCardProject.getId());
+            BeanUtils.copyProperties(punchCardDiary, model);
+            model.setPunchCardTime(DateUtil.formatDate(punchCardDiary.getPunchCardTime(), DatePattern.YYYY_MM_DD_HH_mm_ss));
 
-            //默认取punch_card_diary表的第一个
-            if (!CollectionUtils.isEmpty(punchCardDiaryList)) {
-                PunchCardDiary punchCardDiary = punchCardDiaryList.get(0);
-                model.setId(punchCardDiary.getId());
-                model.setTextContent(punchCardDiary.getTextContent());
-                model.setLikeUserNum(punchCardDiary.getLikeUserNum());
+            PunchCardProject punchCardProject = punchCardProjectApi.getById(punchCardDiary.getProjectId());
+            ProjectInfo projectInfo = new ProjectInfo();
+            BeanUtils.copyProperties(punchCardProject, projectInfo);
+            String label = punchCardProject.getTypeLabel();
+            String[] typeLabels = label.split(CharacterConstant.COMMA_SPLIT_STR);
+            List<TypeLabel> labelList = null;
+            if (!ArrayUtils.isEmpty(typeLabels)) {
+                labelList = Arrays.stream(typeLabels).map(typeLabelStr -> {
 
-                model.setPunchCardTime(punchCardDiary.getPunchCardTime());
-                model.setAddressLatitude(punchCardDiary.getAddressLatitude());
-                model.setAddressLongitude(punchCardDiary.getAddressLongitude());
-                model.setCommentNum(punchCardDiary.getCommentNum());
-                model.setPunchCardAddress(punchCardDiary.getPunchCardAddress());
+                    String[] labelArr = typeLabelStr.split(CharacterConstant.COMMON_DASH_STR);
+                    TypeLabel typeLabel = new TypeLabel();
+                    typeLabel.setParentLabel(labelArr[0]);
+                    typeLabel.setChildLabel(labelArr[1]);
 
-                ProjectInfo projectInfo = new ProjectInfo();
-                projectInfo.setId(punchCardProject.getId());
-                projectInfo.setCoverImgUrl(punchCardProject.getCoverImgUrl());
-                projectInfo.setProjectName(punchCardProject.getProjectName());
-
-                String label = punchCardProject.getTypeLabel();
-                String[] typeLabels = label.split(CharacterConstant.COMMA_SPLIT_STR);
-
-                List<TypeLabel> labelList = null;
-                if (!ArrayUtils.isEmpty(typeLabels)) {
-                    labelList = Arrays.stream(typeLabels).map(typeLabelStr -> {
-
-                        String[] labelArr = typeLabelStr.split(CharacterConstant.COMMON_DASH_STR);
-                        TypeLabel typeLabel = new TypeLabel();
-                        typeLabel.setParentLabel(labelArr[0]);
-                        typeLabel.setChildLabel(labelArr[1]);
-
-                        return typeLabel;
-                    }).collect(Collectors.toList());
-                }
-                projectInfo.setTypeLabel(labelList);
-
-                model.setProjectInfo(projectInfo);
-
-                Publisher publisher = new Publisher();
-                publisher.setId(punchCardDiary.getUserId());
-                User user = userApi.getUserById(punchCardDiary.getUserId());
-                publisher.setAvatarUrl(user.getAvatarUrl());
-                publisher.setGender(user.getGender());
-                publisher.setNickName(user.getNickName());
-                model.setPublisher(publisher);
-
-                DiaryLike diaryLike = diaryLikeApi.getByDiaryIdAndUserId(punchCardDiary.getId(), userId);
-                model.setHaveLike(Objects.nonNull(diaryLike));
-                model.setLikeRecordId(Objects.isNull(diaryLike) ? null : diaryLike.getId());
-
-                RecentThreeAttendUserListModel threeAttendUserListModel = new RecentThreeAttendUserListModel();
-                threeAttendUserListModel.setAvatarUrl(user.getAvatarUrl());
-                List<RecentThreeAttendUserListModel> threeAttendList = new ArrayList<>();
-                threeAttendList.add(threeAttendUserListModel);
-                model.setRecentThreeAttendUserList(threeAttendList);
-
+                    return typeLabel;
+                }).collect(Collectors.toList());
             }
+            projectInfo.setTypeLabel(labelList);
+            model.setProjectInfo(projectInfo);
+
+            Publisher publisher = new Publisher();
+            publisher.setId(punchCardDiary.getUserId());
+            User user = userApi.getUserById(punchCardDiary.getUserId());
+            publisher.setAvatarUrl(user.getAvatarUrl());
+            publisher.setGender(user.getGender());
+            publisher.setNickName(user.getNickName());
+            model.setPublisher(publisher);
+
+            DiaryLike diaryLike = diaryLikeApi.getByDiaryIdAndUserId(punchCardDiary.getId(), userId);
+            model.setHaveLike(Objects.nonNull(diaryLike));
+            model.setLikeRecordId(Objects.isNull(diaryLike) ? null : diaryLike.getId());
+
+            RecentThreeAttendUserListModel threeAttendUserListModel = new RecentThreeAttendUserListModel();
+            threeAttendUserListModel.setAvatarUrl(user.getAvatarUrl());
+            List<RecentThreeAttendUserListModel> threeAttendList = new ArrayList<>();
+            threeAttendList.add(threeAttendUserListModel);
+            model.setRecentThreeAttendUserList(threeAttendList);
+
+            //diary_resource
+            List<DiaryResourceVo> resourceVoList = diaryResourceService.listByDiaryId(punchCardDiary.getId());
+            model.setDiaryResource(resourceVoList);
 
             return model;
         }).collect(Collectors.toList());
-
-        Iterator<PunchCardDiaryRecommendModel> iterator = modelList.iterator();
-        while (iterator.hasNext()) {
-            if (Objects.isNull(iterator.next().getId())) {
-                iterator.remove();
-            }
-        }
 
         return new ResponseModel(modelList);
     }

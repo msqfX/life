@@ -57,6 +57,26 @@
         </where>
         limit #{pageNo,jdbcType=INTEGER} , #{dataNum, jdbcType=INTEGER}
     </select>
+    <select id="list" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from punch_card_diary
+        <where>
+            <if test="likeUserNum != null">
+                like_user_num <![CDATA[ >= ]]> #{likeUserNum,jdbcType=INTEGER}
+            </if>
+            <if test="commentNum != null">
+                and comment_num <![CDATA[ >= ]]> #{commentNum,jdbcType=INTEGER}
+            </if>
+            <if test="visibleType != null">
+                and visible_type = #{visibleType,jdbcType=INTEGER}
+            </if>
+            <if test="projectId != null">
+                and project_id = #{projectId,jdbcType=INTEGER}
+            </if>
+        </where>
+        limit #{pageNo,jdbcType=INTEGER} , #{dataNum, jdbcType=INTEGER}
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from punch_card_diary
     where id = #{id,jdbcType=INTEGER}

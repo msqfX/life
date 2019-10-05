@@ -1,6 +1,8 @@
 package com.dlion.life.base.api;
 
 import com.dlion.life.base.entity.DiaryLike;
+import com.dlion.life.base.entity.PunchCardDiary;
+import com.dlion.life.common.bo.DiarySearchPo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,4 +32,5 @@ public interface DiaryLikeApi {
 
     @GetMapping("/life-base-diaryLike/listByLikedUserId")
     List<DiaryLike> listByLikedUserId(@RequestParam("likedUserId") Integer likedUserId);
+
 }

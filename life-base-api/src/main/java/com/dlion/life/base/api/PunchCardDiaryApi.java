@@ -1,7 +1,9 @@
 package com.dlion.life.base.api;
 
 import com.dlion.life.base.entity.PunchCardDiary;
+import com.dlion.life.common.bo.DiarySearchPo;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,4 +43,13 @@ public interface PunchCardDiaryApi {
 
     @DeleteMapping("/life-base-punchCardDiary/delete")
     void delete(@RequestParam("diaryId") Integer diaryId);
+
+    /**
+     * 日记列表，推荐列表
+     *
+     * @param diarySearchPo
+     * @return
+     */
+    @GetMapping(value = "/life-base-diaryLike/list", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    List<PunchCardDiary> list(@RequestBody DiarySearchPo diarySearchPo);
 }

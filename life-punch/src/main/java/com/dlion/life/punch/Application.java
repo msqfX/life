@@ -16,7 +16,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients(basePackages = {"com.dlion.life"})
-@EnableBinding(Sink.class)
+//@EnableBinding(Sink.class)
 @EnableScheduling
 public class Application {
 

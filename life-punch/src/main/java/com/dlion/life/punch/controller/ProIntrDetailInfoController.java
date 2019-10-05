@@ -144,7 +144,7 @@ public class ProIntrDetailInfoController {
      *
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @DeleteMapping("/deleteProjectIntr")
     public Object deleteProjectIntr(@RequestBody @Valid DeleteProjectIntrVo deleteProjectIntrVo) {
 

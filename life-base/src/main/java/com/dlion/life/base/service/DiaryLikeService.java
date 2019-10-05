@@ -2,6 +2,8 @@ package com.dlion.life.base.service;
 
 import com.dlion.life.base.dao.DiaryLikeMapper;
 import com.dlion.life.base.entity.DiaryLike;
+import com.dlion.life.base.entity.PunchCardDiary;
+import com.dlion.life.common.bo.DiarySearchPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

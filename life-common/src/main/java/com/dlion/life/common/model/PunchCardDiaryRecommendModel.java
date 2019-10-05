@@ -20,7 +20,7 @@ public class PunchCardDiaryRecommendModel {
 
     private String textContent;
 
-    private Date punchCardTime;
+    private String punchCardTime;
 
     private String punchCardAddress;
 
