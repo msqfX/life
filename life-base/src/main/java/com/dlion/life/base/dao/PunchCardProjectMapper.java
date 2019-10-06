@@ -1,6 +1,7 @@
 package com.dlion.life.base.dao;
 
 import com.dlion.life.base.entity.PunchCardProject;
+import com.dlion.life.common.bo.ProjectSearchPo;
 import com.dlion.life.common.data.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -47,9 +48,7 @@ public interface PunchCardProjectMapper extends BaseMapper<PunchCardProject, Int
                                   @Param("dataNum") Integer dataNum);
 
 
-    List<PunchCardProject> getProjectListByType(@Param("typeName") String typeName,
-                                                @Param("pageNo") Integer pageNo,
-                                                @Param("pageSize") Integer pageSize);
+    List<PunchCardProject> getProjectListByType(ProjectSearchPo projectSearchPo);
 
     void refreshTodayPunchCardNum();
 }

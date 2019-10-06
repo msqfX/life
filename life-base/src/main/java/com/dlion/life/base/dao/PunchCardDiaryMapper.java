@@ -6,6 +6,8 @@ import com.dlion.life.common.data.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,4 +27,7 @@ public interface PunchCardDiaryMapper extends BaseMapper<PunchCardDiary, Integer
                                    @Param("dataNum") Integer dataNum);
 
     List<PunchCardDiary> list(DiarySearchPo diarySearchPo);
+
+    List<PunchCardDiary> listByTime(@Param("userId") Integer userId, @Param("projectId") Integer projectId,
+                                    @Param("startTime") Timestamp startTime, @Param("endTime") Timestamp endTime);
 }

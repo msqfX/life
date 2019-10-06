@@ -22,8 +22,14 @@ public class UserProjectRecord {
 
     private Integer allPunchCardNum;
 
+    private Integer allPunchCardDayNum;
+
     private Date attendTime;
 
     private Date lastPunchCardTime;
+
+    private Date createTime;
+
+    private Date updateTime;
 
 }

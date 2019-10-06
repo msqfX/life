@@ -44,6 +44,7 @@
               user_id = #{userId,jdbcType=INTEGER}
             </if>
         </where>
+        group by update_time desc
         limit #{pageNo,jdbcType=INTEGER} , #{dataNum, jdbcType=INTEGER}
     </select>
     <select id="listByCno" resultMap="BaseResultMap">
@@ -75,7 +76,28 @@
                 and project_id = #{projectId,jdbcType=INTEGER}
             </if>
         </where>
+        group by update_time desc
         limit #{pageNo,jdbcType=INTEGER} , #{dataNum, jdbcType=INTEGER}
+    </select>
+    <select id="listByTime" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from punch_card_diary
+        <where>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER}
+            </if>
+            <if test="projectId != null">
+                and project_id = #{projectId,jdbcType=INTEGER}
+            </if>
+            <if test="startTime != null">
+                and CREATE_TIME >= date_format(#{startTime},'%Y-%m-%d %H:%i:%S')
+            </if>
+            <if test="endTime != null">
+                and CREATE_TIME &lt; date_format(#{endTime},'%Y-%m-%d %H:%i:%S')
+            </if>
+        </where>
+        group by update_time desc
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from punch_card_diary

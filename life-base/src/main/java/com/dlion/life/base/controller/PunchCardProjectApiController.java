@@ -3,6 +3,7 @@ package com.dlion.life.base.controller;
 import com.dlion.life.base.api.PunchCardProjectApi;
 import com.dlion.life.base.entity.PunchCardProject;
 import com.dlion.life.base.service.PunchCardProjectService;
+import com.dlion.life.common.bo.ProjectSearchPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -62,9 +63,9 @@ public class PunchCardProjectApiController implements PunchCardProjectApi {
     }
 
     @Override
-    public List<PunchCardProject> getProjectListByType(String typeName, Integer pageNo, Integer pageSize) {
+    public List<PunchCardProject> getProjectListByType(@RequestBody ProjectSearchPo projectSearchPo) {
 
-        return punchCardProjectService.getProjectListByType(typeName, pageNo, pageSize);
+        return punchCardProjectService.getProjectListByType(projectSearchPo);
     }
 
     @Override

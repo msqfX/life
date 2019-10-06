@@ -32,10 +32,22 @@
         from diary_comment
         where respondent_id = #{respondentId,jdbcType=INTEGER}
     </select>
+    <select id="listByPid" resultType="com.dlion.life.base.entity.DiaryComment">
+        select
+        <include refid="Base_Column_List"/>
+        from diary_comment
+        where diary_id = #{diaryId,jdbcType=INTEGER}
+        and pid = #{id,jdbcType=INTEGER}
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from diary_comment
     where id = #{id,jdbcType=INTEGER}
   </delete>
+    <delete id="deleteChildComment">
+    delete from diary_comment
+    where pid = #{id,jdbcType=INTEGER}
+    and diary_id = #{diaryId,jdbcType=INTEGER}
+    </delete>
     <insert id="insert" parameterType="com.dlion.life.base.entity.DiaryComment">
     insert into diary_comment (id, diary_id, pid, 
       reviewer_id, respondent_id, text_comment, 

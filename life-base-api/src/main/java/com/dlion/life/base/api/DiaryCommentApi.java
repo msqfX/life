@@ -34,4 +34,6 @@ public interface DiaryCommentApi {
     @DeleteMapping("/life-base-diaryComment/delete")
     void delete(@RequestParam("id") Integer id);
 
+    @GetMapping("/life-base-diaryComment/listByPid")
+    List<DiaryComment> listByPid(@RequestParam("diaryId") Integer diaryId, @RequestParam("id") Integer id);
 }

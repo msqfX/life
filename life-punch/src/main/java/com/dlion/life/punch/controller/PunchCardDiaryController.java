@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -96,8 +97,21 @@ public class PunchCardDiaryController {
         }
 
         PunchCardDiary punchCardDiary = new PunchCardDiary();
-
+        UserProjectRecord newUserProjectRecord = new UserProjectRecord();
         BeanUtils.copyProperties(punchCardDiaryModel, punchCardDiary);
+
+        UserProjectRecord userProjectRecord = userProjectRecordApi.getByUserId(punchCardDiaryModel.getUserId(), punchCardDiaryModel.getProjectId());
+
+        List<PunchCardDiary> punchCardDiaryList = punchCardDiaryApi.listByTime(punchCardDiaryModel.getUserId(), punchCardDiaryModel.getProjectId(),
+                DateUtil.getBeginOfToday(), DateUtil.getEndOfToday());
+        if (CollectionUtils.isEmpty(punchCardDiaryList)) {
+            // 如果今天没有打卡
+            punchCardDiary.setCurrDiaryPunchCardDayNum(userProjectRecord.getAllPunchCardDayNum() + 1);
+            newUserProjectRecord.setAllPunchCardDayNum(userProjectRecord.getAllPunchCardDayNum() + 1);
+        } else {
+            // 如果今天已经打卡
+            punchCardDiary.setCurrDiaryPunchCardDayNum(userProjectRecord.getAllPunchCardDayNum());
+        }
 
         if (0 == punchCardDiaryModel.getIsRepairDiary()) {
             punchCardDiary.setPunchCardTime(new Date());
@@ -108,8 +122,11 @@ public class PunchCardDiaryController {
 
         int id = punchCardDiaryApi.add(punchCardDiary);
 
-        Map<String, Object> result = new HashMap<>();
-        result.put("id", id);
+        //update user_project_record
+        newUserProjectRecord.setId(userProjectRecord.getId());
+        newUserProjectRecord.setLastPunchCardTime(new Date());
+        newUserProjectRecord.setAllPunchCardNum(userProjectRecord.getAllPunchCardNum() + 1);
+        userProjectRecordApi.update(newUserProjectRecord);
 
         //update punch_card_num
         PunchCardProject newProject = new PunchCardProject();
@@ -118,14 +135,8 @@ public class PunchCardDiaryController {
         newProject.setAllPunchCardNum(punchCardProject.getAllPunchCardNum() + 1);
         punchCardProjectApi.update(newProject);
 
-        //update user_project_record
-        UserProjectRecord userProjectRecord = userProjectRecordApi.getByUserId(punchCardDiaryModel.getUserId(), punchCardDiaryModel.getProjectId());
-        UserProjectRecord newUserProjectRecord = new UserProjectRecord();
-        newUserProjectRecord.setId(userProjectRecord.getId());
-        newUserProjectRecord.setLastPunchCardTime(new Date());
-        newUserProjectRecord.setAllPunchCardNum(userProjectRecord.getAllPunchCardNum() + 1);
-        userProjectRecordApi.update(newUserProjectRecord);
-
+        Map<String, Object> result = new HashMap<>();
+        result.put("id", id);
         return new ResponseModel(result);
     }
 
@@ -219,12 +230,15 @@ public class PunchCardDiaryController {
 
             myPunchCardDiaryModel.setDiaryResource(diaryResourceService.listByDiaryId(punchCardDiary.getId()));
 
-            myPunchCardDiaryModel.setPublisher(userService.getPublister(userId));
+            myPunchCardDiaryModel.setPublisher(userService.getPublister(punchCardDiary.getUserId()));
 
             myPunchCardDiaryModel.setTenLikeInfo(diaryLikeService.listLikeInfo(punchCardDiary.getId()));
 
             myPunchCardDiaryModel.setAllCommentInfo(commentInfoService.listUserInfo(punchCardDiary));
 
+            if (StringUtils.isEmpty(punchCardDiary.getPunchCardAddress())) {
+                myPunchCardDiaryModel.setPunchCardAddress("银河系某个未知的神秘星球");
+            }
             return myPunchCardDiaryModel;
 
         }).collect(Collectors.toList());
@@ -364,6 +378,7 @@ public class PunchCardDiaryController {
      * @return
      */
     @DeleteMapping("/deleteDiaryById")
+    @Transactional(rollbackFor = Exception.class)
     public Object deleteDiaryById(@RequestBody DeleteDiaryVo deleteDiaryVo) {
 
         PunchCardDiary cardDiary = punchCardDiaryApi.getById(deleteDiaryVo.getDiaryId());
@@ -373,6 +388,12 @@ public class PunchCardDiaryController {
 
         if (Objects.equals(cardDiary.getUserId(), deleteDiaryVo.getUserId())) {
             punchCardDiaryApi.delete(deleteDiaryVo.getDiaryId());
+
+            // 删除点赞记录
+            List<DiaryLike> diaryLikeList = diaryLikeApi.listByDiaryId(deleteDiaryVo.getDiaryId());
+            diaryLikeList.stream().forEach(e -> {
+                diaryLikeApi.delete(e.getId());
+            });
 
             //删除对应的文件资源
             List<DiaryResource> resourceList = diaryResourceApi.getByDiaryId(deleteDiaryVo.getDiaryId());

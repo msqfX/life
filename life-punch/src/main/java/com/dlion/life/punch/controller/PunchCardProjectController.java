@@ -8,6 +8,7 @@ import com.dlion.life.base.entity.ProIntrDetailInfo;
 import com.dlion.life.base.entity.PunchCardProject;
 import com.dlion.life.base.entity.User;
 import com.dlion.life.base.entity.UserProjectRecord;
+import com.dlion.life.common.bo.ProjectSearchPo;
 import com.dlion.life.common.constant.DatePattern;
 import com.dlion.life.common.constant.ResultConstant;
 import com.dlion.life.common.model.PunchCardProjectListHomeModel;
@@ -68,8 +69,16 @@ public class PunchCardProjectController {
 
         Integer id = punchCardProjectApi.add(punchCardProject);
 
-        Map<String, Integer> result = new HashMap<>(1);
+        // 将自己添加到记录中
+        UserProjectRecord userProjectRecord = new UserProjectRecord();
+        userProjectRecord.setProjectId(id);
+        userProjectRecord.setUserId(punchCardProjectModel.getCreatorId());
+        userProjectRecord.setIsCreator(1);
+        userProjectRecord.setAttendStatus(1);
+        userProjectRecord.setAttendTime(new Date());
+        userProjectRecordApi.add(userProjectRecord);
 
+        Map<String, Integer> result = new HashMap<>(1);
         result.put("id", id);
 
         return new ResponseModel(result);
@@ -261,6 +270,11 @@ public class PunchCardProjectController {
             return new ResponseModel(ResultConstant.ERROR, "圈子不存在");
         }
 
+        UserProjectRecord dbRecord = userProjectRecordApi.getByUserId(joinProjectModel.getUserId(), joinProjectModel.getProjectId());
+        if (Objects.nonNull(dbRecord)) {
+            return new ResponseModel(ResultConstant.ERROR, "已加入到圈子");
+        }
+
         UserProjectRecord userProjectRecord = new UserProjectRecord();
         userProjectRecord.setProjectId(joinProjectModel.getProjectId());
         if (Objects.equals(punchCardProject.getCreatorId(), joinProjectModel.getUserId())) {
@@ -278,18 +292,20 @@ public class PunchCardProjectController {
         //update attend_num
         PunchCardProject punchProject = new PunchCardProject();
         punchProject.setId(joinProjectModel.getProjectId());
-        punchProject.setAttendUserNum(punchCardProject.getAttendUserNum() + 1);
-        punchCardProjectApi.update(punchProject);
+        if (!Objects.equals(punchCardProject.getCreatorId(), joinProjectModel.getUserId())) {
+            punchProject.setAttendUserNum(punchCardProject.getAttendUserNum() + 1);
+            punchCardProjectApi.update(punchProject);
+        }
 
         return new ResponseModel();
     }
 
 
     @GetMapping("/getProjectListByType")
-    public Object getProjectListByType(@RequestParam String typeName, @RequestParam Integer pageNo,
-                                       @RequestParam Integer pageSize) {
+    public Object getProjectListByType(ProjectSearchPo projectSearchPo) {
 
-        List<PunchCardProject> punchCardProjects = punchCardProjectApi.getProjectListByType(typeName, pageNo, pageSize);
+        projectSearchPo.setPrivacyType(0);
+        List<PunchCardProject> punchCardProjects = punchCardProjectApi.getProjectListByType(projectSearchPo);
 
         List<SearchPunchCardProjectModel> modelList = punchCardProjects.stream().map(punchCardProject -> {
 
@@ -340,7 +356,7 @@ public class PunchCardProjectController {
 
         PunchCardProject newPunchCardProject = new PunchCardProject();
         newPunchCardProject.setId(updateCoverImg.getProjectId());
-        newPunchCardProject.setCoverImgUrl(updateCoverImg.getCurCoverImgUrl());
+        newPunchCardProject.setCoverImgUrl(updateCoverImg.getNewImgUrl());
 
         punchCardProjectApi.update(newPunchCardProject);
 

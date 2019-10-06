@@ -49,7 +49,14 @@
         select
         <include refid="Base_Column_List"/>
         from punch_card_project
-        where type_label like CONCAT('%',#{typeName,jdbcType=VARCHAR},'%')
+        <where>
+            <if test="typeName != null and typeName != ''">
+                type_label like CONCAT('%',#{typeName,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="privacyType != null">
+                and privacy_type = #{privacyType,jdbcType=TINYINT}
+            </if>
+        </where>
         limit #{pageNo,jdbcType=INTEGER} , #{pageSize, jdbcType=INTEGER}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">

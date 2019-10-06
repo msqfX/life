@@ -326,6 +326,7 @@ CREATE TABLE `user_project_record` (
   `is_creator` tinyint(3) NOT NULL COMMENT ' 是否为圈主，0--不是圈子创建者（默认）1--圈子创建者',
   `attend_status` tinyint(3) NOT NULL DEFAULT '1' COMMENT '用户加入圈子的状态，1:参与中，2:待审核，3:已拒绝，4:已退出',
   `all_punch_card_num` int(11) NOT NULL DEFAULT '0' COMMENT '用户累计打卡次数，默认0',
+  all_punch_card_day_num int(11) not null  default 0;
   `attend_time` date NOT NULL COMMENT '加入或者创建圈子时间--年月日',
   `last_punch_card_time` datetime DEFAULT NULL COMMENT '用户上一次的打卡时间',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,

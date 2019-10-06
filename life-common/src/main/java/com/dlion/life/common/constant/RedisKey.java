@@ -19,4 +19,9 @@ public class RedisKey {
      */
     public final static Integer USER_TOKEN_CACHE_EXPIRE_TIME = 60;
 
+    /**
+     * 今日打卡标记
+     */
+    public final static String USER_PUNCH_CARD_DAY_KEY = "user:punch_card_symbol:%s";
+
 }

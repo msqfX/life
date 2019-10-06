@@ -6,7 +6,10 @@ import com.dlion.life.common.bo.DiarySearchPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 打卡日历
@@ -60,6 +63,14 @@ public class PunchCardDiaryService {
 
     public List<PunchCardDiary> list(DiarySearchPo diarySearchPo) {
 
+        if (Objects.nonNull(diarySearchPo.getPageNo())) {
+            diarySearchPo.setPageNo((diarySearchPo.getPageNo() - 1) * diarySearchPo.getPageNo());
+        }
         return punchCardDiaryMapper.list(diarySearchPo);
+    }
+
+    public List<PunchCardDiary> listByTime(Integer userId, Integer projectId, Timestamp startTime, Timestamp endTime) {
+
+        return punchCardDiaryMapper.listByTime(userId, projectId, startTime, endTime);
     }
 }

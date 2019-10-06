@@ -1,7 +1,9 @@
 package com.dlion.life.base.api;
 
 import com.dlion.life.base.entity.PunchCardProject;
+import com.dlion.life.common.bo.ProjectSearchPo;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,7 +43,6 @@ public interface PunchCardProjectApi {
                                             @RequestParam Integer pageNo,
                                             @RequestParam Integer dataNum);
 
-
     /**
      * 根据关键字查询
      *
@@ -54,10 +55,8 @@ public interface PunchCardProjectApi {
     List<PunchCardProject> search(@RequestParam String keyword, @RequestParam Integer pageNo,
                                   @RequestParam Integer dataNum);
 
-    @GetMapping("/life-base-punchCardProject/getProjectListByType")
-    List<PunchCardProject> getProjectListByType(@RequestParam("typeName") String typeName,
-                                                @RequestParam("pageNo") Integer pageNo,
-                                                @RequestParam("pageSize") Integer pageSize);
+    @GetMapping(value = "/life-base-punchCardProject/getProjectListByType", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    List<PunchCardProject> getProjectListByType(@RequestBody ProjectSearchPo projectSearchPo);
 
     @PutMapping("/life-base-punchCardProject/refreshTodayPunchCardNum")
     void refreshTodayPunchCardNum();

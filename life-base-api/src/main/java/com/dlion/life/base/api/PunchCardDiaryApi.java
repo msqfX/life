@@ -6,6 +6,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -52,4 +54,17 @@ public interface PunchCardDiaryApi {
      */
     @GetMapping(value = "/life-base-diaryLike/list", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     List<PunchCardDiary> list(@RequestBody DiarySearchPo diarySearchPo);
+
+    /**
+     * 根据时间查询打卡日记
+     *
+     * @param userId
+     * @param projectId
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    @GetMapping("/life-base-diaryLike/listByTime")
+    List<PunchCardDiary> listByTime(@RequestParam("userId") Integer userId, @RequestParam("projectId") Integer projectId,
+                                    @RequestParam("startTime") Timestamp startTime, @RequestParam("endTime") Timestamp endTime);
 }

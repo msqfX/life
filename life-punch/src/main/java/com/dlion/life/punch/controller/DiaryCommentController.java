@@ -15,10 +15,12 @@ import com.dlion.life.punch.model.DiaryCommentResultModel;
 import com.dlion.life.punch.vo.ReviewerVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -113,6 +115,7 @@ public class DiaryCommentController {
      * @return
      */
     @DeleteMapping("{id}")
+    @Transactional(rollbackFor = Exception.class)
     public Object delete(@PathVariable Integer id, @RequestBody DiaryCommentModel diaryCommentModel, HttpServletRequest request) {
 
         PunchCardDiary punchCardDiary = punchCardDiaryApi.getById(diaryCommentModel.getDiaryId());
@@ -128,11 +131,18 @@ public class DiaryCommentController {
                     diaryCommentApi.delete(id);
                 }
             }
+            List<DiaryComment> diaryCommentList = new ArrayList<>();
+            if (Objects.equals(diaryComment.getPid(), 0)) {
+                diaryCommentList = diaryCommentApi.listByPid(diaryCommentModel.getDiaryId(), id);
+                diaryCommentList.stream().forEach(e -> {
+                    diaryCommentApi.delete(e.getId());
+                });
+            }
 
             // 日记更新评论数量
             PunchCardDiary newPunchCardDiary = new PunchCardDiary();
             newPunchCardDiary.setId(punchCardDiary.getId());
-            newPunchCardDiary.setCommentNum(punchCardDiary.getCommentNum() - 1);
+            newPunchCardDiary.setCommentNum(punchCardDiary.getCommentNum() - 1 - diaryCommentList.size());
             punchCardDiaryApi.update(newPunchCardDiary);
 
             return new ResponseModel();

@@ -49,5 +49,10 @@ public class DiaryCommentApiController implements DiaryCommentApi {
         diaryCommentService.delete(id);
     }
 
+    @Override
+    public List<DiaryComment> listByPid(Integer diaryId, Integer id) {
+
+        return diaryCommentService.listByPid(diaryId, id);
+    }
 
 }

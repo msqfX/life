@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author 李正元
@@ -40,5 +41,10 @@ public class DiaryCommentService {
     public void delete(Integer id) {
 
         diaryCommentMapper.deleteByPrimaryKey(id);
+    }
+
+    public List<DiaryComment> listByPid(Integer diaryId, Integer id) {
+
+        return diaryCommentMapper.listByPid(diaryId, id);
     }
 }

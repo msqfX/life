@@ -2,10 +2,12 @@ package com.dlion.life.base.service;
 
 import com.dlion.life.base.dao.PunchCardProjectMapper;
 import com.dlion.life.base.entity.PunchCardProject;
+import com.dlion.life.common.bo.ProjectSearchPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author 李正元
@@ -57,10 +59,12 @@ public class PunchCardProjectService {
         return punchCardProjectMapper.search(keyword, pageNo, dataNum);
     }
 
-    public List<PunchCardProject> getProjectListByType(String typeName, Integer pageNo, Integer pageSize) {
+    public List<PunchCardProject> getProjectListByType(ProjectSearchPo projectSearchPo) {
 
-        pageNo = (pageNo - 1) * pageSize;
-        return punchCardProjectMapper.getProjectListByType(typeName, pageNo, pageSize);
+        if (Objects.nonNull(projectSearchPo.getPageNo())) {
+            projectSearchPo.setPageNo((projectSearchPo.getPageNo() - 1) * projectSearchPo.getPageNo());
+        }
+        return punchCardProjectMapper.getProjectListByType(projectSearchPo);
     }
 
     public void refreshTodayPunchCardNum() {
