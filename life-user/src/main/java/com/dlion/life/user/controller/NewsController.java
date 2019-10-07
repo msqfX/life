@@ -6,13 +6,13 @@ import com.dlion.life.base.api.UnreadNewsCountApi;
 import com.dlion.life.base.api.UserApi;
 import com.dlion.life.base.entity.DiaryComment;
 import com.dlion.life.base.entity.DiaryLike;
-import com.dlion.life.base.entity.UnreadNewsCount;
 import com.dlion.life.base.entity.User;
 import com.dlion.life.common.constant.DatePattern;
 import com.dlion.life.common.constant.UnreadNewsType;
 import com.dlion.life.common.model.ResponseModel;
 import com.dlion.life.common.utils.DateUtil;
 import com.dlion.life.user.model.*;
+import com.dlion.life.user.service.UserNewsService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -42,6 +42,9 @@ public class NewsController {
     @Autowired
     private UserApi userApi;
 
+    @Autowired
+    private UserNewsService userNewsService;
+
     /**
      * 获取用户未读消息数量
      *
@@ -51,20 +54,9 @@ public class NewsController {
     @GetMapping("/getUnreadNewsCount/{userId}")
     public Object getUnreadNews(@PathVariable Integer userId) {
 
-        List<UnreadNewsCount> newsCountList = unreadNewsCountApi.getByUserId(userId);
-
         UnreadNewsModel model = new UnreadNewsModel();
-
-        newsCountList.forEach(unreadNewsCount -> {
-
-            if (Objects.equals(UnreadNewsType.NEWS_TYPE_LIKE, unreadNewsCount.getUnreadNewsType())) {
-                model.setUnreadLikeNewsNum(unreadNewsCount.getUnreadNewsNum());
-            }
-
-            if (Objects.equals(UnreadNewsType.NEWS_TYPE_COMMENT, unreadNewsCount.getUnreadNewsType())) {
-                model.setUnreadCommentNewsNum(unreadNewsCount.getUnreadNewsNum());
-            }
-        });
+        model.setUnreadCommentNewsNum(userNewsService.getCommentCount(userId));
+        model.setUnreadLikeNewsNum(userNewsService.getLikeCount(userId));
 
         return new ResponseModel(model);
     }
@@ -72,9 +64,13 @@ public class NewsController {
     @PutMapping("/setNewsReadStatus/{userId}")
     public Object setNewsReadStatus(@PathVariable Integer userId, @RequestParam String unreadNewsType) {
 
-        List<UnreadNewsCount> newsCountList = unreadNewsCountApi.getByUserId(userId);
+        if (Objects.equals(UnreadNewsType.NEWS_TYPE_LIKE, unreadNewsType)) {
+            userNewsService.resetLikeCount(userId);
+        }
 
-        unreadNewsCountApi.setNewsCount(userId, unreadNewsType, 0);
+        if (Objects.equals(UnreadNewsType.NEWS_TYPE_COMMENT, unreadNewsType)) {
+            userNewsService.resetCommentCount(userId);
+        }
 
         return new ResponseModel();
     }

@@ -12,6 +12,7 @@ import com.dlion.life.common.model.DiaryCommentModel;
 import com.dlion.life.common.model.ResponseModel;
 import com.dlion.life.common.utils.DateUtil;
 import com.dlion.life.punch.model.DiaryCommentResultModel;
+import com.dlion.life.punch.service.UserNewsService;
 import com.dlion.life.punch.vo.ReviewerVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,9 @@ public class DiaryCommentController {
     @Autowired
     private UserApi userApi;
 
+    @Autowired
+    private UserNewsService userNewsService;
+
     /**
      * 日记评论
      *
@@ -52,6 +56,7 @@ public class DiaryCommentController {
      * @return
      */
     @PostMapping
+    @Transactional(rollbackFor = Exception.class)
     public Object add(@RequestBody @Valid DiaryCommentModel diaryCommentModel) {
 
         PunchCardDiary punchCardDiary = punchCardDiaryApi.getById(diaryCommentModel.getDiaryId());
@@ -70,6 +75,9 @@ public class DiaryCommentController {
         newPunchCardDiary.setId(diaryCommentModel.getDiaryId());
         newPunchCardDiary.setCommentNum(punchCardDiary.getCommentNum() + 1);
         punchCardDiaryApi.update(newPunchCardDiary);
+
+        // 更新消息个数
+        userNewsService.setNewsCount(diaryComment.getRespondentId());
 
         DiaryCommentResultModel diaryCommentResultModel = new DiaryCommentResultModel();
         BeanUtils.copyProperties(diaryCommentModel, diaryCommentResultModel);

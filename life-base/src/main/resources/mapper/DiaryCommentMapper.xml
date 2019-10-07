@@ -31,6 +31,7 @@
         <include refid="Base_Column_List"/>
         from diary_comment
         where respondent_id = #{respondentId,jdbcType=INTEGER}
+        group by create_time desc
     </select>
     <select id="listByPid" resultType="com.dlion.life.base.entity.DiaryComment">
         select

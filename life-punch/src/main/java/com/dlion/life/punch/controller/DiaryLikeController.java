@@ -9,6 +9,7 @@ import com.dlion.life.base.entity.User;
 import com.dlion.life.common.constant.ResultConstant;
 import com.dlion.life.common.model.ResponseModel;
 import com.dlion.life.punch.model.CancelLikeModel;
+import com.dlion.life.punch.service.UserNewsService;
 import com.dlion.life.punch.vo.Admirer;
 import com.dlion.life.punch.vo.DiaryLikeInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,9 @@ public class DiaryLikeController {
 
     @Autowired
     private PunchCardDiaryApi punchCardDiaryApi;
+
+    @Autowired
+    private UserNewsService userNewsService;
 
     /**
      * 喜欢
@@ -71,6 +75,8 @@ public class DiaryLikeController {
         newPunchCardDiary.setId(diaryLike.getDiaryId());
         newPunchCardDiary.setLikeUserNum(punchCardDiary.getLikeUserNum() + 1);
         punchCardDiaryApi.update(newPunchCardDiary);
+
+        userNewsService.setLikeCount(diaryLike.getLikedUserId());
 
         return new ResponseModel(diaryLikeInfoVo);
     }

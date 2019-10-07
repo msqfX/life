@@ -22,6 +22,16 @@ public class RedisKey {
     /**
      * 今日打卡标记
      */
-    public final static String USER_PUNCH_CARD_DAY_KEY = "user:punch_card_symbol:%s";
+    public final static String USER_PUNCH_CARD_DAY_KEY = "user:punch:card:symbol:%s";
 
+    /**
+     * 用户评论个数
+     */
+    public final static String USER_COMMENT_NEWS_COUNT = "user:news:count:comment";
+
+    /**
+     * 用户点赞个数
+     */
+    public final static String USER_LIKE_NEWS_COUNT = "user:news:count:like";
 }
+

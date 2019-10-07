@@ -1,4 +1,4 @@
-package com.dlion.life.punch.service;
+package com.dlion.life.user.service;
 
 import com.dlion.life.common.constant.RedisKey;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +19,7 @@ public class UserNewsService {
     @Autowired
     private HashOperations<String, String, Object> hashOperations;
 
-
-    public void setNewsCount(Integer userId) {
-
-        hashOperations.increment(RedisKey.USER_COMMENT_NEWS_COUNT, userId.toString(), 1);
-    }
-
-    public Integer getNewsCount(Integer userId) {
+    public Integer getCommentCount(Integer userId) {
 
         Object obj = hashOperations.get(RedisKey.USER_COMMENT_NEWS_COUNT, userId.toString());
         if (Objects.nonNull(obj)) {
@@ -34,28 +28,23 @@ public class UserNewsService {
         return 0;
     }
 
-    public void resetNewsCount(Integer userId) {
+    public void resetCommentCount(Integer userId) {
 
         hashOperations.put(RedisKey.USER_COMMENT_NEWS_COUNT, userId.toString(), 0);
-    }
-
-    public void setLikeCount(Integer userId) {
-
-        hashOperations.increment(RedisKey.USER_LIKE_NEWS_COUNT, userId.toString(), 1);
     }
 
     public Integer getLikeCount(Integer userId) {
 
         Object obj = hashOperations.get(RedisKey.USER_LIKE_NEWS_COUNT, userId.toString());
         if (Objects.nonNull(obj)) {
-            return (Integer) obj;
+            return (Integer) (Integer) obj;
         }
         return 0;
     }
 
     public void resetLikeCount(Integer userId) {
 
-        hashOperations.increment(RedisKey.USER_LIKE_NEWS_COUNT, userId.toString(), 0);
+        hashOperations.put(RedisKey.USER_LIKE_NEWS_COUNT, userId.toString(), 0);
     }
 
 }

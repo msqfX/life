@@ -42,6 +42,7 @@
       <include refid="Base_Column_List" />
       from diary_like
       where liked_user_id = #{likedUserId,jdbcType=INTEGER}
+      group by create_time desc
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from diary_like

@@ -187,6 +187,11 @@ public class PunchCardProjectController {
             return new ResponseModel(ResultConstant.ERROR, "圈子不存在");
         }
 
+        // 隐私圈子不允许别人访问
+        if (Objects.equals(cardProject.getPrivacyType(), 1) && !Objects.equals(cardProject.getCreatorId(), userId)) {
+            return new ResponseModel(ResultConstant.ERROR, "隐私圈子只有主人才可以访问");
+        }
+
         ProjectInfoModel projectInfoModel = new ProjectInfoModel();
 
         User user = userApi.getUserById(cardProject.getCreatorId());
