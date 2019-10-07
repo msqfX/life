@@ -44,11 +44,10 @@
     from user
     where open_id = #{openId,jdbcType=INTEGER}
    </select>
-    <select id="list" resultType="com.dlion.life.base.entity.User">
+    <select id="list" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from user
-        where nick_name = #{userName,jdbcType=VARCHAR}
         limit #{pageNum}, #{pageSize}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
