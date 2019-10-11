@@ -39,8 +39,6 @@ public class DingTalkNotify extends AbstractStatusChangeNotifier {
 
     private Expression message;
 
-    private final String dingTalkMessageUrl = "https://oapi.dingtalk.com/robot/send?access_token=%s";
-
     @Value("${dingTalk.accessToken}")
     private String accessToken;
 
@@ -53,6 +51,9 @@ public class DingTalkNotify extends AbstractStatusChangeNotifier {
 
     @Override
     protected Mono<Void> doNotify(InstanceEvent instanceEvent, Instance instance) {
+        logger.error("service status changed: {}", instanceEvent);
+
+        final String dingTalkMessageUrl = "https://oapi.dingtalk.com/robot/send?access_token=%s";
         String url = String.format(dingTalkMessageUrl, accessToken);
         return Mono.fromRunnable(() -> restTemplate.postForEntity(url, createMessage(instanceEvent, instance), Void.class));
     }

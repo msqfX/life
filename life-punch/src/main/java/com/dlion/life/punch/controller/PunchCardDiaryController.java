@@ -296,11 +296,10 @@ public class PunchCardDiaryController {
      * 获取日记详情
      *
      * @param diaryId
-     * @param visitorId
      * @return
      */
     @GetMapping("/getDiaryDetailInfoById")
-    public Object getDiaryDetailInfoById(@RequestParam Integer diaryId, @RequestParam Integer visitorId) {
+    public Object getDiaryDetailInfoById(@LoginUser User loginUser, @RequestParam Integer diaryId) {
 
         PunchCardDiary punchCardDiary = punchCardDiaryApi.getById(diaryId);
         if (Objects.isNull(punchCardDiary)) {
@@ -318,21 +317,27 @@ public class PunchCardDiaryController {
         BeanUtils.copyProperties(punchCardProject, projectInfoVo);
         diaryDetailModel.setProjectInfo(projectInfoVo);
 
-        DiaryLike diaryLike = diaryLikeApi.getByDiaryIdAndUserId(diaryId, visitorId);
-        if (Objects.nonNull(diaryLike)) {
-            diaryDetailModel.setLikeRecordId(diaryLike.getId());
-            diaryDetailModel.setHaveLike(true);
-        } else {
+        if(Objects.isNull(loginUser)){
             diaryDetailModel.setHaveLike(false);
+        }else {
+            DiaryLike diaryLike = diaryLikeApi.getByDiaryIdAndUserId(diaryId, loginUser.getId());
+            if (Objects.nonNull(diaryLike)) {
+                diaryDetailModel.setLikeRecordId(diaryLike.getId());
+                diaryDetailModel.setHaveLike(true);
+            } else {
+                diaryDetailModel.setHaveLike(false);
+            }
         }
-
-        UserProjectRecord projectRecord = userProjectRecordApi.getByUserId(visitorId, punchCardProject.getId());
-        if (Objects.nonNull(projectRecord)) {
-            diaryDetailModel.setExistAttendProject(true);
-        } else {
+        if(Objects.isNull(loginUser)){
             diaryDetailModel.setExistAttendProject(false);
+        }else {
+            UserProjectRecord projectRecord = userProjectRecordApi.getByUserId(loginUser.getId(), punchCardProject.getId());
+            if (Objects.nonNull(projectRecord)) {
+                diaryDetailModel.setExistAttendProject(true);
+            } else {
+                diaryDetailModel.setExistAttendProject(false);
+            }
         }
-
         diaryDetailModel.setDiaryResource(diaryResourceService.listByDiaryId(diaryId));
 
         diaryDetailModel.setPublisher(userService.getPublister(punchCardDiary.getUserId()));

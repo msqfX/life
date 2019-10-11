@@ -62,19 +62,27 @@ public class PunchCardProjectController {
     @Autowired
     private FileService fileService;
 
+    /**
+     * 创建圈子
+     *
+     * @param loginUser
+     * @param punchCardProjectModel
+     * @return
+     */
     @PostMapping
-    public Object add(@RequestBody PunchCardProjectModel punchCardProjectModel) {
+    @Login
+    public Object add(@LoginUser User loginUser, @RequestBody PunchCardProjectModel punchCardProjectModel) {
 
         PunchCardProject punchCardProject = new PunchCardProject();
-
         BeanUtils.copyProperties(punchCardProjectModel, punchCardProject);
+        punchCardProject.setCreatorId(loginUser.getId());
 
         Integer id = punchCardProjectApi.add(punchCardProject);
 
         // 将自己添加到记录中
         UserProjectRecord userProjectRecord = new UserProjectRecord();
         userProjectRecord.setProjectId(id);
-        userProjectRecord.setUserId(punchCardProjectModel.getCreatorId());
+        userProjectRecord.setUserId(loginUser.getId());
         userProjectRecord.setIsCreator(1);
         userProjectRecord.setAttendStatus(1);
         userProjectRecord.setAttendTime(new Date());

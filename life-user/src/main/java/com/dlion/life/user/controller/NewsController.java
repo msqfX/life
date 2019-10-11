@@ -49,7 +49,7 @@ public class NewsController {
     /**
      * 获取用户未读消息数量
      *
-     * @param LoginUser 当前登录用户
+     * @param loginUser 当前登录用户
      * @return
      */
     @GetMapping("/getUnreadNewsCount")
