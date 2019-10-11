@@ -42,6 +42,8 @@ public class MyPunchCardDiaryModel {
 
     private Boolean haveLike;
 
+    private Integer likeRecordId;
+
     private PunchCardProjectVo punchCardProject;
 
     private List<DiaryResourceVo> diaryResource;

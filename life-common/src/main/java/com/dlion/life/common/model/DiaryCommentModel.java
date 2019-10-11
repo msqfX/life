@@ -19,8 +19,14 @@ public class DiaryCommentModel {
 
     private Integer pid;
 
+    /**
+     * 评论者id
+     */
     private Integer reviewerId;
 
+    /**
+     * 被评论者id
+     */
     private Integer respondentId;
 
     private String textComment;

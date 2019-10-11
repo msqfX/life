@@ -1,4 +1,4 @@
-package com.dlion.life.punch.compent;
+package com.dlion.life.punch.component;
 
 import com.dlion.life.base.api.PunchCardProjectApi;
 import org.slf4j.Logger;

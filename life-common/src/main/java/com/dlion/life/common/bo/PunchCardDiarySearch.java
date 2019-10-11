@@ -20,8 +20,6 @@ public class PunchCardDiarySearch {
      */
     private Integer visitedUserId;
 
-    private  Integer visitorUserId;
-
     /**
      * 是否为创建者：0：否，1：是
      */

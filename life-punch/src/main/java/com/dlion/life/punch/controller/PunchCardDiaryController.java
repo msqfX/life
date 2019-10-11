@@ -2,6 +2,7 @@ package com.dlion.life.punch.controller;
 
 import com.dlion.life.base.api.*;
 import com.dlion.life.base.entity.*;
+import com.dlion.life.common.annotation.LoginUser;
 import com.dlion.life.common.bo.DiarySearchPo;
 import com.dlion.life.common.bo.PunchCardDiarySearch;
 import com.dlion.life.common.constant.CharacterConstant;
@@ -164,7 +165,11 @@ public class PunchCardDiaryController {
      * @return
      */
     @GetMapping("/listUserPunchCardDiary")
-    public Object listUserPunchCardDiary(PunchCardDiarySearch punchCardDiarySearch) {
+    public Object listUserPunchCardDiary(@LoginUser User loginUser, PunchCardDiarySearch punchCardDiarySearch) {
+
+        if (Objects.isNull(punchCardDiarySearch.getVisitedUserId())) {
+            return new ResponseModel();
+        }
 
         List<PunchCardDiary> punchCardDiaryList = punchCardDiaryApi.listByUserId(punchCardDiarySearch.getVisitedUserId(),
                 punchCardDiarySearch.getPageNo(), punchCardDiarySearch.getDataNum(), punchCardDiarySearch.getIsDiaryCreator());
@@ -176,7 +181,8 @@ public class PunchCardDiaryController {
             BeanUtils.copyProperties(punchCardDiary, myPunchCardDiaryModel);
             myPunchCardDiaryModel.setPunchCardTime(DateUtil.formatDate(punchCardDiary.getPunchCardTime(), DatePattern.YYYY_MM_DD_HH_mm));
 
-            myPunchCardDiaryModel.setHaveLike(punchCardDiaryService.hasLike(punchCardDiary.getId(), punchCardDiarySearch.getVisitorUserId()));
+            //未登录的时候全是未点赞
+            myPunchCardDiaryModel.setHaveLike(Objects.isNull(loginUser) ? false : punchCardDiaryService.hasLike(punchCardDiary.getId(), loginUser.getId()));
 
             myPunchCardDiaryModel.setPunchCardProject(punchCardProjectService.punchCardProject(punchCardDiary.getProjectId()));
 
@@ -184,9 +190,9 @@ public class PunchCardDiaryController {
 
             myPunchCardDiaryModel.setPublisher(userService.getPublister(punchCardDiary.getUserId()));
 
-            myPunchCardDiaryModel.setTenLikeInfo(new ArrayList());
+            myPunchCardDiaryModel.setTenLikeInfo(diaryLikeService.listLikeInfo(punchCardDiary.getId()));
 
-            myPunchCardDiaryModel.setAllCommentInfo(new ArrayList());
+            myPunchCardDiaryModel.setAllCommentInfo(commentInfoService.listUserInfo(punchCardDiary));
 
             return myPunchCardDiaryModel;
         }).collect(Collectors.toList());
@@ -197,21 +203,25 @@ public class PunchCardDiaryController {
     /**
      * 圈子详情打卡日记列表ø
      *
-     * @param userId
-     * @param projectId
-     * @param pageNo
-     * @param dataNum
+     * @param loginUser 当前登录对象
+     * @param projectId 圈子ID
+     * @param pageNo    当前页
+     * @param dataNum   数量
      * @return
      */
     @GetMapping("/getDiaryListByProjectId")
-    public Object getDiaryListByProjectId(@RequestParam Integer userId, @RequestParam Integer projectId,
+    public Object getDiaryListByProjectId(@LoginUser User loginUser, @RequestParam Integer projectId,
                                           @RequestParam Integer pageNo, @RequestParam Integer dataNum) {
 
         PunchCardProject punchCardProject = punchCardProjectApi.getById(projectId);
         if (Objects.isNull(punchCardProject)) {
             return new ResponseModel(ResultConstant.ERROR, "圈子不存在");
         }
-        Integer visibleType = Objects.equals(punchCardProject.getCreatorId(), userId) ? null : 0;
+
+        Integer visibleType = 1;
+        if (Objects.nonNull(loginUser)) {
+            visibleType = Objects.equals(punchCardProject.getCreatorId(), loginUser.getId()) ? null : 0;
+        }
 
         DiarySearchPo diarySearchPo = new DiarySearchPo(null, null, visibleType, projectId, pageNo, dataNum);
         List<PunchCardDiary> punchCardDiaries = punchCardDiaryApi.list(diarySearchPo);
@@ -224,7 +234,16 @@ public class PunchCardDiaryController {
 
             myPunchCardDiaryModel.setPunchCardTime(DateUtil.formatDate(punchCardDiary.getPunchCardTime(), DatePattern.YYYY_MM_DD_HH_mm));
 
-            myPunchCardDiaryModel.setHaveLike(punchCardDiaryService.hasLike(punchCardDiary.getId(), userId));
+            if (Objects.isNull(loginUser)) {
+                myPunchCardDiaryModel.setHaveLike(false);
+            } else {
+                Boolean hasLike = punchCardDiaryService.hasLike(punchCardDiary.getId(), loginUser.getId());
+                myPunchCardDiaryModel.setHaveLike(hasLike);
+                if (hasLike) {
+                    DiaryLike diaryLike = diaryLikeApi.getByDiaryIdAndUserId(punchCardDiary.getId(), loginUser.getId());
+                    myPunchCardDiaryModel.setLikeRecordId(diaryLike.getId());
+                }
+            }
 
             myPunchCardDiaryModel.setPunchCardProject(punchCardProjectService.punchCardProject(punchCardDiary.getProjectId()));
 

@@ -6,6 +6,8 @@ import com.dlion.life.base.api.UserApi;
 import com.dlion.life.base.entity.DiaryLike;
 import com.dlion.life.base.entity.PunchCardDiary;
 import com.dlion.life.base.entity.User;
+import com.dlion.life.common.annotation.Login;
+import com.dlion.life.common.annotation.LoginUser;
 import com.dlion.life.common.constant.ResultConstant;
 import com.dlion.life.common.model.ResponseModel;
 import com.dlion.life.punch.model.CancelLikeModel;
@@ -39,20 +41,21 @@ public class DiaryLikeController {
     private UserNewsService userNewsService;
 
     /**
-     * 喜欢
+     * 点赞
      *
      * @param diaryLike
      * @return
      */
     @PostMapping("/like")
-    public Object like(@RequestBody DiaryLike diaryLike) {
+    @Login
+    public Object like(@LoginUser User loginUser, @RequestBody DiaryLike diaryLike) {
 
         PunchCardDiary punchCardDiary = punchCardDiaryApi.getById(diaryLike.getDiaryId());
         if (Objects.isNull(punchCardDiary)) {
             return new ResponseModel(ResultConstant.ERROR, "日记不存在");
         }
 
-        DiaryLike like = diaryLikeApi.getByDiaryIdAndUserId(diaryLike.getDiaryId(), diaryLike.getLikedUserId());
+        DiaryLike like = diaryLikeApi.getByDiaryIdAndUserId(diaryLike.getDiaryId(), loginUser.getId());
         if (Objects.nonNull(like)) {
             return new ResponseModel(ResultConstant.ERROR, "已点过赞");
         }

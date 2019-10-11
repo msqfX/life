@@ -36,7 +36,7 @@ public class PunchCardDiaryRecommendModel {
 
     private Integer likeRecordId;
 
-    private List<RecentThreeAttendUserListModel> recentThreeAttendUserList;
+    private List<String> recentThreeAttendUserList;
 
     private ProjectInfo projectInfo;
 

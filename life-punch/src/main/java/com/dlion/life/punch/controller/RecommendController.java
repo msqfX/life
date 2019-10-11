@@ -1,13 +1,8 @@
 package com.dlion.life.punch.controller;
 
-import com.dlion.life.base.api.DiaryLikeApi;
-import com.dlion.life.base.api.PunchCardDiaryApi;
-import com.dlion.life.base.api.PunchCardProjectApi;
-import com.dlion.life.base.api.UserApi;
-import com.dlion.life.base.entity.DiaryLike;
-import com.dlion.life.base.entity.PunchCardDiary;
-import com.dlion.life.base.entity.PunchCardProject;
-import com.dlion.life.base.entity.User;
+import com.dlion.life.base.api.*;
+import com.dlion.life.base.entity.*;
+import com.dlion.life.common.annotation.LoginUser;
 import com.dlion.life.common.bo.DiarySearchPo;
 import com.dlion.life.common.constant.CharacterConstant;
 import com.dlion.life.common.constant.DatePattern;
@@ -60,6 +55,9 @@ public class RecommendController {
     @Autowired
     private DiaryResourceService diaryResourceService;
 
+    @Autowired
+    private UserProjectRecordApi userProjectRecordApi;
+
     /**
      * 打卡系统推荐列表
      *
@@ -76,13 +74,13 @@ public class RecommendController {
     /**
      * 首页推荐列表
      *
-     * @param userId
+     * @param loginUser
      * @param pageNo
      * @param dataNum
      * @return
      */
     @GetMapping("/listDiary")
-    public Object listDiary(@RequestParam Integer userId, @RequestParam Integer pageNo, @RequestParam Integer dataNum) {
+    public Object listDiary(@LoginUser User loginUser, @RequestParam Integer pageNo, @RequestParam Integer dataNum) {
 
         DiarySearchPo diarySearchPo = new DiarySearchPo(1, 1, 0, null, pageNo, dataNum);
         List<PunchCardDiary> punchCardDiaryList = punchCardDiaryApi.list(diarySearchPo);
@@ -121,14 +119,20 @@ public class RecommendController {
             publisher.setNickName(user.getNickName());
             model.setPublisher(publisher);
 
-            DiaryLike diaryLike = diaryLikeApi.getByDiaryIdAndUserId(punchCardDiary.getId(), userId);
-            model.setHaveLike(Objects.nonNull(diaryLike));
-            model.setLikeRecordId(Objects.isNull(diaryLike) ? null : diaryLike.getId());
+            if(Objects.isNull(loginUser)){
+                model.setHaveLike(false);
+            }else {
+                DiaryLike diaryLike = diaryLikeApi.getByDiaryIdAndUserId(punchCardDiary.getId(), loginUser.getId());
+                model.setHaveLike(Objects.nonNull(diaryLike));
+                model.setLikeRecordId(Objects.isNull(diaryLike) ? null : diaryLike.getId());
+            }
 
-            RecentThreeAttendUserListModel threeAttendUserListModel = new RecentThreeAttendUserListModel();
-            threeAttendUserListModel.setAvatarUrl(user.getAvatarUrl());
-            List<RecentThreeAttendUserListModel> threeAttendList = new ArrayList<>();
-            threeAttendList.add(threeAttendUserListModel);
+            List<UserProjectRecord> userProjectRecords = userProjectRecordApi.listByProjectId(punchCardDiary.getProjectId());
+            List<String> threeAttendList = userProjectRecords.stream().map(userProjectRecord -> {
+                User userInfo = userApi.getUserById(userProjectRecord.getUserId());
+
+                return userInfo.getAvatarUrl();
+            }).collect(Collectors.toList());
             model.setRecentThreeAttendUserList(threeAttendList);
 
             //diary_resource

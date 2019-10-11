@@ -7,6 +7,7 @@ import com.dlion.life.base.api.UserApi;
 import com.dlion.life.base.entity.DiaryComment;
 import com.dlion.life.base.entity.DiaryLike;
 import com.dlion.life.base.entity.User;
+import com.dlion.life.common.annotation.LoginUser;
 import com.dlion.life.common.constant.DatePattern;
 import com.dlion.life.common.constant.UnreadNewsType;
 import com.dlion.life.common.model.ResponseModel;
@@ -48,37 +49,55 @@ public class NewsController {
     /**
      * 获取用户未读消息数量
      *
-     * @param userId 用户id
+     * @param LoginUser 当前登录用户
      * @return
      */
-    @GetMapping("/getUnreadNewsCount/{userId}")
-    public Object getUnreadNews(@PathVariable Integer userId) {
+    @GetMapping("/getUnreadNewsCount")
+    public Object getUnreadNews(@LoginUser User loginUser) {
+
+        if (Objects.isNull(loginUser)) {
+            return new ResponseModel(new UnreadNewsModel());
+        }
 
         UnreadNewsModel model = new UnreadNewsModel();
-        model.setUnreadCommentNewsNum(userNewsService.getCommentCount(userId));
-        model.setUnreadLikeNewsNum(userNewsService.getLikeCount(userId));
+        model.setUnreadCommentNewsNum(userNewsService.getCommentCount(loginUser.getId()));
+        model.setUnreadLikeNewsNum(userNewsService.getLikeCount(loginUser.getId()));
 
         return new ResponseModel(model);
     }
 
-    @PutMapping("/setNewsReadStatus/{userId}")
-    public Object setNewsReadStatus(@PathVariable Integer userId, @RequestParam String unreadNewsType) {
+    @PutMapping("/setNewsReadStatus")
+    public Object setNewsReadStatus(@LoginUser User loginUser, @RequestParam String unreadNewsType) {
+
+        if (Objects.isNull(loginUser)) {
+            return new ResponseModel();
+        }
 
         if (Objects.equals(UnreadNewsType.NEWS_TYPE_LIKE, unreadNewsType)) {
-            userNewsService.resetLikeCount(userId);
+            userNewsService.resetLikeCount(loginUser.getId());
         }
 
         if (Objects.equals(UnreadNewsType.NEWS_TYPE_COMMENT, unreadNewsType)) {
-            userNewsService.resetCommentCount(userId);
+            userNewsService.resetCommentCount(loginUser.getId());
         }
 
         return new ResponseModel();
     }
 
+    /**
+     * 获取用户评论列表
+     *
+     * @param loginUser 当前登录用户
+     * @return
+     */
     @GetMapping("/getMyCommentedList")
-    public Object getMyCommentedList(@RequestParam Integer userId) {
+    public Object getMyCommentedList(@LoginUser User loginUser) {
 
-        List<DiaryComment> diaryCommentList = diaryCommentApi.ListByRespondentId(userId);
+        if (Objects.isNull(loginUser)) {
+            return new ResponseModel();
+        }
+
+        List<DiaryComment> diaryCommentList = diaryCommentApi.ListByRespondentId(loginUser.getId());
 
         List<DiaryCommentModel> diaryCommentModels = diaryCommentList.stream().map(diaryComment -> {
             DiaryCommentModel diaryCommentModel = new DiaryCommentModel();
@@ -99,10 +118,20 @@ public class NewsController {
         return new ResponseModel(diaryCommentModels);
     }
 
+    /**
+     * 获取用户点赞列表
+     *
+     * @param loginUser
+     * @return
+     */
     @GetMapping("/getMyLikedList")
-    public Object getMyLikedList(@RequestParam Integer userId) {
+    public Object getMyLikedList(@LoginUser User loginUser) {
 
-        List<DiaryLike> diaryLikes = diaryLikeApi.listByLikedUserId(userId);
+        if (Objects.isNull(loginUser)) {
+            return new ResponseModel();
+        }
+
+        List<DiaryLike> diaryLikes = diaryLikeApi.listByLikedUserId(loginUser.getId());
 
         List<DiaryLikeModel> diaryLikeModels = diaryLikes.stream().map(diaryLike -> {
             DiaryLikeModel diaryLikeModel = new DiaryLikeModel();

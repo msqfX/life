@@ -8,6 +8,8 @@ import com.dlion.life.base.entity.ProIntrDetailInfo;
 import com.dlion.life.base.entity.PunchCardProject;
 import com.dlion.life.base.entity.User;
 import com.dlion.life.base.entity.UserProjectRecord;
+import com.dlion.life.common.annotation.Login;
+import com.dlion.life.common.annotation.LoginUser;
 import com.dlion.life.common.bo.ProjectSearchPo;
 import com.dlion.life.common.constant.DatePattern;
 import com.dlion.life.common.constant.ResultConstant;
@@ -84,21 +86,22 @@ public class PunchCardProjectController {
         return new ResponseModel(result);
     }
 
-    @GetMapping("/getProjectInfoByUserId/{userId}")
-    public Object listByUserId(@PathVariable Integer userId) {
-
-        User user = userApi.getUserById(userId);
-
-        if (Objects.isNull(user)) {
-            return new ResponseModel(ResultConstant.ERROR, "用户信息不存在");
-        }
+    @GetMapping("/getUserProjectListInfo")
+    public Object listByUserId(@LoginUser User loginUser) {
 
         PunchCardProjectListHomeModel projectHomeModel = new PunchCardProjectListHomeModel();
-        projectHomeModel.setId(userId);
-        projectHomeModel.setGender(user.getGender());
-        projectHomeModel.setNickName(user.getNickName());
+        if (Objects.isNull(loginUser)) {
+            projectHomeModel.setPunchCardProjectList(new ArrayList<>());
+            return new ResponseModel(projectHomeModel);
+        }
 
-        List<PunchCardProject> projectList = punchCardProjectApi.getByUserId(userId);
+        if (Objects.nonNull(loginUser)) {
+            projectHomeModel.setId(loginUser.getId());
+            projectHomeModel.setGender(loginUser.getGender());
+            projectHomeModel.setNickName(loginUser.getNickName());
+        }
+
+        List<PunchCardProject> projectList = punchCardProjectApi.getByUserId(loginUser.getId());
 
         List<PunchCardProjectListModel> modelList = projectList.stream().map(project -> {
 
@@ -106,7 +109,7 @@ public class PunchCardProjectController {
 
             BeanUtils.copyProperties(project, model);
 
-            if (Objects.equals(project.getCreatorId(), userId)) {
+            if (Objects.equals(project.getCreatorId(), loginUser.getId())) {
                 model.setIsCreator(1);
             } else {
                 model.setIsCreator(0);
@@ -179,7 +182,7 @@ public class PunchCardProjectController {
      * @return
      */
     @GetMapping("{id}")
-    public Object getProjectInfoById(@PathVariable Integer id, @RequestParam String userId) {
+    public Object getProjectInfoById(@LoginUser User loginUser, @PathVariable Integer id) {
 
         PunchCardProject cardProject = punchCardProjectApi.getById(id);
 
@@ -188,7 +191,7 @@ public class PunchCardProjectController {
         }
 
         // 隐私圈子不允许别人访问
-        if (Objects.equals(cardProject.getPrivacyType(), 1) && !Objects.equals(cardProject.getCreatorId(), userId)) {
+        if (Objects.equals(cardProject.getPrivacyType(), 1) && (Objects.isNull(loginUser) || !Objects.equals(cardProject.getCreatorId(), loginUser.getId()))) {
             return new ResponseModel(ResultConstant.ERROR, "隐私圈子只有主人才可以访问");
         }
 
@@ -245,15 +248,25 @@ public class PunchCardProjectController {
         return new ResponseModel(projectInfoModel);
     }
 
+    /**
+     * 查询用户是否参与当前圈子
+     *
+     * @param loginUser 当前登录用户
+     * @param projectId 圈子ID
+     * @return
+     */
     @GetMapping("/checkUserIsAttend")
-    public Object checkUserIsAttend(@RequestParam Integer userId, @RequestParam Integer projectId) {
+    public Object checkUserIsAttend(@LoginUser User loginUser, @RequestParam Integer projectId) {
 
         Map<String, Boolean> result = new HashMap<>();
+        result.put("checkUserIsAttendRes", false);
 
-        UserProjectRecord projectRecord = userProjectRecordApi.getByUserId(userId, projectId);
-        if (Objects.isNull(projectRecord)) {
-            result.put("checkUserIsAttendRes", false);
-        } else {
+        if (Objects.isNull(loginUser)) {
+            return new ResponseModel(result);
+        }
+
+        UserProjectRecord projectRecord = userProjectRecordApi.getByUserId(loginUser.getId(), projectId);
+        if (Objects.nonNull(projectRecord)) {
             result.put("checkUserIsAttendRes", true);
         }
 
@@ -263,11 +276,13 @@ public class PunchCardProjectController {
     /**
      * 加入圈子
      *
-     * @param joinProjectModel
+     * @param loginUser        当前登录用户
+     * @param joinProjectModel 圈子记录对象
      * @return
      */
-    @PutMapping("/joinProject")
-    public Object joinProject(@RequestBody JoinProjectModel joinProjectModel) {
+    @PostMapping("/joinProject")
+    @Login
+    public Object joinProject(@LoginUser User loginUser, @RequestBody JoinProjectModel joinProjectModel) {
 
         PunchCardProject punchCardProject = punchCardProjectApi.getById(joinProjectModel.getProjectId());
 
@@ -275,20 +290,20 @@ public class PunchCardProjectController {
             return new ResponseModel(ResultConstant.ERROR, "圈子不存在");
         }
 
-        UserProjectRecord dbRecord = userProjectRecordApi.getByUserId(joinProjectModel.getUserId(), joinProjectModel.getProjectId());
+        UserProjectRecord dbRecord = userProjectRecordApi.getByUserId(loginUser.getId(), joinProjectModel.getProjectId());
         if (Objects.nonNull(dbRecord)) {
             return new ResponseModel(ResultConstant.ERROR, "已加入到圈子");
         }
 
         UserProjectRecord userProjectRecord = new UserProjectRecord();
         userProjectRecord.setProjectId(joinProjectModel.getProjectId());
-        if (Objects.equals(punchCardProject.getCreatorId(), joinProjectModel.getUserId())) {
+        if (Objects.equals(punchCardProject.getCreatorId(), loginUser.getId())) {
             userProjectRecord.setIsCreator(1);
         } else {
             userProjectRecord.setIsCreator(0);
         }
 
-        userProjectRecord.setUserId(joinProjectModel.getUserId());
+        userProjectRecord.setUserId(loginUser.getId());
         userProjectRecord.setAttendTime(new Date());
         userProjectRecord.setAttendStatus(1);
 
@@ -297,7 +312,7 @@ public class PunchCardProjectController {
         //update attend_num
         PunchCardProject punchProject = new PunchCardProject();
         punchProject.setId(joinProjectModel.getProjectId());
-        if (!Objects.equals(punchCardProject.getCreatorId(), joinProjectModel.getUserId())) {
+        if (!Objects.equals(punchCardProject.getCreatorId(), loginUser.getId())) {
             punchProject.setAttendUserNum(punchCardProject.getAttendUserNum() + 1);
             punchCardProjectApi.update(punchProject);
         }

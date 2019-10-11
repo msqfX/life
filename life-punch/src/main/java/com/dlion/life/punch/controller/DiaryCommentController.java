@@ -6,6 +6,8 @@ import com.dlion.life.base.api.UserApi;
 import com.dlion.life.base.entity.DiaryComment;
 import com.dlion.life.base.entity.PunchCardDiary;
 import com.dlion.life.base.entity.User;
+import com.dlion.life.common.annotation.Login;
+import com.dlion.life.common.annotation.LoginUser;
 import com.dlion.life.common.constant.DatePattern;
 import com.dlion.life.common.constant.ResultConstant;
 import com.dlion.life.common.model.DiaryCommentModel;
@@ -52,12 +54,14 @@ public class DiaryCommentController {
     /**
      * 日记评论
      *
-     * @param diaryCommentModel
+     * @param loginUser         当前登录用户
+     * @param diaryCommentModel 评论对象
      * @return
      */
     @PostMapping
     @Transactional(rollbackFor = Exception.class)
-    public Object add(@RequestBody @Valid DiaryCommentModel diaryCommentModel) {
+    @Login
+    public Object add(@LoginUser User loginUser, @RequestBody @Valid DiaryCommentModel diaryCommentModel) {
 
         PunchCardDiary punchCardDiary = punchCardDiaryApi.getById(diaryCommentModel.getDiaryId());
         if (Objects.isNull(punchCardDiary)) {
@@ -67,6 +71,7 @@ public class DiaryCommentController {
         DiaryComment diaryComment = new DiaryComment();
 
         BeanUtils.copyProperties(diaryCommentModel, diaryComment);
+        diaryComment.setReviewerId(loginUser.getId());
 
         Integer id = diaryCommentApi.add(diaryComment);
 
@@ -84,7 +89,7 @@ public class DiaryCommentController {
         diaryCommentResultModel.setCreateTime(DateUtil.formatDate(new Date(), DatePattern.YYYY_MM_DD_HH_mm_ss));
         diaryCommentResultModel.setId(id);
 
-        User reviewerUser = userApi.getUserById(diaryCommentModel.getReviewerId());
+        User reviewerUser = userApi.getUserById(loginUser.getId());
         ReviewerVo reviewer = new ReviewerVo();
         BeanUtils.copyProperties(reviewerUser, reviewer);
         diaryCommentResultModel.setReviewer(reviewer);
