@@ -1,0 +1,37 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: life-punch
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+      config:
+        prefix=example:
+        file-extension: yaml
+        group: life-prod
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1
+        min-idle: 0
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+# 七牛云配置
+qiniu:
+  accessKey: rXdJ3Lwu3_l4Nfyx13YdwepwQs8a5PFAnCb_kIeF
+  secretKey: uRfsv7djfZrI234QuYdZuL7eNxA9jNSBgG8_fwwe
+  # 七牛空间名
+  bucket: life-punch
+  # 外链访问路径
+  cdn.prefix: http://upload.dliony.com

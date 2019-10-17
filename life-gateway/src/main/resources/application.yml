@@ -1,0 +1,55 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: life-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+      config:
+        prefix=example:
+        file-extension: yaml
+        group: life-prod
+
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: life
+          uri: lb://life-base
+          predicates:
+            - Method=GET,POST,PUT,DELETE
+        - id: life
+          uri: lb://life-punch
+          predicates:
+            - Method=GET,POST,PUT,DELETE
+        - id: life
+          uri: lb://life-note
+          predicates:
+            - Method=GET,POST,PUT,DELETE
+        - id: life
+          uri: lb://life-mbook
+          predicates:
+            - Method=GET,POST,PUT,DELETE
+        - id: life
+          uri: lb://life-user
+          predicates:
+            - Method=GET,POST,PUT,DELETE
+
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1
+        min-idle: 0
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

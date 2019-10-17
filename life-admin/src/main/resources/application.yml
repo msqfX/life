@@ -1,0 +1,40 @@
+server:
+  port: 8086
+
+spring:
+  application:
+    name: life-admin
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+      config:
+        prefix=example:
+        file-extension: yaml
+        group: life-prod
+  mail:
+    host: smtp.qq.com
+    username: 358525887@qq.com
+    password: tage8df73jk083kd97s
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+  boot:
+    admin:
+      notify:
+        mail:
+          from: 358525887@qq.com
+          to: lizy928@163.com
+
+dingTalk:
+  accessToken: d4025e1r4dfa141f69941cdc7bb72f9c8d702
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
